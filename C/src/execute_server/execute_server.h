@@ -7,7 +7,10 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <errno.h>
-
+#include <os_utils.h>
+#include <os_log.h>
+#include <os_shm.h>
 #endif

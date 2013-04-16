@@ -22,7 +22,7 @@
 #define MAX_LENGTH          256
 #define SERVER_IP           "127.0.0.1"
 #define SERVER_PORT         5588
-#define SHARED_MEMORY_SIZE  (4*4096) 
+#define SHARED_MEMORY_SIZE  (4*1024) 
 
 char * create_share_memory(int key, int size){
 	HANDLE config_id;
@@ -60,6 +60,10 @@ int close_share_memory(char * share_memory){
 
 int main(int argc, const char *argv[]){
 
+    // for our
+    int     circle;
+    char    command[4*1024];
+
     // for share memory
 	int key;
 	int ret;
@@ -72,14 +76,27 @@ int main(int argc, const char *argv[]){
     struct      sockaddr_in server_addr;
     socklen_t   server_len;    
 
+    // got the argv[]
+    memset(command,0,4*1024);
+    strcat(command,"1");
+    strcat(command,"java ");
+    for(circle = 1; circle < argc;circle++){
+        strcat(command,argv[circle]);
+        strcat(command," ");
+    }
+    //printf("%s\n",command);
+    
     // init the share memory and log
     OS_logInit(NULL,0,1);
     key = pid;
+    printf("key:%d\n",key);
     shared_mem = create_share_memory(key, SHARED_MEMORY_SIZE);
     	if(shared_mem == NULL)
 	{
 		OS_log(LVL_ERR,0,"get shared memory failed");
 		return -1;
+	}else{
+        strcpy(shared_mem,command);
 	}
 
     // init the socket
@@ -104,12 +121,12 @@ int main(int argc, const char *argv[]){
             sprintf(message_send,"%d",key);
 
             send_data_len = 0;
-            while(1){
+            while(shared_mem[0]){
                 send_data_len = send(client_sockfd,message_send,MAX_LENGTH,0);
                 if(send_data_len < MAX_LENGTH){
                     printf("leave some data to send.");
                 }else{
-                    // check the status
+                    // check the status              
                     sleep(2);
                 }          
             }       
