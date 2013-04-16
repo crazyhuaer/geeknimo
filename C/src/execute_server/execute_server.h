@@ -13,4 +13,6 @@
 #include <os_utils.h>
 #include <os_log.h>
 #include <os_shm.h>
+
+#include<signal.h>
 #endif

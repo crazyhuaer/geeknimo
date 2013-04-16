@@ -19,12 +19,14 @@
 #include <stdio.h>
 #include "Execute_server.h"
 
-#define MAX_LENGTHS (4096*10)
+#define MAX_LENGTHS 256
 #define SERVER_PORT 5588
 #define SHARED_MEMORY_SIZE (4*1024)
 
+HANDLE config_id;
+
 char * create_share_memory(int key, int size){
-	HANDLE config_id;
+	
 	char *mem_addr;
 
 	config_id = OS_shmget(key,size);
@@ -52,12 +54,20 @@ int close_share_memory(char * share_memory){
 		OS_log(LVL_ERR, 0, "disconnect the shared memory failed");
 		return -1;
 	}
+    OS_shmclose(config_id);
 	return 0;
+}
+
+void sig_handler(int signo)
+{
+  if (signo == SIGINT)
+    exit(1);
 }
 
 int main(int argc, const char *argv[]){
 
     // for share memory
+    int     ret;
     char * shared_mem;
     char receive_command[SHARED_MEMORY_SIZE];
 
@@ -73,6 +83,10 @@ int main(int argc, const char *argv[]){
     socklen_t     sockaddr_len;
 
     long          receive_key;
+
+    // signal sigint
+    if (signal(SIGINT, sig_handler) == SIG_ERR)
+        printf("\ncan't catch SIGINT\n");
 
     // set the socket
     sock_fd = socket(AF_INET,SOCK_DGRAM,0);
@@ -90,7 +104,6 @@ int main(int argc, const char *argv[]){
         printf("bind error,%d\n",errno);
         exit(1);
     }else{
-
         char message[MAX_LENGTHS];
 
         // do job
@@ -117,13 +130,12 @@ int main(int argc, const char *argv[]){
                     return -1;
                 }else{
                     //strcpy(shared_mem,command);
-                    strncpy(receive_command, shared_mem, n);
                     printf("shared_mem:%s\n",shared_mem);
-                    sleep(5);
+                    system("sleep 5");
+                    //sleep(5);
                     shared_mem[0] = 0;
+                    ret = close_share_memory(shared_mem);
                 }
-                          
-                
             }
         }
     }
