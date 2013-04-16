@@ -1,0 +1,112 @@
+#############################################################
+#
+#
+#       File name: Makesource.ruler
+#       Description: define makefile rulers for android
+#       Version: 1.0
+#
+##############################################################
+
+
+##############################################################
+subdir_make = $(MAKE) -C $(CURRENT_DIR)/$(1);
+subdir_clean = $(MAKE) clean -C $(CURRENT_DIR)/$(1);
+
+.PHONY: all clean compile_subdir output_include subdirs $(SUB_DIRS) checkobjdir
+
+all: $(MODULE_BIN) $(MODULE_LIB_SHARED) $(MODULE_LIB_STATIC) output_include subdirs
+
+$(MODULE_BIN): $(OBJS)
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Linking \033[40;32m$@.....\033[0m"
+ifneq ($(CPP_OBJS), )
+	$(CXX) $(LD_OPT) -o $@ -L$(LIBS_DIR) $(LD_FLAGS)  $(addprefix $(OBJ_FOLDER), $^) 
+else    
+	$(CC) $(LD_OPT) -o $@ -L$(LIBS_DIR) $(LD_FLAGS)  $(addprefix $(OBJ_FOLDER), $^) 
+endif   
+	$(CP) $@ $(OUT_BIN_FOLDER)/$@
+	$(RM) $@
+
+$(MODULE_LIB_SHARED): $(OBJS)
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Linking \033[40;32m$(MODULE_LIB_SHARED)......\033[0m"
+ifneq ($(CPP_OBJS), )
+	$(CXX) -shared -fPIC -o $@  $(addprefix $(OBJ_FOLDER), $^)
+else    
+	$(CC) -shared -fPIC -o $@  $(addprefix $(OBJ_FOLDER), $^)
+endif   
+ifeq ($(PLATFORM_RELATED), YES)
+	$(CP) $@ $(OUT_PLATFORM_LIB_FOLDER)/$@
+else
+	$(CP) $@ $(OUT_LIB_FOLDER)/$@
+endif
+	$(RM) $@
+
+$(MODULE_LIB_STATIC): $(OBJS)
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Linking \033[40;32m$@.....\033[0m"
+	$(AR) -rc $@ $(addprefix $(OBJ_FOLDER), $^)
+ifeq ($(PLATFORM_RELATED), YES)
+	$(CP) $@ $(OUT_PLATFORM_LIB_FOLDER)/$@
+else
+	$(CP) $@ $(OUT_LIB_FOLDER)/$@
+endif
+	$(RM) $@
+
+output_include:
+ifneq ($(strip $(OUT_INC_FILE)),) 
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Installing \033[40;32m$(OUT_INC_FILE).....\033[0m"
+	$(CP) -u ${OUT_INC_FILE} $(OUT_INC_DIR)
+endif
+
+compile_subdir:
+	 $(foreach n,$(SUB_DIRS),$(call subdir_make,$(n)))
+
+subdirs: $(SUB_DIRS) 
+$(SUB_DIRS):
+	make -C $@
+
+checkobjdir: 
+	if [ ! -d $(OBJ_FOLDER) ]; then $(MKDIR) $(OBJ_FOLDER); fi
+
+
+$(C_OBJS): %.o: %.c
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Compiling \033[40;33m$(notdir $@)\033[0m <--- \033[40;32m$(notdir $<)\033[0m......"
+	$(CC) $(CFLAGS) -MD -o "$(OBJ_FOLDER)$@" "$<" $(INCLUDE)
+
+$(AS_OBJS): %.o: %.S
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Compiling \033[40;33m$(notdir $@)\033[0m <--- \033[40;32m$(notdir $<)\033[0m......"
+	$(CC) $(CFLAGS) -o "$(OBJ_FOLDER)$@" "$<" 
+	
+$(CPP_OBJS): %.o: %.cpp
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Compiling \033[40;33m$(notdir $@)\033[0m <--- \033[40;32m$(notdir $<)\033[0m......"
+	$(CXX) $(CFLAGS) -MD -o "$(OBJ_FOLDER)$@" "$<" $(INCLUDE)
+
+clean: clean_subdir
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Cleaning \033[40;32mobject files and dependency files......\033[0m"
+	@$(RM) $(addprefix $(OBJ_FOLDER), $(OBJS)) $(addprefix $(OBJ_FOLDER), $(DEPS))
+ifneq ($(strip $(OUT_INC_FILE)),) 
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Uninstalling \033[40;32m$(OUT_INC_FILE).....\033[0m"
+	$(RM) $(addprefix $(OUT_INC_DIR)/, $(OUT_INC_FILE))
+endif
+
+clean_subdir:
+	 $(foreach n,$(SUB_DIRS),$(call subdir_clean,$(n)))
+
+ifeq ($(SK_BUILD_BIN), YES)
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Cleaning \033[40;32m$(MODULE_BIN)......\033[0m"
+	$(RM) $(MODULE_BIN) $(OUT_BIN_FOLDER)/$(MODULE_BIN)
+endif
+
+ifeq ($(SK_BUILD_LIB), YES)
+ifeq ($(PLATFORM_RELATED), YES)
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Cleaning \033[40;32m$(MODULE_LIB_SHARED)......\033[0m"
+	$(RM) $(MODULE_LIB_SHARED) $(OUT_PLATFORM_LIB_FOLDER)/$(MODULE_LIB_SHARED)
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Cleaning \033[40;32m$(MODULE_LIB_STATIC)......\033[0m"
+	$(RM) $(MODULE_LIB_STATIC) $(OUT_PLATFORM_LIB_FOLDER)/$(MODULE_LIB_STATIC)
+else
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Cleaning \033[40;32m$(MODULE_LIB_SHARED)......\033[0m"
+	$(RM) $(MODULE_LIB_SHARED) $(OUT_LIB_FOLDER)/$(MODULE_LIB_SHARED)
+	@echo -e "\033[40;35m[$(PLATFORM_NAME)]:\033[0m Cleaning \033[40;32m$(MODULE_LIB_STATIC)......\033[0m"
+	$(RM) $(MODULE_LIB_STATIC) $(OUT_LIB_FOLDER)/$(MODULE_LIB_STATIC)
+endif
+endif
+
+-include $(DEPS)

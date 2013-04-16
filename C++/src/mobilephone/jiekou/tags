@@ -1,0 +1,26 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CLOSESOCKET	jiekou.h	37;"	d	language:C++
+CLOSESOCKET	jiekou.h	40;"	d	language:C++
+DEBUG_STATUS	jiekou.h	31;"	d	language:C++
+PERROR	jiekou.h	38;"	d	language:C++
+PERROR	jiekou.h	42;"	d	language:C++
+SERVER_PATH	recvun.c	7;"	d	language:C	file:
+SERVER_PATH	sendun.c	9;"	d	language:C	file:
+SLEEP	jiekou.h	36;"	d	language:C++
+SLEEP	jiekou.h	41;"	d	language:C++
+_JIEKOU_H_	jiekou.h	2;"	d	language:C++
+httpserver	jiekou.c	/^int httpserver(struct sockaddr_in * p_struct,char * buff,int len)$/;"	f	language:C	signature:(struct sockaddr_in * p_struct,char * buff,int len)
+init	jiekou.c	/^int init(int video_size,int video_rate,int video_format)$/;"	f	language:C	signature:(int video_size,int video_rate,int video_format)
+localwrite	jiekou.c	/^int localwrite(char * pathname,char * buff,int len)$/;"	f	language:C	signature:(char * pathname,char * buff,int len)
+main	recvun.c	/^int main()$/;"	f	language:C
+main	sendun.c	/^int main(int argc,char * argv[])$/;"	f	language:C	signature:(int argc,char * argv[])
+read_localsocket	jiekou.c	/^int read_localsocket(char * buff,int len)$/;"	f	language:C	signature:(char * buff,int len)
+send_to_server	sendun.c	/^int send_to_server(int connect_socket,char * buff)$/;"	f	language:C	signature:(int connect_socket,char * buff)
+socklen_t	jiekou.h	35;"	d	language:C++
+start_record	jiekou.c	/^int start_record(int mode)$/;"	f	language:C	signature:(int mode)
+stop_record	jiekou.c	/^int stop_record()$/;"	f	language:C

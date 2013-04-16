@@ -1,0 +1,17 @@
+---- malloc Matches (4 in 3 files) ----
+Acmcode.c (d:\project\...\acmcode):34
+    GLOBAL_VAR * global_var = malloc(sizeof(GLOBAL_VAR));
+  
+    memset(global_var,0,sizeof(GLOBAL_VAR));
+ScreenRecorder_client.cpp (w:\mycode\mobile_1):229
+	Para_S *para = (Para_S *)malloc(sizeof(Para_S));
+	para->listenFd = connFd;
+	para->func = func;
+Selectmode.cpp (w:\mycode\mobile_1):93
+    para = (PTHREAD_PARA_S *)malloc(sizeof(PTHREAD_PARA_S));
+    ret = screenrecorder_start(para->cmdFd, para->connFd,(void (*)(void*))listenThreadFunc,(void *) para);
+
+Selectmode.cpp (w:\mycode\mobile_1):154
+    MOBILEPHONE_VAR * mobilephone_var = (MOBILEPHONE_VAR *)malloc(sizeof(MOBILEPHONE_VAR));
+    memset(mobilephone_var,0,sizeof(MOBILEPHONE_VAR));        
+    return mobilephone_var;
