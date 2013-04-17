@@ -3,7 +3,7 @@ include $(PRJ_ROOT)/ruler/Makefile.mk
 ##############################################################
 # compile target control
 ##############################################################
-SK_BUILD_BIN	= yes
+SK_BUILD_BIN	= NO
 SK_BUILD_LIB	= NO
 
 ##############################################################
@@ -21,7 +21,7 @@ MODULE_LIB_STATIC := $(addprefix lib, $(addsuffix .a, $(MODULE_BIN)))
 MODULE_LIB_SHARED := $(addprefix lib, $(addsuffix .so, $(MODULE_BIN)))
 
 ifeq ($(SK_BUILD_BIN), NO)
-MODULE_BIN := 
+MODULE_BIN := jave
 endif
 
 ifeq ($(SK_BUILD_LIB), NO)

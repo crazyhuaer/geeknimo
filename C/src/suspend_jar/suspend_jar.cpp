@@ -85,8 +85,7 @@ int main(int argc, const char *argv[]){
     // got the argv[]
     memset(command,0,4*1024);
     strcat(command,"1");
-    strcat(command,"jar ");
-    for(circle = 1; circle < argc;circle++){
+    for(circle = 0; circle < argc;circle++){
         strcat(command,argv[circle]);
         strcat(command," ");
     }

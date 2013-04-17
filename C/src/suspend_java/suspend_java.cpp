@@ -60,7 +60,8 @@ int close_share_memory(char * share_memory){
 }
 
 
-int main(int argc, const char *argv[]){
+int main(int argc, const char *argv[])
+{
 
     // for our
     int     circle;
@@ -83,10 +84,10 @@ int main(int argc, const char *argv[]){
     check_times = 0;
 
     // got the argv[]
-    memset(command,0,4*1024);
+    //memset(command,0,4*1024);
     strcat(command,"1");
-    strcat(command,"java ");
-    for(circle = 1; circle < argc;circle++){
+    for(circle = 0; circle < argc;circle++)
+    {
         strcat(command,argv[circle]);
         strcat(command," ");
     }
@@ -101,7 +102,9 @@ int main(int argc, const char *argv[]){
 	{
 		OS_log(LVL_ERR,0,"get shared memory failed");
 		return -1;
-	}else{
+	}
+     else
+	{
         strcpy(shared_mem,command);
 	}
 
@@ -112,18 +115,24 @@ int main(int argc, const char *argv[]){
     server_addr.sin_port = htons(SERVER_PORT);
 
     // build the socket and do job
-    if( inet_pton(AF_INET,SERVER_IP,&server_addr.sin_addr) <= 0){
+    if( inet_pton(AF_INET,SERVER_IP,&server_addr.sin_addr) <= 0)
+    {
         ret = close_share_memory(shared_mem);
         perror("inet_pton error");
         exit(1);
-    }else{
+    }
+    else
+    {
         client_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
         server_len = sizeof(server_addr);
-        if( connect(client_sockfd,(struct sockaddr *)&server_addr,server_len) == -1){
+        if( connect(client_sockfd,(struct sockaddr *)&server_addr,server_len) == -1)
+        {
             ret = close_share_memory(shared_mem);
             perror("connect error");
             exit(1);
-        }else{
+        }
+        else
+        {
             char message_send[MAX_LENGTH];
 
             sprintf(message_send,"%d",key);
@@ -132,10 +141,14 @@ int main(int argc, const char *argv[]){
             send_data_len = sendto(client_sockfd,message_send,MAX_LENGTH,0,\
                                 (struct sockaddr *)&server_addr,sizeof(server_addr));
 
-            if(send_data_len < MAX_LENGTH){
+            if(send_data_len < MAX_LENGTH)
+            {
                 printf("leave some data to send.");
-            }else{
-                while(shared_mem[0] && check_times++ < 200){
+            }
+            else
+            {
+                while(shared_mem[0] && check_times++ < 200)
+                {
                     // check the status              
                     usleep(100000);
                 }          

@@ -25,7 +25,8 @@
 
 HANDLE config_id;
 
-char * create_share_memory(int key, int size){
+char * create_share_memory(int key, int size)
+{
 	
 	char *mem_addr;
 
@@ -46,7 +47,8 @@ char * create_share_memory(int key, int size){
     return mem_addr;
 }
 
-int close_share_memory(char * share_memory){
+int close_share_memory(char * share_memory)
+{
 	int ret;
 	ret = OS_shmdt(share_memory);
 	if(ret < 0)
@@ -54,6 +56,7 @@ int close_share_memory(char * share_memory){
 		OS_log(LVL_ERR, 0, "disconnect the shared memory failed");
 		return -1;
 	}
+    
     OS_shmclose(config_id);
 	return 0;
 }
@@ -64,7 +67,8 @@ void sig_handler(int signo)
     exit(1);
 }
 
-int main(int argc, const char *argv[]){
+int main(int argc, const char *argv[])
+{
 
     // for share memory
     int     ret;
@@ -86,7 +90,7 @@ int main(int argc, const char *argv[]){
 
     // signal sigint
     if (signal(SIGINT, sig_handler) == SIG_ERR)
-        printf("\ncan't catch SIGINT\n");
+        OS_log(LVL_ERR,0,"can't catch SIGINT");
 
     // set the socket
     sock_fd = socket(AF_INET,SOCK_DGRAM,0);
@@ -100,26 +104,33 @@ int main(int argc, const char *argv[]){
 
     // build the socket
     return_status = bind(sock_fd,(struct sockaddr *)&server_addr,sockaddr_len);
-    if(return_status == -1){
-        printf("bind error,%d\n",errno);
+    if(return_status == -1)
+    {
+        OS_log(LVL_ERR,0,"bind error");
         exit(1);
-    }else{
+    }
+    else
+    {
         char message[MAX_LENGTHS];
 
         // do job
-        while(1){
+        while(1)
+        {
             memset(message,MAX_LENGTHS,0);
             memset(receive_command,MAX_LENGTHS,0);
             
             receive_data_length = recvfrom(sock_fd,message,MAX_LENGTHS,0,(sockaddr *)&client_addr,&sockaddr_len);
 
-            if(receive_data_length < 0){
+            if(receive_data_length < 0)
+            {
                 continue;
-            }else{
+            }
+            else
+            {
                 // revieve the command,do that.
-                printf("message:%s\n",message);
+                //printf("message:%s\n",message);
                 receive_key = strtol(message,(char **)NULL,10);        
-                printf("receive_key:%ld\n",receive_key);
+                //printf("receive_key:%ld\n",receive_key);
                 
                 // read the share memory
                 shared_mem = create_share_memory(receive_key, SHARED_MEMORY_SIZE);
@@ -128,9 +139,13 @@ int main(int argc, const char *argv[]){
                 {
                     OS_log(LVL_ERR,0,"get shared memory failed");
                     return -1;
-                }else{
+                }
+                else
+                {
                     //strcpy(shared_mem,command);
-                    printf("shared_mem:%s\n",shared_mem);
+                    strncpy(receive_command,shared_mem+1,SHARED_MEMORY_SIZE-2);
+                    //printf("shared_mem:%s\n",shared_mem);
+                    //printf("receive_command:%s\n",receive_command);
                     system("sleep 5");
                     //sleep(5);
                     shared_mem[0] = 0;
