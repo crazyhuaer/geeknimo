@@ -25,6 +25,7 @@
 #define SHARED_MEMORY_SIZE  (4*1024) 
 
 HANDLE config_id;
+char *shared_mem;
 char * create_share_memory(int key, int size){
 	
 	char *mem_addr;
@@ -32,14 +33,16 @@ char * create_share_memory(int key, int size){
 	config_id = OS_shmget(key,size);
 	if(config_id < 0)
 	{
-		OS_log(LVL_ERR,0,"OS_configConnect: OS_shmget error--shared memory not exit");
+		//OS_log(LVL_ERR,0,"OS_configConnect: OS_shmget error--shared memory not exit");
+		printf("OS_configConnect: OS_shmget error--shared memory not exit");
 		return NULL;
 	}
 	
 	mem_addr = (char *)OS_shmat(config_id);
 	if(mem_addr < 0)
 	{
-		OS_log(LVL_ERR,0,"OS_configConnect: bind the shared memory error");
+		//OS_log(LVL_ERR,0,"OS_configConnect: bind the shared memory error");
+		printf("OS_configConnect: bind the shared memory error");
 		return NULL;
 	}
     
@@ -52,13 +55,29 @@ int close_share_memory(char * share_memory){
 	ret = OS_shmdt(share_memory);
 	if(ret < 0)
 	{
-		OS_log(LVL_ERR, 0, "disconnect the shared memory failed");
+		//OS_log(LVL_ERR, 0, "disconnect the shared memory failed");
+		printf("disconnect the shared memory failed");
 		return -1;
 	}
     OS_shmclose(config_id);
 	return 0;
 }
 
+void sig_handler(int signo)
+{
+    int ret;
+    if (signo == SIGINT)
+    {
+        ret = close_share_memory(shared_mem);
+        	if(ret < 0)
+        	{
+        		//OS_log(LVL_ERR,0,"close the shared memory");
+        		printf("close the shared memory");
+        		return;
+        	}  
+    }
+    return;
+}
 
 int main(int argc, const char *argv[])
 {
@@ -67,12 +86,15 @@ int main(int argc, const char *argv[])
     int     circle;
     int     check_times;
     char    command[4*1024];
+    timeval starttime,endtime;
+    int  ms_use;
+    char * p_real_cmd;
 
     // for share memory
 	int key;
 	int ret;
-	char *shared_mem;
-     pid_t pid = getpid();
+	
+     
 
     // for socket
     int         send_data_len;
@@ -80,8 +102,30 @@ int main(int argc, const char *argv[])
     struct      sockaddr_in server_addr;
     socklen_t   server_len;    
 
+    pid_t pid;
+
+    // signal sigint
+    if (signal(SIGINT, sig_handler) == SIG_ERR)
+        OS_log(LVL_ERR,0,"can't catch SIGINT");
+
+
+    if(strstr(argv[1],"--help"))
+    {
+        printf("this is serial_client\n");
+        //return 0;
+    }
+
+
+    // init the share memory and log
+    OS_logInit(NULL,0,1);
+
+
+    pid = getpid();
+
+    
     // for our init
     check_times = 0;
+    gettimeofday(&starttime,0);
 
     // got the argv[]
     //memset(command,0,4*1024);
@@ -91,10 +135,7 @@ int main(int argc, const char *argv[])
         strcat(command,argv[circle]);
         strcat(command," ");
     }
-    //printf("%s\n",command);
-    
-    // init the share memory and log
-    OS_logInit(NULL,0,1);
+
     key = pid;
     printf("key:%d\n",key);
     shared_mem = create_share_memory(key, SHARED_MEMORY_SIZE);
@@ -119,20 +160,12 @@ int main(int argc, const char *argv[])
     {
         ret = close_share_memory(shared_mem);
         perror("inet_pton error");
-        exit(1);
+        return -1;
     }
-    else
-    {
+    
         client_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
         server_len = sizeof(server_addr);
-        if( connect(client_sockfd,(struct sockaddr *)&server_addr,server_len) == -1)
-        {
-            ret = close_share_memory(shared_mem);
-            perror("connect error");
-            exit(1);
-        }
-        else
-        {
+
             char message_send[MAX_LENGTH];
 
             sprintf(message_send,"%d",key);
@@ -147,25 +180,44 @@ int main(int argc, const char *argv[])
             }
             else
             {
-                while(shared_mem[0] && check_times++ < 200)
+                while(shared_mem[0])
                 {
                     // check the status              
                     usleep(100000);
+                    if(check_times++ > 100)
+                    {
+                        check_times = 0;
+                        printf("this program run 10s\n");
+                    }
                 }          
             }       
-        }
+
+
+    p_real_cmd = command +1;
+    
+    if(!memcmp(p_real_cmd,"jar",3))
+    {
+        p_real_cmd[2]='1';
+    }
+    else if(!memcmp(p_real_cmd,"java",4))
+    {
+        p_real_cmd[3]='1';
+    }
+    else
+    {
+        printf("cmd error:\n %s\n",p_real_cmd);
     }
 
-    ret = close_share_memory(shared_mem);
-	if(ret < 0)
-	{
-		OS_log(LVL_ERR,0,"close the shared memory");
-		return -1;
-	}
+    ret = system(p_real_cmd);
 
-    if(check_times > 200){
-        printf("jar run 10s,error.\n");
-    }
+    shared_mem[0] = '2';
+    
+    close_share_memory(shared_mem);
+	
+    gettimeofday(&endtime,0);
+    ms_use = (endtime.tv_sec - starttime.tv_sec)*1000 + (endtime.tv_usec - starttime.tv_usec)/1000;
+    printf("timeuse %d (ms)\n",ms_use);
+    
    
     return 0;
 }

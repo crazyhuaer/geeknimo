@@ -63,8 +63,21 @@ int close_share_memory(char * share_memory)
 
 void sig_handler(int signo)
 {
-  if (signo == SIGINT)
-    exit(1);
+    if (signo == SIGINT)
+        exit(1);
+}
+
+int  os_system(const char * cmd)
+{
+    pid_t status;
+
+    status = system(cmd);
+    if (status == -1)
+        return -1981;
+    else if (WIFEXITED(status))
+        return WEXITSTATUS(status);
+
+    return -1981;
 }
 
 int main(int argc, const char *argv[])
@@ -85,9 +98,18 @@ int main(int argc, const char *argv[])
     int           return_status;
     int           receive_data_length;
     socklen_t     sockaddr_len;
-
+    int          optval;
     long          receive_key;
+    int          sleep_var;
+    int          ms_time_cnt;
 
+    sleep_var = 0;
+    if(argc >= 2)
+    {
+        sleep_var = atoi(argv[1]);
+        printf("init sleep time=%d ms\n",sleep_var);
+        sleep_var *= 1000;
+    }
     // signal sigint
     if (signal(SIGINT, sig_handler) == SIG_ERR)
         OS_log(LVL_ERR,0,"can't catch SIGINT");
@@ -99,9 +121,9 @@ int main(int argc, const char *argv[])
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     server_addr.sin_port = htons(SERVER_PORT);
-
+   
     sockaddr_len = sizeof(server_addr);
-
+    
     // build the socket
     return_status = bind(sock_fd,(struct sockaddr *)&server_addr,sockaddr_len);
     if(return_status == -1)
@@ -113,6 +135,18 @@ int main(int argc, const char *argv[])
     {
         char message[MAX_LENGTHS];
 
+        optval = 1;
+        if(setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&optval, sizeof(optval)) < 0)
+        {
+            OS_log(LVL_WRN, 0,"WARNING--setsockopt SO_REUSEADDR failed");
+        }
+
+        optval = 128*1024;
+        if(setsockopt(sock_fd, SOL_SOCKET, SO_RCVBUF, (char *)&optval, sizeof(optval)) < 0)
+        {
+            OS_log(LVL_WRN, 0,"WARNING--setsockopt SO_RCVBUF failed");
+        }
+        
         // do job
         while(1)
         {
@@ -141,14 +175,35 @@ int main(int argc, const char *argv[])
                     return -1;
                 }
                 else
-                {
-                    //strcpy(shared_mem,command);
-                    strncpy(receive_command,shared_mem+1,SHARED_MEMORY_SIZE-2);
-                    //printf("shared_mem:%s\n",shared_mem);
-                    //printf("receive_command:%s\n",receive_command);
-                    system("sleep 5");
-                    //sleep(5);
-                    shared_mem[0] = 0;
+                {  
+                    printf("%s\n",shared_mem+1);
+                    
+                    if(shared_mem[0]=='1')
+                        shared_mem[0] = 0;
+                    else
+                    {
+                        OS_log(LVL_ERR,0,"something wrong,shared_mem[0]=%d,pid=%s\n",shared_mem[0],message);
+                    }
+
+                    ms_time_cnt = 0;
+                    sleep_var = 100000;
+                    for(;;)
+                    {
+                        usleep(100000);
+                        if(shared_mem[0]=='2')
+                        {
+                            printf("\nfinish exec!\n");
+                            break;
+                        }
+                        ms_time_cnt++;
+                        if(ms_time_cnt >= 100)
+                        {
+                            OS_log(LVL_ERR,0,"running 10 sec not exit!,pid=%s",message);
+                            ms_time_cnt = 0;
+                        }
+                            
+                    }
+
                     ret = close_share_memory(shared_mem);
                 }
             }
