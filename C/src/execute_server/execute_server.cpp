@@ -186,7 +186,7 @@ int main(int argc, const char *argv[])
                     }
 
                     ms_time_cnt = 0;
-                    sleep_var = 100000;
+
                     for(;;)
                     {
                         usleep(100000);
@@ -203,8 +203,10 @@ int main(int argc, const char *argv[])
                         }
                             
                     }
-
+                    
                     ret = close_share_memory(shared_mem);
+                    if(sleep_var)
+                        usleep(sleep_var);
                 }
             }
         }

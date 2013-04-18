@@ -219,5 +219,5 @@ int main(int argc, const char *argv[])
     printf("timeuse %d (ms)\n",ms_use);
     
    
-    return 0;
+    return ret;
 }
