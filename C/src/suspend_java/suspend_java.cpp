@@ -30,7 +30,9 @@
 
 HANDLE config_id;
 char *shared_mem = NULL;
+int system_ret;
 char    pthread_args;
+
 
 int check_process_exist_ex(char * prog_name,int *p_pid,int min_pid)
 {
@@ -143,14 +145,8 @@ void sig_handler(int signo)
 
 void* pthread_func(void * p_arg)
 {
-    int ret = 0;
-    ret = system((char *)p_arg);
-    if(ret == -1)
-    {
-        ;
-    }else{
-        pthread_args = '1';
-    }
+    system_ret = system((char *)p_arg);    
+    pthread_args = '1';
     return NULL;
 }
 
@@ -162,12 +158,11 @@ int main(int argc, const char *argv[])
     int     circle;
     int     check_times;
     char    command[COMMAND_LENGTHS];
-    timeval starttime,endtime;
-    int  ms_use;
+
     char * p_real_cmd;
 
     // pthread
-    int     pthread_system;
+    int     thread_pid;
     char    kill_command[256];
     char    kill_name[256];
 
@@ -184,6 +179,7 @@ int main(int argc, const char *argv[])
     socklen_t   server_len;    
 
     pid_t pid;
+    int monitor_time_cnt;
 
     // signal sigint
     if (signal(SIGINT, sig_handler) == SIG_ERR)
@@ -196,6 +192,12 @@ int main(int argc, const char *argv[])
         return 0;
     }
 
+    if(!check_process_exist_ex("server_serial",&thread_pid,500))
+    {
+        printf("\n\npls running server_serial firstly!\n\n");
+        return -1;
+    }
+
 
     // init the share memory and log
     OS_logInit(NULL,0,1);
@@ -204,11 +206,10 @@ int main(int argc, const char *argv[])
     pid = getpid();
     pthread_args = '0';
 
-    strcpy(kill_name,"ja1");
+    
     
     // for our init
     check_times = 0;
-    gettimeofday(&starttime,0);
 
     // got the argv[]
     //memset(command,0,4*1024);
@@ -249,7 +250,6 @@ int main(int argc, const char *argv[])
     client_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     server_len = sizeof(server_addr);
 
-
     sprintf(message_send,"%d",key);
 
     send_data_len = 0;
@@ -269,21 +269,22 @@ int main(int argc, const char *argv[])
             if(check_times++ > SLEEP_TIME_COUNT)
             {
                 check_times = 0;
-                printf("this program run 10s\n");
+                printf("this program run 10s,pid=%d\n",key);
             }
         }          
     }       
-
 
     p_real_cmd = command +1;
     
     if(!memcmp(p_real_cmd,"jar",3))
     {
         p_real_cmd[2]='1';
+        strcpy(kill_name,"ja1");
     }
     else if(!memcmp(p_real_cmd,"java",4))
     {
         p_real_cmd[3]='1';
+        strcpy(kill_name,"jav1");
     }
     else
     {
@@ -292,15 +293,44 @@ int main(int argc, const char *argv[])
 
     while(pthread_args != '1')
     {
-        ret = OS_thread_create((OS_THREAD_FUNC)pthread_func,(void *)p_real_cmd);
-        ret = check_process_exist_ex(kill_name,&pthread_system,500);
+        system_ret = 0;
+        thread_pid = 0;
+        OS_thread_create((OS_THREAD_FUNC)pthread_func,(void *)p_real_cmd);
         
-        if(ret == 0)
+
+        usleep(SLEEP_TIME_UNIT);
+
+        
+
+   #if 0     
+        if((ret == 0)&&(pthread_args == '0'))
+        {
+            //说明没有找到应该存在的进程，这是不应该出现的现象。
+            printf("\n running %s, but process not exist!\n",kill_name);
+            sleep(1);
+            system_ret = -1;
             break;
-        
-        for(i=0;i<THE_MAX_TIME_EXIT_THREAD && pthread_args == '0';i++)
+        }
+   #endif
+   
+        if(!strcmp(kill_name,"ja1"))
+        {
+            monitor_time_cnt = THE_MAX_TIME_EXIT_THREAD;
+            printf("\nkill_name = ja1\n");
+        }
+        else
+        {
+            monitor_time_cnt = 7*THE_MAX_TIME_EXIT_THREAD;
+            printf("\nkill_name = jav1\n");
+        }
+            
+        for(i=0;(i<monitor_time_cnt)&&(pthread_args == '0');i++)
         {
             usleep(SLEEP_TIME_UNIT);
+            if(!thread_pid)
+            {
+                check_process_exist_ex(kill_name,&thread_pid,500);
+            }
             // if pthread_args = '1' break;
         }
         
@@ -310,8 +340,25 @@ int main(int argc, const char *argv[])
         }
         else
         {
-            sprintf(kill_command,"kill -9 %d",pthread_system);
-            ret = system(kill_command);
+            if(thread_pid)
+            {
+                sprintf(kill_command,"kill -9 %d",thread_pid);
+                system(kill_command);
+                printf("\n\nfound %s block, kill pid %d\n",kill_name,thread_pid);
+            }
+            else
+            {
+                printf("\n running %s, but process not exist!\n",kill_name);
+            }
+
+            sleep(1);
+            //因为kill掉system拉起的线程后，而使
+            if((pthread_args=='1')&&thread_pid)
+                pthread_args = '0';
+            else
+            {
+                printf("\nkill the thread,but pthread_args!=1 \n");
+            }
         }
     }
     
@@ -321,11 +368,7 @@ int main(int argc, const char *argv[])
     shared_mem[0] = '2';
     
     close_share_memory(shared_mem);
-	
-    gettimeofday(&endtime,0);
-    ms_use = (endtime.tv_sec - starttime.tv_sec)*1000 + (endtime.tv_usec - starttime.tv_usec)/1000;
-    //printf("timeuse %d (ms)\n",ms_use);
     
    
-    return ret;
+    return system_ret;
 }
