@@ -23,10 +23,68 @@
 #define SERVER_IP           "127.0.0.1"
 #define SERVER_PORT         5588
 #define SHARED_MEMORY_SIZE  (4*1024) 
+#define COMMAND_LENGTHS     (4*1024)
+#define SLEEP_TIME_COUNT    100
+#define SLEEP_TIME_UNIT     100000
+#define THE_MAX_TIME_EXIT_THREAD    100
 
 HANDLE config_id;
-char *shared_mem;
-char * create_share_memory(int key, int size){
+char *shared_mem = NULL;
+char    pthread_args;
+
+int check_process_exist_ex(char * prog_name,int *p_pid,int min_pid)
+{
+    int proc_pid;
+    char tmpbuf[256];
+
+    DIR              *pDir ;
+    struct dirent    *ent  ;
+    FILE *fd;
+
+    pDir = opendir("/proc");
+
+    while ((ent=readdir(pDir))!=NULL)
+    {
+        if (ent->d_type & DT_DIR)
+        {
+            if ((ent->d_name[0] >= '1') &&(ent->d_name[0] <= '9'))
+            {
+                proc_pid = atoi(ent->d_name);
+
+                if (proc_pid > min_pid)
+                {
+                    sprintf(tmpbuf,"/proc/%s/cmdline",ent->d_name);
+                    fd = fopen(tmpbuf,"rb");
+                    if (fd)
+                    {
+                        tmpbuf[0] = 0;
+                        fread(tmpbuf, 1, sizeof(tmpbuf), fd);
+                        if (tmpbuf[0])
+                        {
+                            if (strstr(tmpbuf,prog_name))
+                            {
+                                if (p_pid)
+                                    *p_pid = proc_pid;
+
+                                closedir(pDir);
+                                return 1;           // found the process
+                            }
+                        }
+                        fclose(fd);
+                    }
+                    else
+                        printf("open %s failed!\n",tmpbuf);
+                }
+            }
+        }
+    }
+
+    closedir(pDir);
+    return 0;
+}
+
+char * create_share_memory(int key, int size)
+{
 	
 	char *mem_addr;
 
@@ -52,6 +110,10 @@ char * create_share_memory(int key, int size){
 
 int close_share_memory(char * share_memory){
 	int ret;
+    if(share_memory == NULL)
+    {
+        return -1;
+    }
 	ret = OS_shmdt(share_memory);
 	if(ret < 0)
 	{
@@ -79,24 +141,43 @@ void sig_handler(int signo)
     return;
 }
 
+void* pthread_func(void * p_arg)
+{
+    int ret = 0;
+    ret = system((char *)p_arg);
+    if(ret == -1)
+    {
+        ;
+    }else{
+        pthread_args = '1';
+    }
+    return NULL;
+}
+
 int main(int argc, const char *argv[])
 {
 
     // for our
+    int     i;
     int     circle;
     int     check_times;
-    char    command[4*1024];
+    char    command[COMMAND_LENGTHS];
     timeval starttime,endtime;
     int  ms_use;
     char * p_real_cmd;
 
+    // pthread
+    int     pthread_system;
+    char    kill_command[256];
+    char    kill_name[256];
+
     // for share memory
 	int key;
 	int ret;
-	
-     
 
     // for socket
+    
+    char message_send[MAX_LENGTH];
     int         send_data_len;
     int         client_sockfd;
     struct      sockaddr_in server_addr;
@@ -112,7 +193,7 @@ int main(int argc, const char *argv[])
     if(strstr(argv[1],"--help"))
     {
         printf("this is serial_client\n");
-        //return 0;
+        return 0;
     }
 
 
@@ -121,7 +202,9 @@ int main(int argc, const char *argv[])
 
 
     pid = getpid();
+    pthread_args = '0';
 
+    strcpy(kill_name,"ja1");
     
     // for our init
     check_times = 0;
@@ -137,7 +220,7 @@ int main(int argc, const char *argv[])
     }
 
     key = pid;
-    printf("key:%d\n",key);
+    //printf("key:%d\n",key);
     shared_mem = create_share_memory(key, SHARED_MEMORY_SIZE);
     	if(shared_mem == NULL)
 	{
@@ -163,34 +246,33 @@ int main(int argc, const char *argv[])
         return -1;
     }
     
-        client_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-        server_len = sizeof(server_addr);
+    client_sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    server_len = sizeof(server_addr);
 
-            char message_send[MAX_LENGTH];
 
-            sprintf(message_send,"%d",key);
+    sprintf(message_send,"%d",key);
 
-            send_data_len = 0;
-            send_data_len = sendto(client_sockfd,message_send,MAX_LENGTH,0,\
-                                (struct sockaddr *)&server_addr,sizeof(server_addr));
+    send_data_len = 0;
+    send_data_len = sendto(client_sockfd,message_send,MAX_LENGTH,0,\
+                        (struct sockaddr *)&server_addr,sizeof(server_addr));
 
-            if(send_data_len < MAX_LENGTH)
+    if(send_data_len < MAX_LENGTH)
+    {
+        printf("leave some data to send.");
+    }
+    else
+    {
+        while(shared_mem[0])
+        {
+            // check the status              
+            usleep(SLEEP_TIME_UNIT);
+            if(check_times++ > SLEEP_TIME_COUNT)
             {
-                printf("leave some data to send.");
+                check_times = 0;
+                printf("this program run 10s\n");
             }
-            else
-            {
-                while(shared_mem[0])
-                {
-                    // check the status              
-                    usleep(100000);
-                    if(check_times++ > 100)
-                    {
-                        check_times = 0;
-                        printf("this program run 10s\n");
-                    }
-                }          
-            }       
+        }          
+    }       
 
 
     p_real_cmd = command +1;
@@ -208,7 +290,33 @@ int main(int argc, const char *argv[])
         printf("cmd error:\n %s\n",p_real_cmd);
     }
 
-    ret = system(p_real_cmd);
+    while(pthread_args != '1')
+    {
+        ret = OS_thread_create((OS_THREAD_FUNC)pthread_func,(void *)p_real_cmd);
+        ret = check_process_exist_ex(kill_name,&pthread_system,500);
+        
+        if(ret == 0)
+            break;
+        
+        for(i=0;i<THE_MAX_TIME_EXIT_THREAD && pthread_args == '0';i++)
+        {
+            usleep(SLEEP_TIME_UNIT);
+            // if pthread_args = '1' break;
+        }
+        
+        if(pthread_args == '1')
+        {
+            break;
+        }
+        else
+        {
+            sprintf(kill_command,"kill -9 %d",pthread_system);
+            ret = system(kill_command);
+        }
+    }
+    
+
+    //ret = system(p_real_cmd);
 
     shared_mem[0] = '2';
     
@@ -216,7 +324,7 @@ int main(int argc, const char *argv[])
 	
     gettimeofday(&endtime,0);
     ms_use = (endtime.tv_sec - starttime.tv_sec)*1000 + (endtime.tv_usec - starttime.tv_usec)/1000;
-    printf("timeuse %d (ms)\n",ms_use);
+    //printf("timeuse %d (ms)\n",ms_use);
     
    
     return ret;

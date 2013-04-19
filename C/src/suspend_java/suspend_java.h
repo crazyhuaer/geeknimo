@@ -14,5 +14,9 @@
 #include <os_utils.h>
 #include <os_log.h>
 #include <os_shm.h>
-#include<signal.h>
+#include <signal.h>
+
+#include <os_thread.h>
+#include <dirent.h>
+
 #endif

@@ -88,6 +88,10 @@ int main(int argc, const char *argv[])
     char * shared_mem;
     char receive_command[SHARED_MEMORY_SIZE];
 
+    int     total_time_cnt;
+    int     jar_count_max;
+    int     java_count_max;
+
     // init the share memory and log   
     OS_logInit(NULL,0,1);           
 
@@ -103,13 +107,18 @@ int main(int argc, const char *argv[])
     int          sleep_var;
     int          ms_time_cnt;
 
+    total_time_cnt = 0;
+    jar_count_max = 0;
+    java_count_max = 0;
     sleep_var = 0;
+    
     if(argc >= 2)
     {
         sleep_var = atoi(argv[1]);
         printf("init sleep time=%d ms\n",sleep_var);
         sleep_var *= 1000;
     }
+    
     // signal sigint
     if (signal(SIGINT, sig_handler) == SIG_ERR)
         OS_log(LVL_ERR,0,"can't catch SIGINT");
@@ -152,7 +161,7 @@ int main(int argc, const char *argv[])
         {
             memset(message,MAX_LENGTHS,0);
             memset(receive_command,MAX_LENGTHS,0);
-            
+  
             receive_data_length = recvfrom(sock_fd,message,MAX_LENGTHS,0,(sockaddr *)&client_addr,&sockaddr_len);
 
             if(receive_data_length < 0)
@@ -186,15 +195,39 @@ int main(int argc, const char *argv[])
                     }
 
                     ms_time_cnt = 0;
+                    total_time_cnt = 0;
 
                     for(;;)
-                    {
-                        usleep(100000);
+                    {     
                         if(shared_mem[0]=='2')
                         {
                             printf("\nfinish exec!\n");
+                            
+                            // count the jar and java
+                            if(!memcmp(shared_mem+1,"jar",3))
+                            {
+                               if( total_time_cnt > jar_count_max)
+                               {
+                                    jar_count_max = total_time_cnt;
+                               }
+                            }
+                            
+                            if(!memcmp(shared_mem+1,"java",4))
+                            { 
+                               if( total_time_cnt > java_count_max)
+                               {
+                                    java_count_max = total_time_cnt;
+                               }
+                            }
+
+                            printf("jar run:%d\n",jar_count_max);
+                            printf("java run:%d\n",java_count_max);
+                            
                             break;
                         }
+                        
+                        usleep(100000);
+                        total_time_cnt++;
                         ms_time_cnt++;
                         if(ms_time_cnt >= 100)
                         {
