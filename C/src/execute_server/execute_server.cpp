@@ -93,8 +93,8 @@ int main(int argc, const char *argv[])
     int     java_count_max;
 
     // init the share memory and log   
-    OS_logInit(NULL,0,1);           
-
+    OS_logInit(NULL,"server_serial.log",1);           
+    OS_logSetGrade(0,0);
     // init the socket
     int           sock_fd;
     struct        sockaddr_in server_addr,client_addr;
@@ -137,8 +137,9 @@ int main(int argc, const char *argv[])
     return_status = bind(sock_fd,(struct sockaddr *)&server_addr,sockaddr_len);
     if(return_status == -1)
     {
-        OS_log(LVL_ERR,0,"bind error");
-        exit(1);
+        OS_log(LVL_ERR,0,"bind error,maybe server_serial already exist!");
+        close(sock_fd);
+        return -1;
     }
     else
     {
@@ -186,6 +187,7 @@ int main(int argc, const char *argv[])
                 else
                 {  
                     printf("%s\n",shared_mem+1);
+                    //OS_log(LVL_INFO,0,"%s",shared_mem+1);
                     
                     if(shared_mem[0]=='1')
                         shared_mem[0] = 0;
@@ -209,6 +211,7 @@ int main(int argc, const char *argv[])
                                if( total_time_cnt > jar_count_max)
                                {
                                     jar_count_max = total_time_cnt;
+                                    OS_log(LVL_INFO,0,"jar run max delay: %d\n%s",jar_count_max,(shared_mem+1));
                                }
                             }
                             
@@ -217,11 +220,12 @@ int main(int argc, const char *argv[])
                                if( total_time_cnt > java_count_max)
                                {
                                     java_count_max = total_time_cnt;
+                                    OS_log(LVL_INFO,0,"java run max delay: %d\n%s",java_count_max,(shared_mem+1));
                                }
                             }
 
-                            printf("jar run:%d\n",jar_count_max);
-                            printf("java run:%d\n",java_count_max);
+                            //printf("jar run:%d\n",jar_count_max);
+                            //printf("java run:%d\n",java_count_max);
                             
                             break;
                         }
