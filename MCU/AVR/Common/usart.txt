@@ -1,0 +1,98 @@
+/***********************************************/
+// UART 
+// CPU Frequence and Baud  单片机频率和波特率
+#define	FRE_CPU	8000000
+#define	BAUD	9600  
+//数据接收变量
+volatile	char	recieve_data=0;
+
+/*============================================================ 
+* 
+* 函 数 名：usart_init
+* 
+* 参  数： 
+* 
+*     		void
+* 
+* 功能描述: 
+* 
+*						USART初始化
+* 
+* 返 回 值：空 
+* 
+* 抛出异常： 
+* 
+* 作  者：Crazyhuaer(Neo) 2010/5/9 
+* 
+============================================================*/
+
+void	usart_init(void)
+{
+	// Data write register and Date read register----UBRRH  and UBRRL
+	UCSRA = 0x00;
+	UCSRC |= (1<<URSEL)|(1<<UCSZ1)|(1<<UCSZ0); //8位数据位+1位停止位
+	UBRRH = (FRE_CPU/BAUD/16-1)/256;
+	UBRRL = (FRE_CPU/BAUD/16-1)%256;
+	UCSRB |= (1 << RXCIE) | (1 << RXEN) | ( 1 << TXEN); //允许发送和接收,接收中断使能
+}
+
+
+/*============================================================ 
+* 
+* 函 数 名：	uart_charsend
+* 
+* 参  数： 
+* 
+*     		char	data	：发送的字符
+* 
+* 功能描述: 
+* 
+*						USART字符发送函数
+* 
+* 返 回 值：	空 
+* 
+* 抛出异常： 
+* 
+* 作  者：Crazyhuaer(Neo) 2010/5/9 
+* 
+============================================================*/
+void uart_charsend( char data )
+{
+	/* Is not completly? */
+	// Use Query approach send and Interrupt approach recieve
+	// UCSRA ...UDRE(BIT)
+	while ( !( UCSRA &( 1<<UDRE)) );
+	/* send data */
+	UDR = data;
+}
+/*============================================================ 
+* 
+* 函 数 名：	uart_charsend_str
+* 
+* 参  数： 
+* 
+*     		char	*str	：发送的字符串
+* 
+* 功能描述: 
+* 
+*						USART字符发送串函数
+* 
+* 返 回 值：	空 
+* 
+* 抛出异常： 
+* 
+* 作  者：Crazyhuaer(Neo) 2010/5/9 
+* 
+============================================================*/
+void	uart_charsend_str(char	*str)
+{	
+		while(*str != '\0')
+		{
+				uart_charsend(*str);
+				str++;
+		}
+		uart_charsend(0x0a);	//结尾时回车
+		uart_charsend(0x0d);
+}
+
+/******************************************************************/
