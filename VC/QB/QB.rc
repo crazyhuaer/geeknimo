@@ -1,0 +1,383 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\QB.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\QB.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_QB_DIALOG DIALOGEX 0, 0, 472, 319
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Qianbian_TouchScreen_Calibration V1.0"
+FONT 9, "宋体"
+BEGIN
+    CONTROL         "Tab1",IDC_TAB_MAIN,"SysTabControl32",0x0,7,35,458,260,
+                    WS_EX_TRANSPARENT
+    LTEXT           "www.gzqb.com.cn",IDC_STATIC,9,298,66,14
+    GROUPBOX        "",IDC_STATIC,7,2,458,30
+    LTEXT           "Module:",IDC_STATIC,101,14,33,10
+    COMBOBOX        IDC_SCREEN_TYPE,135,12,233,223,CBS_DROPDOWNLIST | 
+                    CBS_AUTOHSCROLL | CBS_SORT | WS_DISABLED | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "退出",IDC_EXIT,380,10,56,16
+    LTEXT           "Qianbian computer Co.LTD GZ.CN",IDC_STATIC,344,298,122,
+                    14
+END
+
+IDD_TAB_HELP DIALOGEX 0, 0, 455, 260
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_CHILD
+EXSTYLE WS_EX_TRANSPARENT
+FONT 8, "宋体"
+BEGIN
+    LTEXT           "help",IDC_STATIC,18,17,222,227,0,WS_EX_STATICEDGE
+    PUSHBUTTON      "1",IDC_PASSWORD_1,258,95,31,29
+    PUSHBUTTON      "2",IDC_PASSWORD_2,307,95,31,29
+    PUSHBUTTON      "3",IDC_PASSWORD_3,355,95,31,29
+    PUSHBUTTON      "4",IDC_PASSWORD_4,258,134,31,29
+    PUSHBUTTON      "5",IDC_PASSWORD_5,307,134,31,29
+    PUSHBUTTON      "6",IDC_PASSWORD_6,355,134,31,29
+    PUSHBUTTON      "7",IDC_PASSWORD_7,258,175,31,29
+    PUSHBUTTON      "8",IDC_PASSWORD_8,307,175,31,29
+    PUSHBUTTON      "9",IDC_PASSWORD_9,355,175,31,29
+    PUSHBUTTON      "<>",IDC_BUTTON10,258,215,31,29
+    PUSHBUTTON      "0",IDC_PASSWORD_0,307,215,31,29
+    PUSHBUTTON      "<--",IDC_BUTTON12,355,215,31,29
+    PUSHBUTTON      "Login",IDC_LOGIN,401,108,34,114
+    GROUPBOX        "User Login:",IDC_STATIC,244,13,204,240
+    LTEXT           "User Name:",IDC_STATIC,259,36,44,13
+    LTEXT           "Password:",IDC_STATIC,259,58,43,13
+    EDITTEXT        IDC_USER_NAME,308,33,107,15,ES_AUTOHSCROLL
+    EDITTEXT        IDC_USER_PASSWORD,308,55,107,15,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+END
+
+IDD_TAB_CALIBRATION DIALOG DISCARDABLE  0, 0, 455, 260
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_CHILD
+FONT 8, "宋体"
+BEGIN
+    GROUPBOX        "Mouse Click(鼠标设定)",IDC_STATIC,7,7,147,143
+    LTEXT           "Double Click Area(双击范围):",IDC_STATIC,14,21,117,9
+    CONTROL         "Slider1",IDC_SLIDER_DOUBLE_CLICK_AREA,"msctls_trackbar32",
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,9,30,113,15
+    EDITTEXT        IDC_EDIT_DOUBLE_CLICK_AREA,129,29,20,15,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Enable Right Click(右键允许)",
+                    IDC_CHECK_ENABLE_RIGHT_CLICK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,47,126,10
+    LTEXT           "Right Click Delay(右击延时):",IDC_STATIC,14,65,117,9
+    CONTROL         "Slider1",IDC_SLIDER_RIGHT_CLICK_DELAY,"msctls_trackbar32",
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,9,75,116,15
+    EDITTEXT        IDC_EDIT_RIGHT_CLICK_DELAY,129,73,20,15,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Right Click Area(右击范围):",IDC_STATIC,14,99,109,9
+    CONTROL         "Slider1",IDC_SLIDER_RIGHT_CLICK_AREA,"msctls_trackbar32",
+                    TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,9,110,116,15
+    EDITTEXT        IDC_EDIT_RIGHT_CLICK_AREA,129,107,20,15,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "X_Inv",IDC_CHECK_X_INV,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,132,36,12
+    CONTROL         "Y_Inv",IDC_CHECK_Y_INV,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,55,132,36,12
+    CONTROL         "XY_Inv",IDC_CHECK_XY_INV,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,97,132,36,12
+    LTEXT           "HW_SN:",IDC_STATIC,13,156,25,11
+    LTEXT           "",IDC_STATIC_HW_SN,63,156,89,11
+    LTEXT           "HW_Version:",IDC_STATIC,13,171,47,11
+    LTEXT           "",IDC_STATIC_HW_VERSION,63,171,89,11
+    LTEXT           "SW_Version:",IDC_STATIC,13,186,47,11
+    LTEXT           "",IDC_STATIC_SN_VERSION,63,186,89,11
+    CONTROL         "Progress1",IDC_PROGRESS_ACCESS,"msctls_progress32",
+                    WS_BORDER,7,204,441,10
+    PUSHBUTTON      "Screen Calibration(校准)",IDC_BUTTON_SCREEN_CALIBRATION,
+                    7,226,134,27
+    PUSHBUTTON      "Read Configuration(读参数)",
+                    IDC_BUTTON_READ_CONFIGURATION,160,226,134,27
+    PUSHBUTTON      "Write Configuration(写参数)",
+                    IDC_BUTTON_WRITE_CONFIGURATION,313,225,134,27
+    GROUPBOX        "Offset_Zoom",IDC_STATIC,337,7,111,193
+    CONTROL         "Set By Calibration",IDC_CHECK_SET_BY_CALIBRATION,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,345,20,94,9
+    PUSHBUTTON      "U",IDC_BUTTON_UP,384,33,18,18
+    PUSHBUTTON      "L",IDC_BUTTON_LEFT,363,55,18,18
+    PUSHBUTTON      "R",IDC_BUTTON_RIGHT,404,55,18,18
+    PUSHBUTTON      "D",IDC_BUTTON_DOWN,384,76,18,18
+    LTEXT           "Offset_X",IDC_STATIC,355,103,37,9
+    LTEXT           "Offset_Y",IDC_STATIC,355,123,34,9
+    EDITTEXT        IDC_EDIT_OFFSET_X,401,102,34,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_EDIT_OFFSET_Y,401,122,34,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "ZoomX",IDC_STATIC,355,143,34,9
+    EDITTEXT        IDC_EDIT_ZOOM_X,401,142,34,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "ZoomY",IDC_STATIC,355,172,34,9
+    EDITTEXT        IDC_EDIT_ZOOM_Y,401,170,34,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,352,158,85,7
+    CONTROL         "Slider1",IDC_SLIDER2,"msctls_trackbar32",TBS_BOTH | 
+                    TBS_NOTICKS | WS_TABSTOP,352,186,85,7
+    CONTROL         "Just enable one point be touched!(只允许第一个触摸点工作)",
+                    IDC_RADIO_ENABLE_FIRST_POINT,"Button",BS_AUTORADIOBUTTON | 
+                    BS_MULTILINE | WS_GROUP,161,11,165,18
+    CONTROL         "Enable middle point confirmed(当有亮点同时触摸时，确认中间点)",
+                    IDC_RADIO_ENABLE_MIDDLE_POINT,"Button",
+                    BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP,161,35,165,
+                    18
+    CONTROL         "Always simple point(无双点输出)",
+                    IDC_CHECK_ALWAYS_SIMPLE_POINT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,161,55,157,15
+    CONTROL         "Simulate Mouse(仿真鼠标方式)",IDC_CHECK_SIMULATE_MOUSE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,161,73,157,15
+    CONTROL         "2Point simulate wheel(双点模拟滚轮)",
+                    IDC_CHECK_2POINT_SIMULATE_WHEEL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,161,91,157,15
+    GROUPBOX        "Factory Define(工厂参数)",IDC_STATIC,161,110,168,90
+    LTEXT           "X1",IDC_STATIC,166,122,10,11
+    LTEXT           "X2",IDC_STATIC,188,122,10,11
+    LTEXT           "X3",IDC_STATIC,209,122,10,11
+    LTEXT           "X4",IDC_STATIC,230,122,10,11
+    LTEXT           "X5",IDC_STATIC,251,122,10,11
+    LTEXT           "X6",IDC_STATIC,272,122,10,11
+    LTEXT           "X7",IDC_STATIC,293,122,10,11
+    LTEXT           "X8",IDC_STATIC,314,122,10,11
+    LTEXT           "X9",IDC_STATIC,167,160,10,11
+    LTEXT           "XA",IDC_STATIC,188,160,10,11
+    LTEXT           "XB",IDC_STATIC,209,160,10,11
+    LTEXT           "XC",IDC_STATIC,230,160,10,11
+    LTEXT           "XD",IDC_STATIC,251,160,10,11
+    LTEXT           "XE",IDC_STATIC,272,160,10,11
+    LTEXT           "XF",IDC_STATIC,293,160,10,11
+    LTEXT           "X0",IDC_STATIC,314,160,10,11
+    EDITTEXT        IDC_EDIT_X1,164,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X2,185,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X3,206,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X4,227,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X5,248,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X6,269,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X7,290,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X8,311,137,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X9,164,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_XA,185,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_XB,206,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_XC,227,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_XD,248,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_XE,269,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_XF,290,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_X0,311,175,14,16,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+IDD_TAB_PCB_SETTING DIALOG DISCARDABLE  0, 0, 341, 185
+STYLE DS_MODALFRAME | WS_CHILD
+FONT 10, "System"
+BEGIN
+    LTEXT           "Setting",IDC_STATIC,7,7,37,17
+    LTEXT           "Setting",IDC_STATIC,312,170,22,8
+END
+
+IDD_TAB_TEST DIALOG DISCARDABLE  0, 0, 343, 184
+STYLE DS_MODALFRAME | WS_CHILD
+FONT 10, "System"
+BEGIN
+    LTEXT           "Test",IDC_STATIC,7,7,16,8
+    LTEXT           "Test",IDC_STATIC,320,169,16,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "QB Microsoft 基础类应用程序\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "QB\0"
+            VALUE "LegalCopyright", "版权所有 (C) 2013\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "QB.EXE\0"
+            VALUE "ProductName", "QB 应用程序\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_QB_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 465
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 312
+    END
+
+    IDD_TAB_HELP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 448
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 253
+    END
+
+    IDD_TAB_CALIBRATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 448
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 253
+    END
+
+    IDD_TAB_PCB_SETTING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 334
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_TAB_TEST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 336
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 177
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_SOCKETS_INIT_FAILED "Windows 通信端口初始化失败。"
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\QB.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

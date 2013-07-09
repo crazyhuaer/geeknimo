@@ -1,0 +1,33 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: QB - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Debug/QB.res" /d "_DEBUG" /d "_AFXDLL" "F:\CODE\GEEKNIMO\VC\QB\QB.rc"" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP8639.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/QB.pdb" /debug /machine:I386 /out:"Debug/QB.exe" /pdbtype:sept 
+.\Debug\Dialog_Tab_Calibration.obj
+.\Debug\Dialog_Tab_Help.obj
+.\Debug\QB.obj
+.\Debug\QBDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\QB.res
+.\Debug\Dialog_Tab_Pcb_Setting.obj
+.\Debug\Dialog_Tab_TEST.obj
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP8639.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Linking...
+
+
+
+<h3>Results</h3>
+QB.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
