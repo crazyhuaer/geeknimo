@@ -1,0 +1,39 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: version1 - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP8FC4.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/version1.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\CODE\GEEKNIMO\VC\TOUCHPAD\version1\version1Dlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP8FC4.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP8FD5.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/version1.pdb" /debug /machine:I386 /out:"Debug/version1.exe" /pdbtype:sept 
+.\Debug\AlexfStaticHistogram.obj
+.\Debug\StdAfx.obj
+.\Debug\version1.obj
+.\Debug\version1Dlg.obj
+.\Debug\version1.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP8FD5.tmp"
+<h3>Output Window</h3>
+Compiling...
+version1Dlg.cpp
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/version1.bsc"  .\Debug\StdAfx.sbr .\Debug\AlexfStaticHistogram.sbr .\Debug\version1.sbr .\Debug\version1Dlg.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+version1.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

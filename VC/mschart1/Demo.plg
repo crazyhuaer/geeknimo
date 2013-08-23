@@ -1,0 +1,206 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Demo - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Debug/Demo.res" /d "_DEBUG" /d "_AFXDLL" "F:\Code\geeknimo\VC\mschart1\Demo.rc"" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP2412.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/Demo.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\mschart1\Demo.cpp"
+"F:\Code\geeknimo\VC\mschart1\DemoDoc.cpp"
+"F:\Code\geeknimo\VC\mschart1\DemoView.cpp"
+"F:\Code\geeknimo\VC\mschart1\font.cpp"
+"F:\Code\geeknimo\VC\mschart1\MainFrm.cpp"
+"F:\Code\geeknimo\VC\mschart1\mschart.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcaxis.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcaxisgrid.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcaxisscale.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcaxistitle.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcbackdrop.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcbrush.cpp"
+"F:\Code\geeknimo\VC\mschart1\vccategoryscale.cpp"
+"F:\Code\geeknimo\VC\mschart1\vccolor.cpp"
+"F:\Code\geeknimo\VC\mschart1\vccoor.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcdatagrid.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcdatapoint.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcdatapointlabel.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcdatapoints.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcfill.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcfont.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcfootnote.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcframe.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcintersection.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclabel.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclabels.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclcoor.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclegend.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclight.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclightsource.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclightsources.cpp"
+"F:\Code\geeknimo\VC\mschart1\vclocation.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcmarker.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcpen.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcplot.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcplotbase.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcrect.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcseries.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcseriescollection.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcseriesmarker.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcseriesposition.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcshadow.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcstatline.cpp"
+"F:\Code\geeknimo\VC\mschart1\vctextlayout.cpp"
+"F:\Code\geeknimo\VC\mschart1\vctick.cpp"
+"F:\Code\geeknimo\VC\mschart1\vctitle.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcvaluescale.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcview3d.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcwall.cpp"
+"F:\Code\geeknimo\VC\mschart1\vcweighting.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP2412.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP2413.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/Demo.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\mschart1\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP2413.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP2414.bat" with contents
+[
+@echo off
+copyright.bat
+]
+Creating command line "C:\Users\geeknimo\AppData\Local\Temp\RSP2414.bat"
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+Demo.cpp
+DemoDoc.cpp
+DemoView.cpp
+font.cpp
+MainFrm.cpp
+mschart.cpp
+vcaxis.cpp
+vcaxisgrid.cpp
+vcaxisscale.cpp
+vcaxistitle.cpp
+vcbackdrop.cpp
+vcbrush.cpp
+vccategoryscale.cpp
+vccolor.cpp
+vccoor.cpp
+vcdatagrid.cpp
+vcdatapoint.cpp
+vcdatapointlabel.cpp
+vcdatapoints.cpp
+vcfill.cpp
+Generating Code...
+Compiling...
+vcfont.cpp
+vcfootnote.cpp
+vcframe.cpp
+vcintersection.cpp
+vclabel.cpp
+vclabels.cpp
+vclcoor.cpp
+vclegend.cpp
+vclight.cpp
+vclightsource.cpp
+vclightsources.cpp
+vclocation.cpp
+vcmarker.cpp
+vcpen.cpp
+vcplot.cpp
+vcplotbase.cpp
+vcrect.cpp
+vcseries.cpp
+vcseriescollection.cpp
+vcseriesmarker.cpp
+Generating Code...
+Compiling...
+vcseriesposition.cpp
+vcshadow.cpp
+vcstatline.cpp
+vctextlayout.cpp
+vctick.cpp
+vctitle.cpp
+vcvaluescale.cpp
+vcview3d.cpp
+vcwall.cpp
+vcweighting.cpp
+Generating Code...
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP3069.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/Demo.pdb" /debug /machine:I386 /out:"Debug/Demo.exe" /pdbtype:sept 
+.\Debug\Demo.obj
+.\Debug\DemoDoc.obj
+.\Debug\DemoView.obj
+.\Debug\font.obj
+.\Debug\MainFrm.obj
+.\Debug\mschart.obj
+.\Debug\StdAfx.obj
+.\Debug\vcaxis.obj
+.\Debug\vcaxisgrid.obj
+.\Debug\vcaxisscale.obj
+.\Debug\vcaxistitle.obj
+.\Debug\vcbackdrop.obj
+.\Debug\vcbrush.obj
+.\Debug\vccategoryscale.obj
+.\Debug\vccolor.obj
+.\Debug\vccoor.obj
+.\Debug\vcdatagrid.obj
+.\Debug\vcdatapoint.obj
+.\Debug\vcdatapointlabel.obj
+.\Debug\vcdatapoints.obj
+.\Debug\vcfill.obj
+.\Debug\vcfont.obj
+.\Debug\vcfootnote.obj
+.\Debug\vcframe.obj
+.\Debug\vcintersection.obj
+.\Debug\vclabel.obj
+.\Debug\vclabels.obj
+.\Debug\vclcoor.obj
+.\Debug\vclegend.obj
+.\Debug\vclight.obj
+.\Debug\vclightsource.obj
+.\Debug\vclightsources.obj
+.\Debug\vclocation.obj
+.\Debug\vcmarker.obj
+.\Debug\vcpen.obj
+.\Debug\vcplot.obj
+.\Debug\vcplotbase.obj
+.\Debug\vcrect.obj
+.\Debug\vcseries.obj
+.\Debug\vcseriescollection.obj
+.\Debug\vcseriesmarker.obj
+.\Debug\vcseriesposition.obj
+.\Debug\vcshadow.obj
+.\Debug\vcstatline.obj
+.\Debug\vctextlayout.obj
+.\Debug\vctick.obj
+.\Debug\vctitle.obj
+.\Debug\vcvaluescale.obj
+.\Debug\vcview3d.obj
+.\Debug\vcwall.obj
+.\Debug\vcweighting.obj
+.\Debug\Demo.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP3069.tmp"
+
+===本程序下载于VC知识库(www.vckbase.com)===
+-------技术支持由UIPower提供(www.uipower.com)------
+......如遇到任何技术问题请发邮件vckbase@vckbase.com......
+<h3>Output Window</h3>
+Linking...
+
+
+
+<h3>Results</h3>
+Demo.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

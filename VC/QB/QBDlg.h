@@ -10,7 +10,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // CQBDlg dialog
-
+#include "InitFile.h"
 #include "Dialog_Tab_TEST.h"
 #include "Dialog_Tab_Help.h"
 #include "Dialog_Tab_Calibration.h"
@@ -21,6 +21,9 @@ class CQBDlg : public CDialog
 // Construction
 public:
 	CQBDlg(CWnd* pParent = NULL);	// standard constructor
+	CString section;
+	CString filename;
+	CInitFile initfile;
 
 // Dialog Data
 	//{{AFX_DATA(CQBDlg)
@@ -31,6 +34,8 @@ public:
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CQBDlg)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	//}}AFX_VIRTUAL

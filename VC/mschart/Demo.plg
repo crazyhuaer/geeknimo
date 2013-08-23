@@ -1,0 +1,206 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Demo - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Debug/Demo.res" /d "_DEBUG" /d "_AFXDLL" "F:\code\comtech\activexapp\mschart\mschart\Demo.rc"" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP695.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/Demo.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\code\comtech\activexapp\mschart\mschart\Demo.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\DemoDoc.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\DemoView.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\font.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\MainFrm.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\mschart.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcaxis.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcaxisgrid.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcaxisscale.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcaxistitle.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcbackdrop.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcbrush.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vccategoryscale.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vccolor.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vccoor.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcdatagrid.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcdatapoint.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcdatapointlabel.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcdatapoints.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcfill.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcfont.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcfootnote.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcframe.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcintersection.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclabel.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclabels.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclcoor.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclegend.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclight.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclightsource.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclightsources.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vclocation.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcmarker.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcpen.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcplot.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcplotbase.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcrect.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcseries.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcseriescollection.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcseriesmarker.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcseriesposition.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcshadow.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcstatline.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vctextlayout.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vctick.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vctitle.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcvaluescale.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcview3d.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcwall.cpp"
+"F:\code\comtech\activexapp\mschart\mschart\vcweighting.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP695.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP696.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Debug/Demo.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\code\comtech\activexapp\mschart\mschart\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP696.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP697.bat" with contents
+[
+@echo off
+copyright.bat
+]
+Creating command line "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP697.bat"
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+Demo.cpp
+DemoDoc.cpp
+DemoView.cpp
+font.cpp
+MainFrm.cpp
+mschart.cpp
+vcaxis.cpp
+vcaxisgrid.cpp
+vcaxisscale.cpp
+vcaxistitle.cpp
+vcbackdrop.cpp
+vcbrush.cpp
+vccategoryscale.cpp
+vccolor.cpp
+vccoor.cpp
+vcdatagrid.cpp
+vcdatapoint.cpp
+vcdatapointlabel.cpp
+vcdatapoints.cpp
+vcfill.cpp
+Generating Code...
+Compiling...
+vcfont.cpp
+vcfootnote.cpp
+vcframe.cpp
+vcintersection.cpp
+vclabel.cpp
+vclabels.cpp
+vclcoor.cpp
+vclegend.cpp
+vclight.cpp
+vclightsource.cpp
+vclightsources.cpp
+vclocation.cpp
+vcmarker.cpp
+vcpen.cpp
+vcplot.cpp
+vcplotbase.cpp
+vcrect.cpp
+vcseries.cpp
+vcseriescollection.cpp
+vcseriesmarker.cpp
+Generating Code...
+Compiling...
+vcseriesposition.cpp
+vcshadow.cpp
+vcstatline.cpp
+vctextlayout.cpp
+vctick.cpp
+vctitle.cpp
+vcvaluescale.cpp
+vcview3d.cpp
+vcwall.cpp
+vcweighting.cpp
+Generating Code...
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP698.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/Demo.pdb" /debug /machine:I386 /out:"Debug/Demo.exe" /pdbtype:sept 
+.\Debug\Demo.obj
+.\Debug\DemoDoc.obj
+.\Debug\DemoView.obj
+.\Debug\font.obj
+.\Debug\MainFrm.obj
+.\Debug\mschart.obj
+.\Debug\StdAfx.obj
+.\Debug\vcaxis.obj
+.\Debug\vcaxisgrid.obj
+.\Debug\vcaxisscale.obj
+.\Debug\vcaxistitle.obj
+.\Debug\vcbackdrop.obj
+.\Debug\vcbrush.obj
+.\Debug\vccategoryscale.obj
+.\Debug\vccolor.obj
+.\Debug\vccoor.obj
+.\Debug\vcdatagrid.obj
+.\Debug\vcdatapoint.obj
+.\Debug\vcdatapointlabel.obj
+.\Debug\vcdatapoints.obj
+.\Debug\vcfill.obj
+.\Debug\vcfont.obj
+.\Debug\vcfootnote.obj
+.\Debug\vcframe.obj
+.\Debug\vcintersection.obj
+.\Debug\vclabel.obj
+.\Debug\vclabels.obj
+.\Debug\vclcoor.obj
+.\Debug\vclegend.obj
+.\Debug\vclight.obj
+.\Debug\vclightsource.obj
+.\Debug\vclightsources.obj
+.\Debug\vclocation.obj
+.\Debug\vcmarker.obj
+.\Debug\vcpen.obj
+.\Debug\vcplot.obj
+.\Debug\vcplotbase.obj
+.\Debug\vcrect.obj
+.\Debug\vcseries.obj
+.\Debug\vcseriescollection.obj
+.\Debug\vcseriesmarker.obj
+.\Debug\vcseriesposition.obj
+.\Debug\vcshadow.obj
+.\Debug\vcstatline.obj
+.\Debug\vctextlayout.obj
+.\Debug\vctick.obj
+.\Debug\vctitle.obj
+.\Debug\vcvaluescale.obj
+.\Debug\vcview3d.obj
+.\Debug\vcwall.obj
+.\Debug\vcweighting.obj
+.\Debug\Demo.res
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP698.tmp"
+
+===本程序下载于VC知识库(www.vckbase.com)===
+-------技术支持由UIPower提供(www.uipower.com)------
+......如遇到任何技术问题请发邮件vckbase@vckbase.com......
+<h3>Output Window</h3>
+Linking...
+
+
+
+<h3>Results</h3>
+Demo.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

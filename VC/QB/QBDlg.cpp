@@ -98,7 +98,16 @@ BOOL CQBDlg::OnInitDialog()
 	temp.Format("%d",IDC_TAB_MAIN);
 	AfxMessageBox(temp);
 	*/
-
+	
+	//initfile.SetFileName("data","Ts_Cali.ini");
+	initfile.SetFileName("data","test.ini");
+	//section="TYPE0";
+	section="TYPE_TEST";
+	initfile.ReadIniFile();
+	
+	CString m_Name=initfile.GetString(section,"m_Name");
+	//	m_nlength=initfile.GetInt(section,"length");
+	//	m_fwidth=initfile.GetFloat(section,"width");
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -191,4 +200,13 @@ void CQBDlg::OnExit()
 {
 	// TODO: Add your control notification handler code here
 	exit(0);
+}
+
+BOOL CQBDlg::PreTranslateMessage(MSG* pMsg) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_ESCAPE)  return TRUE;
+	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_RETURN) return TRUE; 
+	else 
+    return CDialog::PreTranslateMessage(pMsg);
 }

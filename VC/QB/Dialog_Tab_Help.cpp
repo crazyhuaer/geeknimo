@@ -72,7 +72,7 @@ void CDialog_Tab_Help::OnLogin()
 		}
 		else
 		{
-			AfxMessageBox("您已经登录了");
+			//AfxMessageBox("您已经登录了");
 		}
 
 	} 
@@ -118,13 +118,11 @@ void CDialog_Tab_Help::OnLogin()
 		}
 		else
 		{
-			AfxMessageBox("您已经登录了");
+			//AfxMessageBox("您已经登录了");
 		}
 
 	}
 	else	;
-
-
 
 #if 0
 	//CQBDlg *dlg = (CQBDlg *)AfxGetApp()->m_pMainWnd;
@@ -134,4 +132,17 @@ void CDialog_Tab_Help::OnLogin()
 #endif
 
 
+}
+
+BOOL CDialog_Tab_Help::PreTranslateMessage(MSG* pMsg) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_ESCAPE)  return TRUE;
+	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_RETURN) 
+	{
+		CDialog_Tab_Help::OnLogin();
+		return TRUE;
+	}
+	else 
+    return CDialog::PreTranslateMessage(pMsg);
 }
