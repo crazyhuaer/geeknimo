@@ -22,6 +22,7 @@ public:
 public:
 	int	Button_ID_Increase;
 	int Histogram_ID_Increase;
+	int Static_ID_Increase;
 	CAlexfStaticHistogram   m_AlexfStaticHistogram[5];
 
 // Dialog Data
@@ -31,6 +32,7 @@ public:
 	CButton					m_ScanLeft;
 	CButton					m_ScanRight;
 	CButton					m_Exit;
+	CStatic					m_PcbInfo;
 		// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 

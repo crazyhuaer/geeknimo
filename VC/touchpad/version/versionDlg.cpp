@@ -13,6 +13,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define IDC_HISTOGRAM 200
 #define IDC_BUTTON	  300
+#define	IDC_STATIC_CONTROL	  350
 /////////////////////////////////////////////////////////////////////////////
 // CVersionDlg dialog
 
@@ -23,6 +24,7 @@ CVersionDlg::CVersionDlg(CWnd* pParent /*=NULL*/)
 		// NOTE: the ClassWizard will add member initialization here
 		Button_ID_Increase = 0;
 		Histogram_ID_Increase = 0;
+		Static_ID_Increase = 0;
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -73,6 +75,7 @@ BOOL CVersionDlg::OnInitDialog()
 	m_ScanLeft.Create("×óÐ±É¨",WS_VISIBLE,CRect(90,10,160,40),this,IDC_BUTTON + Button_ID_Increase++);
 	m_ScanRight.Create("ÓÒÐ±É¨",WS_VISIBLE,CRect(170,10,240,40),this,IDC_BUTTON + Button_ID_Increase++);
 	m_Exit.Create("ÍË³ö",WS_VISIBLE,CRect(250,10,320,40),this,IDC_BUTTON + Button_ID_Increase++);
+	m_PcbInfo.Create("x°åÊý:3,y°åÊý:2,Ð±É¨:0",WS_VISIBLE,CRect(330,15,600,40),this,IDC_STATIC_CONTROL + Static_ID_Increase++);
 
 	// Set the control of histogram
 	//0
@@ -92,97 +95,23 @@ BOOL CVersionDlg::OnInitDialog()
 
 	//3
 	m_AlexfStaticHistogram[3].Create("YPAD1", WS_VISIBLE | WS_CHILD,
-		CRect( 50, 390, 380, 710 ), this, IDC_HISTOGRAM + Histogram_ID_Increase++ );
+		CRect( 50, 385, 380, 710 ), this, IDC_HISTOGRAM + Histogram_ID_Increase++ );
 	m_AlexfStaticHistogram[3].ModifyStyleEx( 0, WS_EX_CLIENTEDGE, SWP_DRAWFRAME );
 
 	//4
 	m_AlexfStaticHistogram[4].Create("YPAD2", WS_VISIBLE | WS_CHILD,
-		CRect( 400, 390, 730, 710 ), this, IDC_HISTOGRAM + Histogram_ID_Increase++ );
+		CRect( 400, 385, 730, 710 ), this, IDC_HISTOGRAM + Histogram_ID_Increase++ );
 	m_AlexfStaticHistogram[4].ModifyStyleEx( 0, WS_EX_CLIENTEDGE, SWP_DRAWFRAME );
 
 	// Initialization the Histogram
+	CString	sHeadTitle[5] = {"XPCB1","XPCB2","XPCB3","YPCB1","YPCB2"};
 	for (int i=0;i<5;i++)
 	{
 		//m_AlexfStaticHistogram[i].Initialization();
 		//m_AlexfStaticHistogram[i].Initialization(RGB(0,255,255),3,4,RGB(255,0,0),64);
-		m_AlexfStaticHistogram[i].Initialization(RGB(0,255,255),3,4,RGB(255,0,0),64);
-/*
-		m_AlexfStaticHistogram[i].Add(10);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(60);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		
-		m_AlexfStaticHistogram[i].Add(10);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(60);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		
-		m_AlexfStaticHistogram[i].Add(10);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(60);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		
-		
-		m_AlexfStaticHistogram[i].Add(10);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(60);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		
-		m_AlexfStaticHistogram[i].Add(10);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(60);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		
-		m_AlexfStaticHistogram[i].Add(10);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(60);
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);
-		
-		m_AlexfStaticHistogram[i].Add(50);
-		m_AlexfStaticHistogram[i].Add(40);
-		m_AlexfStaticHistogram[i].Add(20);
-		m_AlexfStaticHistogram[i].Add(30);*/
-
+		m_AlexfStaticHistogram[i].Initialization(RGB(0,255,255),3,4,RGB(0,0,255),64,sHeadTitle[i]);
 	}
 	
-	
-
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -222,9 +151,18 @@ HCURSOR CVersionDlg::OnQueryDragIcon()
 	return (HCURSOR) m_hIcon;
 }
 
+BOOL CVersionDlg::PreTranslateMessage(MSG* pMsg) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_ESCAPE)  return TRUE;
+	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_RETURN) return TRUE; 
+	else
+		return CDialog::PreTranslateMessage(pMsg);
+}
+
 void CVersionDlg::OnScanOrigin()
 {
-	m_AlexfStaticHistogram[0].UPDATE(0,50);
+	m_AlexfStaticHistogram[0].UPDATE(0,100);
 	m_AlexfStaticHistogram[0].UPDATE(4,50);
 	m_AlexfStaticHistogram[0].UPDATE(8,50);
 	m_AlexfStaticHistogram[0].RedrawWindow();
@@ -251,11 +189,4 @@ void CVersionDlg::OnExit()
 	this->OnCancel();
 }
 
-BOOL CVersionDlg::PreTranslateMessage(MSG* pMsg) 
-{
-	// TODO: Add your specialized code here and/or call the base class
-	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_ESCAPE)  return TRUE;
-	if(pMsg->message==WM_KEYDOWN && pMsg->wParam==VK_RETURN) return TRUE; 
-	else
-		return CDialog::PreTranslateMessage(pMsg);
-}
+

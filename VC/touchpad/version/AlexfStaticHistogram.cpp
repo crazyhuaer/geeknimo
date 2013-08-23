@@ -37,6 +37,7 @@ CAlexfStaticHistogram::CAlexfStaticHistogram()
 	m_bTextLeft = TRUE;
 	m_bNeedFullRedraw = FALSE;
 	m_bMotionLToR = TRUE;
+	m_sHeadTitle = "";
 	m_clr = GetSysColor(COLOR_BTNHIGHLIGHT);//FNA
 	m_clrBack = GetSysColor(COLOR_BTNFACE); //FNA
 
@@ -79,6 +80,8 @@ void CAlexfStaticHistogram::OnPaint()
 	}
 	CRect cr1(cr);
 
+//////////////////////////////////////////////////////////////////////////
+	// Text
 	dc.SetBkMode(TRANSPARENT);
 	dc.SetTextColor(GetSysColor(COLOR_BTNTEXT));
 	int hh = 0;
@@ -96,8 +99,15 @@ void CAlexfStaticHistogram::OnPaint()
 			DT_WORDBREAK);
 		cr1.OffsetRect(hh, 0);
 	}
-	dc.SelectObject(pOldFont);
+	
 
+	// Add Header Title
+	cr1=cr;
+	cr1.bottom = cr.top + 15;
+	cr1.left = cr.right/2 + cr.left/2 - 2*m_sHeadTitle.GetLength();
+	dc.DrawText(m_sHeadTitle, (LPRECT)&cr1,DT_WORDBREAK);
+
+	dc.SelectObject(pOldFont);
 /******************************/
 
 
@@ -105,6 +115,7 @@ void CAlexfStaticHistogram::OnPaint()
 	/************************************************************************/
 	/* Neo Add                                                              */
 	/************************************************************************/
+	cr.top = cr.top + 15;
 	cr.bottom = cr.bottom - 15;
 	//////////////////////////////////////////////////////////////////////////
 	if (m_dMaxValue == 0) return;
@@ -122,7 +133,7 @@ void CAlexfStaticHistogram::OnPaint()
 	int nOffset = 0;
 	if (m_lTextLines != 0) nOffset =(int) (cr.Width() / (m_lTextLines) - (m_dDataWidth - 1) - 0.5);
 	
-
+	// Draw histogram
 	while (TRUE)
 	{
 		int h1 = 0;
@@ -144,6 +155,12 @@ void CAlexfStaticHistogram::OnPaint()
 	
 		//if (cr1.left > cr.left) break;
 	}
+
+	// Draw the temp line
+	CRect cr2(cr);
+	cr2.top = cr.top + 3*(cr.bottom - cr.top)/5;
+	cr2.bottom = cr.top + 3*(cr.bottom - cr.top)/5 + 2;
+	dc.FillRect(cr2, & CBrush(RGB(255,0,0)));
 	// Do not call CStatic::OnPaint() for painting messages
 }
  
@@ -249,6 +266,8 @@ void CAlexfStaticHistogram::Initialization()
 	text[7] = "56";
 	text[8] = "64";
 
+	m_sHeadTitle = "Demo";
+
 	for (int i = 0; i < 64; i++)
 	{
 		this->Add(0);
@@ -256,11 +275,13 @@ void CAlexfStaticHistogram::Initialization()
 	
 }
 
-void CAlexfStaticHistogram::Initialization(COLORREF rgbBackColor,int dTextWidth,int dDataWidth,COLORREF rgbColor,int dTextLines)
+void CAlexfStaticHistogram::Initialization(COLORREF rgbBackColor,int dTextWidth,int dDataWidth,COLORREF rgbColor,int dTextLines,CString sHeadTitle)
 {
 
 	CString	sTemp;
 
+	m_sHeadTitle = sHeadTitle;
+	
 	SetBackColor(rgbBackColor);
 	SetMotionLtoR(FALSE);
 	SetTextWidth(dTextWidth);

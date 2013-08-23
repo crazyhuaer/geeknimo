@@ -42,7 +42,7 @@ public:
 	// Implementation
 public:
 	void Initialization();
-	void Initialization(COLORREF rgbBackColor,int dTextWidth,int dDataWidth,COLORREF rgbColor,int dTextLines=64);
+	void Initialization(COLORREF rgbBackColor,int dTextWidth,int dDataWidth,COLORREF rgbColor,int dTextLines=64,CString sHeadTitle = "demo");
 	BOOL Add(DOUBLE dValue);
 	BOOL UPDATE(int dIndex,DOUBLE dValue);
 	BOOL IsOK() {return m_bOK;}
@@ -60,6 +60,7 @@ public:
 	// Generated message map functions
 protected:
 	int m_dDataWidth;
+	CString  m_sHeadTitle;
 	COLORREF m_clr;
 	COLORREF m_clrBack;
 	BOOL m_bOK;				// control operational
