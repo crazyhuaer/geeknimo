@@ -1,0 +1,103 @@
+C51 COMPILER V9.01   ADC                                                                   08/23/2013 20:12:41 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE ADC
+OBJECT MODULE PLACED IN .\out\adc.obj
+COMPILER INVOKED BY: D:\Program Files\keil\C51\BIN\C51.EXE bsp\adc.c BROWSE INCDIR(.\app;.\bsp;.\uip) DEBUG OBJECTEXTEND
+                    - PRINT(.\out\adc.lst) OBJECT(.\out\adc.obj)
+
+line level    source
+
+   1          #include "STC12C5A60S2.H"
+   2          #include "uart.h"
+   3          #include "intrins.h"
+   4          
+   5          typedef unsigned char BYTE;
+   6          typedef unsigned int WORD;
+   7          
+   8          BYTE ch = 3; //ADC channel NO.
+   9          
+  10          
+  11          void Delay_x(WORD n);
+  12          
+  13          
+  14          /*Define ADC operation const for ADC_CONTR*/
+  15          #define ADC_POWER 0x80 //ADC power control bit
+  16          #define ADC_FLAG 0x10 //ADC complete flag
+  17          #define ADC_START 0x08 //ADC start control bit
+  18          #define ADC_SPEEDLL 0x00 //540 clocks
+  19          #define ADC_SPEEDL 0x20 //360 clocks
+  20          #define ADC_SPEEDH 0x40 //180 clocks
+  21          #define ADC_SPEEDHH 0x60 //90 clocks
+  22          
+  23          /*----------------------------
+  24          ADC interrupt service routine
+  25          ----------------------------*/
+  26          //void adc_isr() interrupt 5 using 1
+  27          //{
+  28          //      ADC_CONTR &= !ADC_FLAG; //Clear ADC interrupt flag
+  29          ////    SendData(ch); //Show Channel NO.
+  30          ////    SendData(ADC_RES); //Get ADC high 8-bit result and Send to UART
+  31          //      //if you want show 10-bit result, uncomment next line
+  32          //      // SendData(ADC_LOW2); //Show ADC low 2-bit result
+  33          ////    if (++ch > 7) ch = 0; //switch to next channel
+  34          //      adc_val = (WORD)ADC_RES<<2 + (ADC_RESL)>>6;
+  35          //      ADC_CONTR = ADC_POWER | ADC_SPEEDLL | ADC_START | ch;
+  36          //
+  37          //      xlog("isr");
+  38          //}
+  39          
+  40          /*----------------------------
+  41          Initial ADC sfr
+  42          ----------------------------*/
+  43          void InitADC( )
+  44          {
+  45   1              P1ASF = (1<<ch); //P13×÷ÎªADCÊäÈë
+  46   1              ADC_RES = 0; //Clear previous result
+  47   1              ADC_CONTR = ADC_POWER | ADC_SPEEDLL | ADC_START | ch;
+  48   1      //      EADC = 1;
+  49   1              Delay_x(2); //ADC power-on delay and Start A/D conversion
+  50   1              while(ADC_CONTR & ADC_FLAG == 0);
+  51   1              ADC_CONTR &= ~ADC_FLAG;
+  52   1      }
+  53          
+  54          unsigned short get_adc_val(void)
+C51 COMPILER V9.01   ADC                                                                   08/23/2013 20:12:41 PAGE 2   
+
+  55          {
+  56   1              unsigned short ret = 0;
+  57   1      
+  58   1              ADC_CONTR = ADC_POWER | ADC_SPEEDLL | ADC_START | ch;
+  59   1              _nop_(); _nop_();_nop_();_nop_();_nop_();_nop_();
+  60   1              while(ADC_CONTR & ADC_FLAG == 0);
+  61   1              ret = (WORD)ADC_RES<<2 | ADC_RESL&0x03;
+  62   1              ADC_CONTR &= ~ADC_FLAG;
+  63   1              return ret;
+  64   1      }
+  65          
+  66          /*----------------------------
+  67          Software delay function
+  68          ----------------------------*/
+  69          void Delay_x(WORD n)
+  70          {
+  71   1              WORD x;
+  72   1              while (n--)
+  73   1              {
+  74   2                      x = 5000;
+  75   2                      while (x--);
+  76   2              }
+  77   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     96    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

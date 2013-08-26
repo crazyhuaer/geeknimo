@@ -1,0 +1,267 @@
+C51 COMPILER V9.01   UART                                                                  08/23/2013 20:12:41 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\out\uart.obj
+COMPILER INVOKED BY: D:\Program Files\keil\C51\BIN\C51.EXE bsp\uart.c BROWSE INCDIR(.\app;.\bsp;.\uip) DEBUG OBJECTEXTEN
+                    -D PRINT(.\out\uart.lst) OBJECT(.\out\uart.obj)
+
+line level    source
+
+   1          #define UART_GLOBALS
+   2          
+   3          #include "uart.h"
+   4          
+   5          #define S2RI 1
+   6          #define S2TI 2
+   7          
+   8          
+   9          /*----------------------------------------------------------------------------
+  10            Notes:
+  11            The length of the receive and transmit buffers must be a power of 2.
+  12            Each buffer has a next_in and a next_out index.
+  13            If next_in = next_out, the buffer is empty.
+  14            (next_in - next_out) % buffer_size = the number of characters in the buffer.
+  15           *----------------------------------------------------------------------------*/
+  16          
+  17          /*----------------------------------------------------------------------------
+  18           *----------------------------------------------------------------------------*/
+  19          #if TBUF_SIZE < 2
+              #error TBUF_SIZE is too small.  It must be larger than 1.
+              #elif ((TBUF_SIZE & (TBUF_SIZE-1)) != 0)
+              #error TBUF_SIZE must be a power of 2.
+              #endif
+  24          
+  25          #if RBUF_SIZE < 2
+              #error RBUF_SIZE is too small.  It must be larger than 1.
+              #elif ((RBUF_SIZE & (RBUF_SIZE-1)) != 0)
+              #error RBUF_SIZE must be a power of 2.
+              #endif
+  30          
+  31          xdata struct buf_st rbuf = { 0, 0, };
+  32          
+  33          xdata struct buf_st tbuf = { 0, 0, };
+  34          
+  35          u8 tx_restart = 1;               // NZ if TX restart is required
+  36          
+  37          /*------------------------------------------------------------------------------
+  38            buffer_Init
+  39            initialize the buffers
+  40           *------------------------------------------------------------------------------*/
+  41          void buffer_Init (void) {
+  42   1      
+  43   1        tbuf.in = 0;                                    // Clear com buffer indexes
+  44   1        tbuf.out = 0;
+  45   1        tx_restart = 1;
+  46   1      
+  47   1        rbuf.in = 0;
+  48   1        rbuf.out = 0;
+  49   1      }
+  50          
+  51          /*------------------------------------------------------------------------------
+  52            SenChar
+  53            transmit a character
+  54           *------------------------------------------------------------------------------*/
+C51 COMPILER V9.01   UART                                                                  08/23/2013 20:12:41 PAGE 2   
+
+  55          int SendChar (u8 c) {
+  56   1        struct buf_st *p = &tbuf;
+  57   1                                                        // If the buffer is full, return an error value
+  58   1        if (SIO_TBUFLEN >= TBUF_SIZE)
+  59   1          return (-1);
+  60   1        ES = 0;                                                  
+  61   1        p->buf [p->in & (TBUF_SIZE - 1)] = c;           // Add data to the transmit buffer.
+  62   1        p->in++;
+  63   1        ES = 1;
+  64   1        if (tx_restart) {                               // If transmit interrupt is disabled, enable it
+  65   2          tx_restart = 0;
+  66   2              TI = 1;
+  67   2        }
+  68   1      
+  69   1        return (0);
+  70   1      }
+  71          
+  72          void xputs(u8 *dt)
+  73          {
+  74   1              while(*dt)
+  75   1                      SendChar(*dt++);
+  76   1      
+  77   1              SendChar('\r');
+  78   1              SendChar('\n');
+  79   1      }
+  80          
+  81          /*------------------------------------------------------------------------------
+  82            GetKey
+  83            receive a character
+  84           *------------------------------------------------------------------------------*/
+  85          int GetKey (void) {
+  86   1        struct buf_st *p = &rbuf;
+  87   1        u16 ret;
+  88   1      
+  89   1        if (SIO_RBUFLEN == 0)
+  90   1          return (-1);
+  91   1        ES = 0;
+  92   1        ret = p->buf [(p->out++) & (RBUF_SIZE - 1)];
+  93   1        ES = 1;
+  94   1        return (ret);
+  95   1      }
+  96          
+  97          
+  98          //uart2 variables
+  99          bit busy = 0; //=0 可以发送  =1表示不可以发送
+ 100          
+ 101          
+ 102          /**********************************************************************
+ 103          **函数原型：    void Uart_Init(void)
+ 104          **参数说明：    无
+ 105          **返 回 值：    无      
+ 106          **说    明：    串口初始化，采用T2，时钟和波特率在net_cfg.h中定义
+ 107          ************************************************************************/
+ 108          void uart_init(void)
+ 109          {
+ 110   1      //uart1
+ 111   1              TMOD = (TMOD & 0x0F) | 0x20;
+ 112   1              TH1=256-ETH_CPU_XTAL/32/BPS;
+ 113   1              AUXR |= 0x40;    //T1 1t mode  
+ 114   1              TL1=TH1;
+ 115   1              SCON=0x50;
+ 116   1              TR1=1;
+C51 COMPILER V9.01   UART                                                                  08/23/2013 20:12:41 PAGE 3   
+
+ 117   1              ES = 1;
+ 118   1              TI = 1;
+ 119   1      ////    RCAP2H=(65536-FOSC/16/BPS)/256;           //6-clock mode
+ 120   1      ////    RCAP2L=(65536-FOSC/16/BPS)%256;
+ 121   1      //      RCAP2H=(65536-ETH_CPU_XTAL/32/BPS)/256;          //12-clock mode 
+ 122   1      //      RCAP2L=(65536-ETH_CPU_XTAL/32/BPS)%256;
+ 123   1      //      SCON = 0x50;                          //串口工作方式1
+ 124   1      //      T2CON = 0x34;                      
+ 125   1      ////    TI=1;
+ 126   1      //      PS=1;   //高中断优先级
+ 127   1      //      ES=1;
+ 128   1      
+ 129   1      //注意 串口2采用查询方式时，有问题，字节间需要很长的延时  否则字节无法同步 股这里采用中断收发
+ 130   1      //uart2
+ 131   1              S2CON = 0x50;   
+ 132   1      //      BRT = -(ETH_CPU_XTAL/12/32/BPS);
+ 133   1      //      AUXR |= 0x10;
+ 134   1              BRT = -(ETH_CPU_XTAL/32/115200);
+ 135   1              AUXR |= 0x14;  //BRTR = 1, BRTx12 = 1
+ 136   1              IE2 = 0x01;
+ 137   1      //      EA = 1;
+ 138   1      
+ 139   1      
+ 140   1      }
+ 141          
+ 142          
+ 143          //void put2(u8 dt)
+ 144          //{
+ 145          //      if(busy==1) while(busy==1);
+ 146          //      S2BUF = dt;
+ 147          //      busy = 1;
+ 148          //}
+ 149          //
+ 150          ////串口2输出字符串  用于输出调试日志
+ 151          //void put2s(u8 *p)
+ 152          //{
+ 153          //      while(*p)
+ 154          //      {
+ 155          //              put2(*p++);
+ 156          //      }
+ 157          //}
+ 158          //
+ 159          //void put2hex(u8 *p, len)
+ 160          //{
+ 161          //      u8 i;
+ 162          //      code u8 tab[] = "0123456789ABCDEF";
+ 163          //      for(i=0; i<len; i++)
+ 164          //      {
+ 165          //              put2(tab[p[i]>>4]);
+ 166          //              put2(tab[p[i]&0x0f]);
+ 167          //              put2(' ');
+ 168          //      }
+ 169          //}
+ 170          //
+ 171          
+ 172          /**********************************************************************
+ 173          **函数原型：    void    Printf_Char(uchar ascii)
+ 174          **参数说明：    ascii： 发送到串口的ASCII
+ 175          **返 回 值：    无      
+ 176          **说    明：    往串口发送一个字符
+ 177          ************************************************************************/
+ 178          //void put(unsigned char ascii)
+C51 COMPILER V9.01   UART                                                                  08/23/2013 20:12:41 PAGE 4   
+
+ 179          //{     ES=0;
+ 180          //      SBUF=ascii;
+ 181          //      while(!TI);
+ 182          //      TI=0;
+ 183          //      ES=1;
+ 184          //}
+ 185          
+ 186          
+ 187          /*******************************************************************
+ 188          串口ISR，执行一些命令
+ 189          ********************************************************************/
+ 190          void serial(void) interrupt 4
+ 191          {
+ 192   1              struct buf_st *p;
+ 193   1              
+ 194   1              if(TI) 
+ 195   1              {       
+ 196   2                      TI=0;
+ 197   2                      p = &tbuf;
+ 198   2                      
+ 199   2                      if (p->in != p->out) {
+ 200   3                              SBUF = (p->buf [p->out & (TBUF_SIZE-1)] & 0x1FF);
+ 201   3                              p->out++;
+ 202   3                              tx_restart = 0;
+ 203   3                      }
+ 204   2                      else {
+ 205   3                              tx_restart = 1;
+ 206   3                      }
+ 207   2              } 
+ 208   1      
+ 209   1              if (RI)
+ 210   1              {       RI=0;
+ 211   2                      p = &rbuf;
+ 212   2                      
+ 213   2                      if (((p->in - p->out) & ~(RBUF_SIZE-1)) == 0) {
+ 214   3                              p->buf [p->in & (RBUF_SIZE-1)] = SBUF;
+ 215   3                              p->in++;
+ 216   3                      }
+ 217   2              }        
+ 218   1      }
+ 219          
+ 220          void uart2_isr(void) interrupt 8 using 2
+ 221          {
+ 222   1      
+ 223   1              if(S2CON & S2RI)
+ 224   1              {
+ 225   2                      S2CON &= ~S2RI;
+ 226   2                      S2BUF = S2BUF;
+ 227   2              }
+ 228   1              
+ 229   1              if(S2CON & S2TI)
+ 230   1              {
+ 231   2                      S2CON &= ~S2TI; 
+ 232   2                      busy = 0;
+ 233   2              }
+ 234   1      }
+ 235          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    543    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.01   UART                                                                  08/23/2013 20:12:41 PAGE 5   
+
+   XDATA SIZE       =   2056    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

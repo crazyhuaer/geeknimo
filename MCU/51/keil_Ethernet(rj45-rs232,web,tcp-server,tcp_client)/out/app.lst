@@ -1,0 +1,330 @@
+C51 COMPILER V9.01   APP                                                                   08/23/2013 20:12:41 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE APP
+OBJECT MODULE PLACED IN .\out\app.obj
+COMPILER INVOKED BY: D:\Program Files\keil\C51\BIN\C51.EXE app\app.c BROWSE INCDIR(.\app;.\bsp;.\uip) DEBUG OBJECTEXTEND
+                    - PRINT(.\out\app.lst) OBJECT(.\out\app.obj)
+
+line level    source
+
+   1          #define  APP_GLOBALS
+   2          
+   3          #include "app.h"
+   4          #include "STC12C5A60S2.H"
+   5          #include "adc.h"
+   6          #include <stdio.h>
+   7          #include <string.h>
+   8          
+   9          u8 xdata tx_buf[RBUF_SIZE];  //缓冲串口接收到的数据  通过tcp发送出去
+  10          extern u8 client_connect_flag;
+  11          
+  12          
+  13          char xdata  htmlpage[] =
+  14          {
+  15          "HTTP/1.0 200 OK\nContent-Type: text/html\n\n"
+  16          "<html><meta http-equiv=refresh content=3>"
+  17          "<body><center>"
+  18          "<h1>基于WEB的监控系统设计测试页面</h1>"
+  19          "<h3>开关量控制:</h3><br>"
+  20          "<p>点击按钮以开启或关闭LED 1对应LED灭 0对应LED亮</p></center>"
+  21          "<form action=swc.html><table align=center>"
+  22          "<tr align=center>"
+  23          "<td>P1_7:&nbsp<input type=submit name=sw7 value=1></td>"         //0x147
+  24          "<td>P1_6:&nbsp<input type=submit name=sw6 value=1></td></tr></table></form>"   // 0x17e
+  25          "<center><h3>平台电压: 05.00V</h3>"      //0x1ae-0x1af :'10'
+  26          "</body></html>"                                                                                                                                                   
+  27          /*
+  28          "<HTML><HEAD><meta http-equiv=refresh content=1><TITLE>Welcome to BD7BQ's Website</TITLE></HEAD>"
+  29          "<table border=\"1\" width=\"49%\" height=\"81\">"
+  30          "<tr>"
+  31          "<td width=\"100%\" colspan=\"2\" height=\"24\">"
+  32          "<p align=\"center\">"
+  33          "<font color=\"#FF0000\">"
+  34          "测试,欢迎访问我的单片机以太网测试板</font></td>"
+  35          "</tr>"
+  36          "<tr>"
+  37          "<td width=\"48%\" align=\"center\" height=\"45\"><font size=\"6\">温度</font></td>"
+  38          "<td width=\"52%\" align=\"center\" height=\"45\"><font size=\"6\">28.5度</font></td>"
+  39          "</tr>"
+  40          "</table>"
+  41          "<br>"
+  42          "你是本次启动后第00000个访问者,Good luck to you .</br>"
+  43          "</HTML>" */
+  44          };
+  45          struct httpd_state xdata hs;
+  46          static unsigned int tt; //the value of temperature
+  47          void listen_init(void)
+  48          {
+  49   1              //80端口用于web页面
+  50   1              uip_listen(HTONS(8079));  //用于串口波特率设置
+  51   1              uip_listen(HTONS(8080));  //用于收发数据
+  52   1              uip_listen(HTONS(80));  /* http server */
+  53   1      }
+  54          sbit P1_7=P1^7;
+C51 COMPILER V9.01   APP                                                                   08/23/2013 20:12:41 PAGE 2   
+
+  55          sbit P1_6=P1^6;
+  56          
+  57          void appcall(void)
+  58          {
+  59   1              u16 i;
+  60   1      
+  61   1        switch(uip_conn->lport) 
+  62   1        {
+  63   2        /* http port */
+  64   2              case HTONS(80):
+  65   2                      /* when syn_rcv the uip_connected() return not zero ,it means 
+  66   2                         client connect to host*/
+  67   2                      if(uip_connected()) { 
+  68   3                              /* init the byte count */
+  69   3                              hs.count = 0;                                   
+  70   3                              return;
+  71   3                      }
+  72   2                      else if(uip_poll()) {    
+  73   3                      /* If we are polled ten times, we abort the connection. This is
+  74   3                         because we don't want connections lingering indefinately in
+  75   3                         the system.  */
+  76   3                              if(hs.count++ >= 10) {
+  77   4                                      uip_abort();
+  78   4                              }
+  79   3                              return;
+  80   3                      }
+  81   2                      else if(uip_newdata())
+  82   2                      {       if(uip_appdata[0]!='G' || uip_appdata[1]!='E' || uip_appdata[2]!='T' || uip_appdata[3]!=' ')
+  83   3                                      uip_abort();
+  84   3                              /* control the led on and off */
+  85   3                              /* 0123456789abcdef */
+  86   3                              /* GET /swc.html?sw7=1 */
+  87   3                              if(uip_appdata[4]=='/' && uip_appdata[5]=='s' && uip_appdata[6]=='w' && uip_appdata[7]=='c')
+  88   3                              {       if(uip_appdata[16]=='7')
+  89   4                                      {       if(uip_appdata[18]=='1') 
+  90   5                                              {       P1_7=0;
+  91   6                                                      htmlpage[0x146]='0';
+  92   6                                              }
+  93   5                                              else
+  94   5                                              {       P1_7=1;
+  95   6                                                      htmlpage[0x146]='1';
+  96   6                                                      
+  97   6                                              }
+  98   5                                      }
+  99   4                                      if(uip_appdata[16]=='6')
+ 100   4                                      {       if(uip_appdata[18]=='1') 
+ 101   5                                              {       P1_6=0;
+ 102   6                                                      htmlpage[0x17d]='0';
+ 103   6                                              }
+ 104   5                                              else
+ 105   5                                              {       P1_6=1;
+ 106   6                                                      htmlpage[0x17d]='1';
+ 107   6                                                      
+ 108   6                                              }
+ 109   5                                      }
+ 110   4                              }
+ 111   3      
+ 112   3                              {
+ 113   4                                      xdata u8 val[16];
+ 114   4                                      sprintf(val,"%04.2f",get_adc_val()*5.0/1024);
+ 115   4                                      memcpy(&htmlpage[0x1ae],val,5);
+ 116   4                              }
+C51 COMPILER V9.01   APP                                                                   08/23/2013 20:12:41 PAGE 3   
+
+ 117   3      //                      tt = 0;
+ 118   3      //                      htmlpage[0x1ae]=(unsigned char)(tt>>8)/10+'0';   //整数
+ 119   3      //                      htmlpage[0x1af]=(unsigned char)(tt>>8)%10+'0';
+ 120   3      //
+ 121   3      //                      htmlpage[0x1af+2]=(tt & 0x00ff)/10+'0';                 //小数
+ 122   3      //                      htmlpage[0x1af+3]=(tt & 0x00ff)%10+'0';
+ 123   3                              
+ 124   3      
+ 125   3                              hs.dataptr=htmlpage;
+ 126   3                              hs.count=sizeof(htmlpage)-1;
+ 127   3                      }
+ 128   2      
+ 129   2      
+ 130   2                      //若收到client的ack包，说明先前的数据已成功发送，进行剩下的数据处理，若没数据要发，就关闭连接             
+ 131   2                      if(uip_acked()) {//若没发送完，长度和开始指针还是存在hs->count 和hs->dataptr中          
+ 132   3                              if(hs.count >= uip_conn->len) {  /* uip_conn.len contain the bytes sent just now */
+ 133   4                                      hs.count -= uip_conn->len;
+ 134   4                                      hs.dataptr += uip_conn->len;
+ 135   4                              }
+ 136   3                              else {
+ 137   4                                      hs.count = 0;
+ 138   4                              }
+ 139   3                      
+ 140   3                              if(hs.count == 0) {                                     
+ 141   4                                      uip_close();     /* 数据发送完成，关闭连接 */
+ 142   4                              }
+ 143   3                      }
+ 144   2                      /* 在没有重发数据且在ESTABLISHED状态时，才会出现uip_flags = UIP_POLL; */
+ 145   2                      if(!uip_poll()) {
+ 146   3                      /* Send a piece of data, but not more than the MSS of the       connection.     */
+ 147   3                              uip_send(hs.dataptr, hs.count);
+ 148   3                      }
+ 149   2      
+ 150   2                      return;
+ 151   2                              
+ 152   2              case HTONS(8079):               //*串口参数配置 
+ 153   2                      if (uip_newdata())      //*UIP_CONNECTED UIP_NEWDATA UIP_ACKDATA
+ 154   2                      {       if(uip_appdata[0]=='s' && uip_appdata[1]=='e' && uip_appdata[2]=='t')
+ 155   3                              if(uip_appdata[3]=='c' && uip_appdata[4]=='o' && uip_appdata[5]=='m')
+ 156   3                              {                       
+ 157   4                              //      u8 *str[]={"24","48","96","192","288","384","576","1152"};
+ 158   4                                      u8 code tab[] = {112,184,220,238,244,247,250,253};
+ 159   4                                      xputs("set ok, please change buard rate\r\n");
+ 160   4                                      Delay_x(500);
+ 161   4      
+ 162   4                                      i = uip_appdata[6] - '0';
+ 163   4                                      if(i >= 0 && i <=7)
+ 164   4                                      {
+ 165   5                                              TH1 = tab[i];
+ 166   5                                              TL1=TH1;
+ 167   5                                      }
+ 168   4      
+ 169   4      
+ 170   4      //                              switch(uip_appdata[6])
+ 171   4      //                              {       case '0':  //2400bps
+ 172   4      //                                              TH1 = 112;
+ 173   4      //                                              //RCAP2H=0xf7;
+ 174   4      //                                              //RCAP2L=0x00;
+ 175   4      //                                              //puts("300bps\r\n");
+ 176   4      //                                              break;
+ 177   4      //                                      case '1':
+ 178   4      //                                              TH1 = 184;      //4800bps
+C51 COMPILER V9.01   APP                                                                   08/23/2013 20:12:41 PAGE 4   
+
+ 179   4      //                                              //RCAP2H=0xfb;
+ 180   4      //                                              //RCAP2L=0x80;
+ 181   4      //                                              //puts("600bps\r\n");
+ 182   4      //                                              break;
+ 183   4      //                                      case '2':
+ 184   4      //                                              TH1 = 220; //9600bps
+ 185   4      //                                              //RCAP2H=0xfd;
+ 186   4      //                                              //RCAP2L=0xc0;
+ 187   4      //                                              //puts("1200bps\r\n");
+ 188   4      //                                              break;
+ 189   4      //                                      case '3':
+ 190   4      //                                              TH1 = 
+ 191   4      //                                              //RCAP2H=0xfe;
+ 192   4      //                                              //RCAP2L=0xe0;
+ 193   4      //                                              //puts("2400bps\r\n");
+ 194   4      //                                              break;
+ 195   4      //                                      case '4':
+ 196   4      //                                              //RCAP2H=0xff;
+ 197   4      //                                              //RCAP2L=0x70;
+ 198   4      //                                              //puts("4800bps\r\n");
+ 199   4      //                                              break;
+ 200   4      //                                      case '5':
+ 201   4      //                                              //RCAP2H=0xff;
+ 202   4      //                                              //RCAP2L=0xb8;
+ 203   4      //                                              //puts("9600bps\r\n");
+ 204   4      //                                              break;
+ 205   4      //                                      case '6':
+ 206   4      //                                              //RCAP2H=0xff;
+ 207   4      //                                              //RCAP2L=0xdc;
+ 208   4      //                                              //puts("19200bps\r\n");
+ 209   4      //                                              break;
+ 210   4      //                                      case '7':
+ 211   4      //                                              //RCAP2H=0xff;
+ 212   4      //                                              //RCAP2L=0xee;
+ 213   4      //                                              //puts("38400bps\r\n");
+ 214   4      //                                              break;
+ 215   4      //                                      case '8':
+ 216   4      //                                              //RCAP2H=0xff;
+ 217   4      //                                              //RCAP2L=0xf4;
+ 218   4      //                                              //puts("57600bps\r\n");
+ 219   4      //                                              break;
+ 220   4      //                                      case '9':
+ 221   4      //                                              //RCAP2H=0xff;
+ 222   4      //                                              //RCAP2L=0xfa;
+ 223   4      //                                              //puts("115200bps\r\n");
+ 224   4      //                                              break;
+ 225   4      //                                      default:
+ 226   4      //                                              //RCAP2H=0xff;
+ 227   4      //                                              //RCAP2L=0xb8;
+ 228   4      //                                              //puts("9600bps\r\n");
+ 229   4      //                                              break;
+ 230   4      //                              }                                       
+ 231   4                              }
+ 232   3                      }               
+ 233   2              return;    
+ 234   2              /*---------------------------------------------------------------------------------*/
+ 235   2              //用于数据传送的端口    
+ 236   2              case HTONS(8080):
+ 237   2                      if (uip_newdata())      //UIP_CONNECTED UIP_NEWDATA UIP_ACKDATA
+ 238   2                      {
+ 239   3                              if(uip_len)
+ 240   3                              {
+C51 COMPILER V9.01   APP                                                                   08/23/2013 20:12:41 PAGE 5   
+
+ 241   4                                      for(i=0; i<uip_len; i++ )
+ 242   4                                      {
+ 243   5                                              SendChar(uip_appdata[i]);
+ 244   5      //                                      if(-1 != SendChar(uip_appdata[i]))
+ 245   5      //                                              i++;
+ 246   5                                      }
+ 247   4                              }       
+ 248   3                      }
+ 249   2                      if(uip_poll())
+ 250   2                      {
+ 251   3                              u16 dt_len = SIO_RBUFLEN;
+ 252   3                              
+ 253   3                              if(dt_len > 0)
+ 254   3                              {
+ 255   4                                      for(i=0; i<dt_len; i++)
+ 256   4                                      {
+ 257   5                                              tx_buf[i] = GetKey();
+ 258   5                                      }       
+ 259   4                                      uip_slen = dt_len;
+ 260   4                                      uip_send(tx_buf,uip_slen);
+ 261   4                              }
+ 262   3                      }                                       
+ 263   2              return;   
+ 264   2      /*---------------------------------------------------------------------------------*/
+ 265   2      //采用client时，这部分需要取消
+ 266   2      //      default:
+ 267   2      //    uip_abort();
+ 268   2      //    break;
+ 269   2        }
+ 270   1        
+ 271   1        if(uip_conn->rport == HTONS(8888))
+ 272   1        {
+ 273   2              if(uip_connected())
+ 274   2              {
+ 275   3                      code char hello[] = "Hello world\r\n"; 
+ 276   3                      xlog("建立连接\r\n");
+ 277   3                      uip_slen = strlen(hello);
+ 278   3                      uip_send(hello,uip_slen);
+ 279   3                      client_connect_flag = 1;
+ 280   3              }
+ 281   2              else if(uip_newdata())
+ 282   2              {
+ 283   3                      uip_send(uip_appdata,uip_len);  //照原样输出    
+ 284   3              }
+ 285   2              else if(uip_aborted())
+ 286   2              {
+ 287   3                      client_connect_flag = 0;
+ 288   3                      xlog("rst ");
+ 289   3              }
+ 290   2              else if(uip_closed())
+ 291   2              {
+ 292   3                      client_connect_flag = 0;
+ 293   3                      xlog("disc ");  
+ 294   3              }
+ 295   2        }  
+ 296   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    989    ----
+   CONSTANT SIZE    =     86    ----
+   XDATA SIZE       =   1485      16
+C51 COMPILER V9.01   APP                                                                   08/23/2013 20:12:41 PAGE 6   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

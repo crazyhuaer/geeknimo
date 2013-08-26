@@ -1,0 +1,40 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: usbtest - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP45C6.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Debug/" /Fp"Debug/usbtest.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\touchpad\usbtest\usb.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP45C6.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP45C7.tmp" with contents
+[
+setupapi.lib hid.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/usbtest.pdb" /debug /machine:I386 /out:"Debug/usbtest.exe" /pdbtype:sept 
+.\Debug\StdAfx.obj
+.\Debug\usb.obj
+.\Debug\usbtest.obj
+.\Debug\usbtestDlg.obj
+.\Debug\usbtest.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP45C7.tmp"
+<h3>Output Window</h3>
+Compiling...
+usb.cpp
+F:\Code\geeknimo\VC\touchpad\usbtest\usb.cpp(213) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/usbtest.bsc"  .\Debug\StdAfx.sbr .\Debug\usb.sbr .\Debug\usbtest.sbr .\Debug\usbtestDlg.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+usbtest.exe - 0 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,468 @@
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE UIP_ARP
+OBJECT MODULE PLACED IN .\out\uip_arp.obj
+COMPILER INVOKED BY: D:\Program Files\keil\C51\BIN\C51.EXE uip\uip_arp.c BROWSE INCDIR(.\app;.\bsp;.\uip) DEBUG OBJECTEX
+                    -TEND PRINT(.\out\uip_arp.lst) OBJECT(.\out\uip_arp.obj)
+
+line level    source
+
+   1          /**
+   2           * \addtogroup uip
+   3           * @{
+   4           */
+   5          
+   6          /**
+   7           * \defgroup uiparp uIP Address Resolution Protocol
+   8           * @{
+   9           * 
+  10           * The Address Resolution Protocol ARP is used for mapping between IP
+  11           * addresses and link level addresses such as the Ethernet MAC
+  12           * addresses. ARP uses broadcast queries to ask for the link level
+  13           * address of a known IP address and the host which is configured with
+  14           * the IP address for which the query was meant, will respond with its
+  15           * link level address.
+  16           *
+  17           * \note This ARP implementation only supports Ethernet.
+  18           */
+  19           
+  20          /**
+  21           * \file
+  22           * Implementation of the ARP Address Resolution Protocol.
+  23           * \author Adam Dunkels <adam@dunkels.com>
+  24           *
+  25           */
+  26          
+  27          /*
+  28           * Copyright (c) 2001-2003, Adam Dunkels.
+  29           * All rights reserved. 
+  30           *
+  31           * Redistribution and use in source and binary forms, with or without 
+  32           * modification, are permitted provided that the following conditions 
+  33           * are met: 
+  34           * 1. Redistributions of source code must retain the above copyright 
+  35           *    notice, this list of conditions and the following disclaimer. 
+  36           * 2. Redistributions in binary form must reproduce the above copyright 
+  37           *    notice, this list of conditions and the following disclaimer in the 
+  38           *    documentation and/or other materials provided with the distribution. 
+  39           * 3. The name of the author may not be used to endorse or promote
+  40           *    products derived from this software without specific prior
+  41           *    written permission.  
+  42           *
+  43           * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+  44           * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  45           * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  46           * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+  47           * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  48           * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+  49           * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  50           * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  51           * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  52           * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  53           * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
+  54           *
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 2   
+
+  55           * This file is part of the uIP TCP/IP stack.
+  56           *
+  57           * $Id: uip_arp.c,v 1.7.2.3 2003/10/06 22:42:30 adam Exp $
+  58           *
+  59           */
+  60          
+  61          /*       ษออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+  62                   บ    TITLE:  Keil C51 v7.00 port of Adam Dunkels' uIP v0.9 บ
+  63                   บ REVISION:  VER 0.0                                       บ
+  64                   บ REV.DATE:  30-01-05                                      บ
+  65                   บ  ARCHIVE:                                                บ
+  66                   บ   AUTHOR:  Murray R. Van Luyn, 2005.                     บ
+  67                   ศออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ        */
+  68          
+  69          #include "uip_arp.h"
+  70          
+  71          #include <string.h>
+  72          
+  73          struct arp_hdr {
+  74            struct uip_eth_hdr ethhdr;
+  75            u16_t hwtype;
+  76            u16_t protocol;
+  77            u8_t hwlen;
+  78            u8_t protolen;
+  79            u16_t opcode;
+  80            struct uip_eth_addr shwaddr;
+  81            u16_t sipaddr[2];
+  82            struct uip_eth_addr dhwaddr;
+  83            u16_t dipaddr[2]; 
+  84          };
+  85          
+  86          struct ethip_hdr {
+  87            struct uip_eth_hdr ethhdr;
+  88            /* IP header. */
+  89            u8_t vhl,
+  90              tos,          
+  91              len[2],       
+  92              ipid[2],        
+  93              ipoffset[2],  
+  94              ttl,          
+  95              proto;     
+  96            u16_t ipchksum;
+  97            u16_t srcipaddr[2], 
+  98              destipaddr[2];
+  99          };
+ 100          
+ 101          #define ARP_REQUEST 1
+ 102          #define ARP_REPLY   2
+ 103          
+ 104          #define ARP_HWTYPE_ETH 1
+ 105          
+ 106          struct arp_entry {
+ 107            u16_t ipaddr[2];
+ 108            struct uip_eth_addr ethaddr;
+ 109            u8_t time;
+ 110          };
+ 111          
+ 112          struct uip_eth_addr xdata uip_ethaddr = {{UIP_ETHADDR0,
+ 113                                              UIP_ETHADDR1,
+ 114                                              UIP_ETHADDR2,
+ 115                                              UIP_ETHADDR3,
+ 116                                              UIP_ETHADDR4,
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 3   
+
+ 117                                              UIP_ETHADDR5}};
+ 118          
+ 119          static struct arp_entry xdata arp_table[UIP_ARPTAB_SIZE];
+ 120          static u16_t xdata ipaddr[2];
+ 121          static u8_t xdata i, c;
+ 122          
+ 123          static u8_t xdata arptime;
+ 124          static u8_t xdata tmpage;
+ 125          
+ 126          #define BUF   ((struct arp_hdr *)&uip_buf[0])
+ 127          #define IPBUF ((struct ethip_hdr *)&uip_buf[0])
+ 128          /*-----------------------------------------------------------------------------------*/
+ 129          /**
+ 130           * Initialize the ARP module.
+ 131           *
+ 132           */
+ 133          /*-----------------------------------------------------------------------------------*/
+ 134          void
+ 135          uip_arp_init(void)
+ 136          {
+ 137   1        for(i = 0; i < UIP_ARPTAB_SIZE; ++i) {
+ 138   2          memset(arp_table[i].ipaddr, 0, 4);
+ 139   2        }
+ 140   1      }
+ 141          /*-----------------------------------------------------------------------------------*/
+ 142          /**
+ 143           * Periodic ARP processing function.
+ 144           *
+ 145           * This function performs periodic timer processing in the ARP module
+ 146           * and should be called at regular intervals. The recommended interval
+ 147           * is 10 seconds between the calls.
+ 148           *
+ 149           */
+ 150          /*-----------------------------------------------------------------------------------*/
+ 151          void
+ 152          uip_arp_timer(void)
+ 153          {
+ 154   1        struct arp_entry *tabptr;
+ 155   1        
+ 156   1        ++arptime;
+ 157   1        for(i = 0; i < UIP_ARPTAB_SIZE; ++i) {
+ 158   2          tabptr = &arp_table[i];
+ 159   2          if((tabptr->ipaddr[0] | tabptr->ipaddr[1]) != 0 &&
+ 160   2             arptime - tabptr->time >= UIP_ARP_MAXAGE) {
+ 161   3            memset(tabptr->ipaddr, 0, 4);
+ 162   3          }
+ 163   2        }
+ 164   1      
+ 165   1      }
+ 166          /*-----------------------------------------------------------------------------------*/
+ 167          static void
+ 168          uip_arp_update(u16_t *ipaddr, struct uip_eth_addr *ethaddr)
+ 169          {
+ 170   1        register struct arp_entry *tabptr;
+ 171   1        /* Walk through the ARP mapping table and try to find an entry to
+ 172   1           update. If none is found, the IP -> MAC address mapping is
+ 173   1           inserted in the ARP table. */
+ 174   1        for(i = 0; i < UIP_ARPTAB_SIZE; ++i) {
+ 175   2      
+ 176   2          tabptr = &arp_table[i];
+ 177   2          /* Only check those entries that are actually in use. */
+ 178   2          if(tabptr->ipaddr[0] != 0 &&
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 4   
+
+ 179   2             tabptr->ipaddr[1] != 0) {
+ 180   3      
+ 181   3            /* Check if the source IP address of the incoming packet matches
+ 182   3               the IP address in this ARP table entry. */
+ 183   3            if(ipaddr[0] == tabptr->ipaddr[0] &&
+ 184   3               ipaddr[1] == tabptr->ipaddr[1]) {
+ 185   4               
+ 186   4              /* An old entry found, update this and return. */
+ 187   4              memcpy(tabptr->ethaddr.addr, ethaddr->addr, 6);
+ 188   4              tabptr->time = arptime;
+ 189   4      
+ 190   4              return;
+ 191   4            }
+ 192   3          }
+ 193   2        }
+ 194   1      
+ 195   1        /* If we get here, no existing ARP table entry was found, so we
+ 196   1           create one. */
+ 197   1      
+ 198   1        /* First, we try to find an unused entry in the ARP table. */
+ 199   1        for(i = 0; i < UIP_ARPTAB_SIZE; ++i) {
+ 200   2          tabptr = &arp_table[i];
+ 201   2          if(tabptr->ipaddr[0] == 0 &&
+ 202   2             tabptr->ipaddr[1] == 0) {
+ 203   3            break;
+ 204   3          }
+ 205   2        }
+ 206   1      
+ 207   1        /* If no unused entry is found, we try to find the oldest entry and
+ 208   1           throw it away. */
+ 209   1        if(i == UIP_ARPTAB_SIZE) {
+ 210   2          tmpage = 0;
+ 211   2          c = 0;
+ 212   2          for(i = 0; i < UIP_ARPTAB_SIZE; ++i) {
+ 213   3            tabptr = &arp_table[i];
+ 214   3            if(arptime - tabptr->time > tmpage) {
+ 215   4              tmpage = arptime - tabptr->time;
+ 216   4              c = i;
+ 217   4            }
+ 218   3          }
+ 219   2          i = c;
+ 220   2        }
+ 221   1      
+ 222   1        /* Now, i is the ARP table entry which we will fill with the new
+ 223   1           information. */
+ 224   1        memcpy(tabptr->ipaddr, ipaddr, 4);
+ 225   1        memcpy(tabptr->ethaddr.addr, ethaddr->addr, 6);
+ 226   1        tabptr->time = arptime;
+ 227   1      }
+ 228          /*-----------------------------------------------------------------------------------*/
+ 229          /**
+ 230           * ARP processing for incoming IP packets
+ 231           *
+ 232           * This function should be called by the device driver when an IP
+ 233           * packet has been received. The function will check if the address is
+ 234           * in the ARP cache, and if so the ARP cache entry will be
+ 235           * refreshed. If no ARP cache entry was found, a new one is created.
+ 236           *
+ 237           * This function expects an IP packet with a prepended Ethernet header
+ 238           * in the uip_buf[] buffer, and the length of the packet in the global
+ 239           * variable uip_len.
+ 240           */
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 5   
+
+ 241          /*-----------------------------------------------------------------------------------*/
+ 242          void
+ 243          uip_arp_ipin(void)
+ 244          {
+ 245   1        uip_len -= sizeof(struct uip_eth_hdr);
+ 246   1              
+ 247   1        /* Only insert/update an entry if the source IP address of the
+ 248   1           incoming IP packet comes from a host on the local network. */
+ 249   1        if((IPBUF->srcipaddr[0] & uip_arp_netmask[0]) !=
+ 250   1           (uip_hostaddr[0] & uip_arp_netmask[0])) {
+ 251   2          return;
+ 252   2        }
+ 253   1        if((IPBUF->srcipaddr[1] & uip_arp_netmask[1]) !=
+ 254   1           (uip_hostaddr[1] & uip_arp_netmask[1])) {
+ 255   2          return;
+ 256   2        }
+ 257   1        uip_arp_update(IPBUF->srcipaddr, &(IPBUF->ethhdr.src));
+ 258   1        
+ 259   1        return;
+ 260   1      }
+ 261          /*-----------------------------------------------------------------------------------*/
+ 262          /**
+ 263           * ARP processing for incoming ARP packets.
+ 264           *
+ 265           * This function should be called by the device driver when an ARP
+ 266           * packet has been received. The function will act differently
+ 267           * depending on the ARP packet type: if it is a reply for a request
+ 268           * that we previously sent out, the ARP cache will be filled in with
+ 269           * the values from the ARP reply. If the incoming ARP packet is an ARP
+ 270           * request for our IP address, an ARP reply packet is created and put
+ 271           * into the uip_buf[] buffer.
+ 272           *
+ 273           * When the function returns, the value of the global variable uip_len
+ 274           * indicates whether the device driver should send out a packet or
+ 275           * not. If uip_len is zero, no packet should be sent. If uip_len is
+ 276           * non-zero, it contains the length of the outbound packet that is
+ 277           * present in the uip_buf[] buffer.
+ 278           *
+ 279           * This function expects an ARP packet with a prepended Ethernet
+ 280           * header in the uip_buf[] buffer, and the length of the packet in the
+ 281           * global variable uip_len.
+ 282           */
+ 283          /*-----------------------------------------------------------------------------------*/
+ 284          void
+ 285          uip_arp_arpin(void)
+ 286          {
+ 287   1      
+ 288   1        if(uip_len < sizeof(struct arp_hdr)) {
+ 289   2          uip_len = 0;
+ 290   2          return;
+ 291   2        }
+ 292   1      
+ 293   1        uip_len = 0;
+ 294   1        
+ 295   1        switch(BUF->opcode) {
+ 296   2        case HTONS(ARP_REQUEST):
+ 297   2          /* ARP request. If it asked for our address, we send out a
+ 298   2             reply. */
+ 299   2          if(BUF->dipaddr[0] == uip_hostaddr[0] &&
+ 300   2             BUF->dipaddr[1] == uip_hostaddr[1]) {
+ 301   3            /* The reply opcode is 2. */
+ 302   3            BUF->opcode = HTONS(2);
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 6   
+
+ 303   3      
+ 304   3            memcpy(BUF->dhwaddr.addr, BUF->shwaddr.addr, 6);
+ 305   3            memcpy(BUF->shwaddr.addr, uip_ethaddr.addr, 6);
+ 306   3            memcpy(BUF->ethhdr.src.addr, uip_ethaddr.addr, 6);
+ 307   3            memcpy(BUF->ethhdr.dest.addr, BUF->dhwaddr.addr, 6);
+ 308   3            
+ 309   3            BUF->dipaddr[0] = BUF->sipaddr[0];
+ 310   3            BUF->dipaddr[1] = BUF->sipaddr[1];
+ 311   3            BUF->sipaddr[0] = uip_hostaddr[0];
+ 312   3            BUF->sipaddr[1] = uip_hostaddr[1];
+ 313   3      
+ 314   3            BUF->ethhdr.type = HTONS(UIP_ETHTYPE_ARP);      
+ 315   3            uip_len = sizeof(struct arp_hdr);
+ 316   3          }      
+ 317   2          break;
+ 318   2        case HTONS(ARP_REPLY):
+ 319   2          /* ARP reply. We insert or update the ARP table if it was meant
+ 320   2             for us. */
+ 321   2          if(BUF->dipaddr[0] == uip_hostaddr[0] &&
+ 322   2             BUF->dipaddr[1] == uip_hostaddr[1]) {
+ 323   3      
+ 324   3            uip_arp_update(BUF->sipaddr, &BUF->shwaddr);
+ 325   3          }
+ 326   2          break;
+ 327   2        }
+ 328   1      
+ 329   1        return;
+ 330   1      }
+ 331          /*-----------------------------------------------------------------------------------*/
+ 332          /**
+ 333           * Prepend Ethernet header to an outbound IP packet and see if we need
+ 334           * to send out an ARP request.
+ 335           *
+ 336           * This function should be called before sending out an IP packet. The
+ 337           * function checks the destination IP address of the IP packet to see
+ 338           * what Ethernet MAC address that should be used as a destination MAC
+ 339           * address on the Ethernet.
+ 340           *
+ 341           * If the destination IP address is in the local network (determined
+ 342           * by logical ANDing of netmask and our IP address), the function
+ 343           * checks the ARP cache to see if an entry for the destination IP
+ 344           * address is found. If so, an Ethernet header is prepended and the
+ 345           * function returns. If no ARP cache entry is found for the
+ 346           * destination IP address, the packet in the uip_buf[] is replaced by
+ 347           * an ARP request packet for the IP address. The IP packet is dropped
+ 348           * and it is assumed that they higher level protocols (e.g., TCP)
+ 349           * eventually will retransmit the dropped packet.
+ 350           *
+ 351           * If the destination IP address is not on the local network, the IP
+ 352           * address of the default router is used instead.
+ 353           *
+ 354           * When the function returns, a packet is present in the uip_buf[]
+ 355           * buffer, and the length of the packet is in the global variable
+ 356           * uip_len.
+ 357           */
+ 358          /*-----------------------------------------------------------------------------------*/
+ 359          void
+ 360          uip_arp_out(void)
+ 361          {
+ 362   1        struct arp_entry *tabptr;
+ 363   1        /* Find the destination IP address in the ARP table and construct
+ 364   1           the Ethernet header. If the destination IP addres isn't on the
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 7   
+
+ 365   1           local network, we use the default router's IP address instead.
+ 366   1      
+ 367   1           If not ARP table entry is found, we overwrite the original IP
+ 368   1           packet with an ARP request for the IP address. */
+ 369   1      
+ 370   1        /* Check if the destination address is on the local network. */
+ 371   1        if((IPBUF->destipaddr[0] & uip_arp_netmask[0]) !=
+ 372   1           (uip_hostaddr[0] & uip_arp_netmask[0]) ||
+ 373   1           (IPBUF->destipaddr[1] & uip_arp_netmask[1]) !=
+ 374   1           (uip_hostaddr[1] & uip_arp_netmask[1])) {
+ 375   2          /* Destination address was not on the local network, so we need to
+ 376   2             use the default router's IP address instead of the destination
+ 377   2             address when determining the MAC address. */
+ 378   2          ipaddr[0] = uip_arp_draddr[0];
+ 379   2          ipaddr[1] = uip_arp_draddr[1];
+ 380   2        } else {
+ 381   2          /* Else, we use the destination IP address. */
+ 382   2          ipaddr[0] = IPBUF->destipaddr[0];
+ 383   2          ipaddr[1] = IPBUF->destipaddr[1];
+ 384   2        }
+ 385   1            
+ 386   1        for(i = 0; i < UIP_ARPTAB_SIZE; ++i) {
+ 387   2          tabptr = &arp_table[i];
+ 388   2          if(ipaddr[0] == tabptr->ipaddr[0] &&
+ 389   2             ipaddr[1] == tabptr->ipaddr[1])
+ 390   2            break;
+ 391   2        }
+ 392   1      
+ 393   1        if(i == UIP_ARPTAB_SIZE) {
+ 394   2          /* The destination address was not in our ARP table, so we
+ 395   2             overwrite the IP packet with an ARP request. */
+ 396   2      
+ 397   2          memset(BUF->ethhdr.dest.addr, 0xff, 6);
+ 398   2          memset(BUF->dhwaddr.addr, 0x00, 6);
+ 399   2          memcpy(BUF->ethhdr.src.addr, uip_ethaddr.addr, 6);
+ 400   2          memcpy(BUF->shwaddr.addr, uip_ethaddr.addr, 6);
+ 401   2          
+ 402   2          BUF->dipaddr[0] = ipaddr[0];
+ 403   2          BUF->dipaddr[1] = ipaddr[1];
+ 404   2          BUF->sipaddr[0] = uip_hostaddr[0];
+ 405   2          BUF->sipaddr[1] = uip_hostaddr[1];
+ 406   2          BUF->opcode = HTONS(ARP_REQUEST); /* ARP request. */
+ 407   2          BUF->hwtype = HTONS(ARP_HWTYPE_ETH);
+ 408   2          BUF->protocol = HTONS(UIP_ETHTYPE_IP);
+ 409   2          BUF->hwlen = 6;
+ 410   2          BUF->protolen = 4;
+ 411   2          BUF->ethhdr.type = HTONS(UIP_ETHTYPE_ARP);
+ 412   2      
+ 413   2          uip_appdata = &uip_buf[40 + UIP_LLH_LEN];
+ 414   2          
+ 415   2          uip_len = sizeof(struct arp_hdr);
+ 416   2          return;
+ 417   2        }
+ 418   1      
+ 419   1        /* Build an ethernet header. */
+ 420   1        memcpy(IPBUF->ethhdr.dest.addr, tabptr->ethaddr.addr, 6);
+ 421   1        memcpy(IPBUF->ethhdr.src.addr, uip_ethaddr.addr, 6);
+ 422   1        
+ 423   1        IPBUF->ethhdr.type = HTONS(UIP_ETHTYPE_IP);
+ 424   1      
+ 425   1        uip_len += sizeof(struct uip_eth_hdr);
+ 426   1      }
+C51 COMPILER V9.01   UIP_ARP                                                               08/23/2013 20:12:41 PAGE 8   
+
+ 427          /*-----------------------------------------------------------------------------------*/
+ 428          
+ 429          /** @} */
+ 430          /** @} */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1458    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =    124    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      12
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,10 @@
+".\out\uip.obj",
+".\out\uip_arch.obj",
+".\out\uip_arp.obj",
+".\out\app.obj",
+".\out\main.obj",
+".\out\uart.obj",
+".\out\adc.obj",
+".\out\etherdev.obj" 
+TO ".\out\Ethernet_uv4" 
+PRINT(".\out\Ethernet_uv4.m51") RAMSIZE(256) 

@@ -1,0 +1,503 @@
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE ETHERDEV
+OBJECT MODULE PLACED IN .\out\etherdev.obj
+COMPILER INVOKED BY: D:\Program Files\keil\C51\BIN\C51.EXE uip\etherdev.c BROWSE INCDIR(.\app;.\bsp;.\uip) DEBUG OBJECTE
+                    -XTEND PRINT(.\out\etherdev.lst) OBJECT(.\out\etherdev.obj)
+
+line level    source
+
+   1          #include <absacc.h>
+   2          #include "etherdev.h"
+   3          #include "uart.h"
+   4          
+   5          sbit P1_7=P1^7;
+   6          sbit P1_6=P1^6;
+   7          
+   8          
+   9          #define ETH_CPU_CLOCK      ETH_CPU_XTAL / 12    // 8051 clock rate (X1 mode)
+  10          
+  11          // Delay routine timing parameters
+  12          //#define ETH_DELAY_CONST    9.114584e-5          // Delay routine constant
+  13          //#define ETH_DELAY_MULTPLR  (unsigned char)(ETH_DELAY_CONST * ETH_CPU_CLOCK)
+  14          
+  15          // X1 CPU mode timing parameters
+  16          #define ETH_T0_CLOCK             ETH_CPU_XTAL / 12 // Timer 0 mode 1 clock rate
+  17          //#define ETH_T0_INT_RATE          24                // Timer 0 intrupt rate (Hz)
+  18          #define ETH_T0_INT_RATE          24
+  19          
+  20          #define ETH_T0_RELOAD            65536 - (ETH_T0_CLOCK / ETH_T0_INT_RATE)
+  21          
+  22          #define ETH_MIN_PACKET_LEN 0x3C
+  23          
+  24          // Packet transmit & receive buffer configuration
+  25          //#define ETH_TX_PAGE_START  0x40    // 0x4000 Tx buffer is  6 * 256 = 1536 bytes
+  26          //#define ETH_RX_PAGE_START  0x46    // 0x4600 Rx buffer is 26 * 256 = 6656 bytes
+  27          //#define ETH_RX_PAGE_STOP   0x60    // 0x6000
+  28          
+  29          //#define ETH_ADDR_PORT_MASK 0x1F                 // 00011111y
+  30          //#define ETH_DATA_PORT_MASK 0xFF                 // 11111111y
+  31          
+  32          //#define ETH_MIN_PACKET_LEN 0x3C
+  33          
+  34          static unsigned char tick_count = 0;
+  35          static bit Tx_Buff_Sel;
+  36          
+  37          #define     RTL8019AS_BASE_ADDRESS  0x8000
+  38          //*********** RTL8019's address deifne***************
+  39          #define     RED_ADDR0   RTL8019AS_BASE_ADDRESS+0x0000
+  40          #define     RED_ADDR1   RTL8019AS_BASE_ADDRESS+0x0001
+  41          #define     RED_ADDR2   RTL8019AS_BASE_ADDRESS+0x0002
+  42          #define     RED_ADDR3   RTL8019AS_BASE_ADDRESS+0x0003
+  43          #define     RED_ADDR4   RTL8019AS_BASE_ADDRESS+0x0004
+  44          #define     RED_ADDR5   RTL8019AS_BASE_ADDRESS+0x0005
+  45          #define     RED_ADDR6   RTL8019AS_BASE_ADDRESS+0x0006
+  46          #define     RED_ADDR7   RTL8019AS_BASE_ADDRESS+0x0007
+  47          #define     RED_ADDR8   RTL8019AS_BASE_ADDRESS+0x0008
+  48          #define     RED_ADDR9   RTL8019AS_BASE_ADDRESS+0x0009
+  49          #define     RED_ADDRa   RTL8019AS_BASE_ADDRESS+0x000a
+  50          #define     RED_ADDRb   RTL8019AS_BASE_ADDRESS+0x000b
+  51          #define     RED_ADDRc   RTL8019AS_BASE_ADDRESS+0x000c
+  52          #define     RED_ADDRd   RTL8019AS_BASE_ADDRESS+0x000d
+  53          #define     RED_ADDRe   RTL8019AS_BASE_ADDRESS+0x000e
+  54          #define     RED_ADDRf   RTL8019AS_BASE_ADDRESS+0x000f
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 2   
+
+  55          #define     RED_ADDR10  RTL8019AS_BASE_ADDRESS+0x0010
+  56          #define     RED_ADDR18  RTL8019AS_BASE_ADDRESS+0x0018
+  57          
+  58          #define         Reg00   XBYTE[RED_ADDR0]   
+  59          #define         Reg01   XBYTE[RED_ADDR1]
+  60          #define         Reg02   XBYTE[RED_ADDR2]
+  61          #define         Reg03   XBYTE[RED_ADDR3]
+  62          #define         Reg04   XBYTE[RED_ADDR4]
+  63          #define         Reg05   XBYTE[RED_ADDR5]
+  64          #define         Reg06   XBYTE[RED_ADDR6]
+  65          #define         Reg07   XBYTE[RED_ADDR7]
+  66          #define         Reg08   XBYTE[RED_ADDR8]
+  67          #define         Reg09   XBYTE[RED_ADDR9]
+  68          #define         Reg0a   XBYTE[RED_ADDRa]
+  69          #define         Reg0b   XBYTE[RED_ADDRb]
+  70          #define         Reg0c   XBYTE[RED_ADDRc]
+  71          #define         Reg0d   XBYTE[RED_ADDRd]
+  72          #define         Reg0e   XBYTE[RED_ADDRe]
+  73          #define         Reg0f   XBYTE[RED_ADDRf]
+  74          #define         Reg10   XBYTE[RED_ADDR10]
+  75          #define         Reg18   XBYTE[RED_ADDR18]
+  76          
+  77          
+  78          static unsigned int etherdev_poll(void);
+  79          
+  80          
+  81          /**********************************************************************
+  82          **函数原型：  void Delay(unsigned int8 t)        内部调用
+  83          **入口参数:     unsigned int8 t:延时常数   
+  84          **说    明：    微秒级延时程序 
+  85          ************************************************************************/
+  86          void Delay(unsigned char t)
+  87          {       while(t--);
+  88   1      }
+  89          
+  90          /**********************************************************************
+  91          **函数原型：    void Delay_Ms(unsigned int16 t1)        晶振24.576M
+  92          **入口参数:     unsigned int8 t1:毫秒级延时，延时约为t1ms
+  93          **说    明：    毫秒级延时程序 
+  94          ************************************************************************/ 
+  95          void Delay_Ms(unsigned int t1)
+  96          {       
+  97   1              t1 = 12*t1;
+  98   1              while(t1--)
+  99   1              {
+ 100   2              #if ETH_CPU_XTAL==11059200 
+ 101   2                      Delay(151);             //11059200Hz
+ 102   2              #else                           //ETH_CPU_XTAL=22118400Hz
+                              Delay(150);
+                              Delay(152);
+                      #endif
+ 106   2              }               
+ 107   1      }
+ 108          
+ 109          /**********************************************************************
+ 110          **函数原型：  void  page(unsigned char pagenumber)
+ 111          **入口参数:             unsigned char   pagenumber: 要切换的页    
+ 112          **说    明：    选择页,可选择0,1,2三页,第四页ne000兼容芯片保留 
+ 113          ************************************************************************/
+ 114          void page(unsigned char pagenumber)
+ 115          {       unsigned char temp;
+ 116   1              temp=Reg00;//command register
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 3   
+
+ 117   1              temp=temp&0x3B ;//注意txp位不能要
+ 118   1              pagenumber=pagenumber <<6;
+ 119   1              temp=temp | pagenumber;
+ 120   1              Reg00=temp;
+ 121   1      }
+ 122          
+ 123          void Set_Mac()
+ 124          {
+ 125   1              u16 xdata dt[6];
+ 126   1              u8 xdata str_buf[64];
+ 127   1      
+ 128   1              page(1);
+ 129   1          Reg01 = UIP_ETHADDR0;
+ 130   1          Reg02 = UIP_ETHADDR1;
+ 131   1          Reg03 = UIP_ETHADDR2;
+ 132   1          Reg04 = UIP_ETHADDR3;
+ 133   1          Reg05 = UIP_ETHADDR4;
+ 134   1          Reg06 = UIP_ETHADDR5;
+ 135   1                      
+ 136   1              dt[0] = UIP_ETHADDR0;
+ 137   1              dt[1] = UIP_ETHADDR1;
+ 138   1              dt[2] = UIP_ETHADDR2;
+ 139   1              dt[3] = UIP_ETHADDR3;
+ 140   1              dt[4] = UIP_ETHADDR4;
+ 141   1              dt[5] = UIP_ETHADDR5;
+ 142   1              sprintf(str_buf,"写入MAC:%02x-%02x-%02x-%02x-%02x-%02x\r\n",dt[0],dt[1],dt[2],dt[3],dt[4],dt[5]);
+ 143   1              xlog(str_buf);
+ 144   1                              
+ 145   1              dt[0] = Reg01;
+ 146   1              dt[1] = Reg02;
+ 147   1              dt[2] = Reg03;
+ 148   1              dt[3] = Reg04;
+ 149   1              dt[4] = Reg05;
+ 150   1              dt[5] = Reg06;
+ 151   1              sprintf(str_buf,"读出MAC:%02x-%02x-%02x-%02x-%02x-%02x\r\n",dt[0],dt[1],dt[2],dt[3],dt[4],dt[5]);
+ 152   1              xlog(str_buf);
+ 153   1      
+ 154   1          page(0);
+ 155   1      }
+ 156          
+ 157          /**********************************************************************
+ 158          **函数原型:     void    InitNic()            
+ 159          **说    明:对芯片的工作寄存器进行设置,各个寄存器的用法可参考文档和
+ 160          **                               络芯片的数据手册
+ 161          ************************************************************************/
+ 162          void etherdev_init(void)
+ 163          {       unsigned char temp;
+ 164   1              ETH_RST_PIN=0;             //reset
+ 165   1              Delay_Ms(60);
+ 166   1              ETH_RST_PIN=1;
+ 167   1              Delay_Ms(50);
+ 168   1              ETH_RST_PIN=0; 
+ 169   1              Delay_Ms(100);
+ 170   1      
+ 171   1              //use reset port to reset the ic
+ 172   1              temp=Reg18;
+ 173   1              Reg18=temp;
+ 174   1      
+ 175   1              if(Reg04 & 0x80)           //ISR.RST
+ 176   1              {
+ 177   2                      xlog("nic reset fail\r\n");
+ 178   2                      for(;;)
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 4   
+
+ 179   2                      {
+ 180   3                              P1_7 = 0;
+ 181   3                              P1_6 = 0;
+ 182   3                              Delay_Ms(200);
+ 183   3                              P1_7 = 1;
+ 184   3                              P1_6 = 1;
+ 185   3                              Delay_Ms(200);
+ 186   3                      }
+ 187   2              }
+ 188   1              else
+ 189   1              {
+ 190   2                      xlog("nic reset ok\r\n");
+ 191   2              }
+ 192   1      
+ 193   1      
+ 194   1              Reg00=0x21;   //使芯片处于停止模式,这时进行寄存器设置
+ 195   1              Delay_Ms(100); //延时10毫秒,确保芯片进入停止模式
+ 196   1              
+ 197   1      
+ 198   1              if((Reg0a != 0x50) || (Reg0b != 0x70))
+ 199   1              {
+ 200   2                      xlog("nic id error\r\n");
+ 201   2                      for(;;)
+ 202   2                      {
+ 203   3                              P1_7 = 1;
+ 204   3                              P1_6 = 0;
+ 205   3                              Delay_Ms(200);
+ 206   3                              P1_7 = 0;
+ 207   3                              P1_6 = 1;
+ 208   3                              Delay_Ms(200);
+ 209   3                      }
+ 210   2              }
+ 211   1              else
+ 212   1              {
+ 213   2                      xlog("nic id correct\r\n");
+ 214   2              }
+ 215   1      
+ 216   1      
+ 217   1              page(0);
+ 218   1              Reg0a=0x00;   //清rbcr0
+ 219   1              Reg0b=0x00;   //清rbcr1
+ 220   1              Reg0c= 0xe0;  //RCR,监视模式,不接收数据包
+ 221   1              Reg0d= 0xe2;  //TCR,loop back模式
+ 222   1              
+ 223   1              Reg01=0x4c;
+ 224   1      
+ 225   1      //      Reg02=0x80;
+ 226   1              Reg02=0x60;
+ 227   1              Reg03=0x4c;
+ 228   1              Reg04=0x40;  //TPSR,发送起始页寄存器
+ 229   1              Reg07=0xff;  //清除所有中断标志位，中断状态寄存器
+ 230   1              Reg0f=0x00;  //中断屏蔽寄存器清0，禁止中断
+ 231   1              
+ 232   1              Reg0e=0xc8;  // 数据配置寄存器，8位dma方式
+ 233   1              page(1);
+ 234   1              Reg07=0x4d;
+ 235   1              Reg08=0x00;
+ 236   1              Reg09=0x00;
+ 237   1              Reg0a=0x00;
+ 238   1              Reg0b=0x00;
+ 239   1              Reg0c=0x00;
+ 240   1              Reg0d=0x00;
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 5   
+
+ 241   1              Reg0e=0x00;
+ 242   1              Reg0f=0x00;
+ 243   1              Reg00=0x22;  //这时让芯片开始工作   
+ 244   1              Set_Mac();  //将芯片物理地址写入到MAR寄存器
+ 245   1        
+ 246   1              page(0);
+ 247   1              //Reg0c=0xcc;  //将芯片设置成正常模式,跟外部网络连接
+ 248   1              Reg0c=0xc4;        //接收广播，不接收多播
+ 249   1              Reg0d=0xe0;
+ 250   1              
+ 251   1              Reg00=0x22;  //启动芯片开始工作
+ 252   1              Reg07=0xff;  //清除所有中断标志位
+ 253   1          
+ 254   1              TR0  = 0;          
+ 255   1              // Set timer/ counter 0 as mode 1 16 bit timer.      
+ 256   1              TMOD &= 0xF0;
+ 257   1              TMOD |= 0x01;
+ 258   1              // Preload for 24Hz periodic interrupt.    
+ 259   1              TH0 = ETH_T0_RELOAD >> 8; 
+ 260   1              TL0 = ETH_T0_RELOAD;
+ 261   1              // Restart timer/ counter 0 running.
+ 262   1              TR0 = 1;
+ 263   1              // Enable timer/ counter 0 overflow interrupt.            
+ 264   1              ET0 = 1;
+ 265   1              // Enable global interrupt.
+ 266   1      //      EA = 1;
+ 267   1      }
+ 268          
+ 269          /**********************************************************************
+ 270          **函数原型：    void            Send_Packet(union Netcard *TxdNetBuff,unsigned int length)
+ 271          **入口参数:             union Netcard *TxdNetBuff       :指向发送缓冲区
+ 272          **              unsigned int length                                     :发送数据包的长度
+ 273          **出口参数:             无
+ 274          **返 回 值：    无              
+ 275          **说    明：    发送数据包,以太网底层驱动程序,所有的数据发送都要通过该程序
+ 276          ************************************************************************/
+ 277          void etherdev_send(void)
+ 278          {       unsigned int i;
+ 279   1              unsigned char *ptr;
+ 280   1              ptr = uip_buf;
+ 281   1              
+ 282   1              page(0);                                        //切换至第0页
+ 283   1              Tx_Buff_Sel=!Tx_Buff_Sel;       //设置两个发缓区,提高发送效率
+ 284   1              if(Tx_Buff_Sel)
+ 285   1                      {Reg09=0x40 ;}                  //RSAR1 设置发送页地址
+ 286   1              else
+ 287   1                      {Reg09=0x46 ;}                  //RSAR1设置发送页地址       
+ 288   1              Reg08=0x00;                                     //RSAR0 read page address low
+ 289   1              Reg0b=uip_len>>8;               //RBCR1 read count high
+ 290   1              Reg0a=uip_len&0xff;     //RBCR0 read count low;
+ 291   1              
+ 292   1              Reg00=0x12;                     //write dma, page0
+ 293   1              
+ 294   1              // DMA transfer packet from uip_buf & uip_appdata to RTL8019AS local
+ 295   1              // transmit buffer memory.
+ 296   1              for(i = 0; i < uip_len; i++)
+ 297   1              {   if(i == 40 + UIP_LLH_LEN) 
+ 298   2                {
+ 299   3                    ptr = (unsigned char *)uip_appdata;
+ 300   3                }
+ 301   2                Reg10=*ptr++;
+ 302   2              }
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 6   
+
+ 303   1              while(Reg00 & 0x40);    //wait for the last transmit complete
+ 304   1      /*      
+ 305   1              for(i=0;i<6;i++)        //最多重发6次
+ 306   1              {
+ 307   1                      for(ii=0;ii<1000;ii++)
+ 308   1                      {//检查CR寄存器的txp位是否为低,为1说明正在发送,为0说明发完或出错放弃
+ 309   1                      if((Reg00&0x04)==0)  
+ 310   1                              { break; }
+ 311   1                      }
+ 312   1                      if((Reg04&0x01)!=0)//表示发送成功,判断发送状态寄存器TSR.PTX，决定是否出错
+ 313   1                              {break;};
+ 314   1                      Reg00=0x3e;              //?
+ 315   1              }
+ 316   1      */      
+ 317   1              Reg07=0xff;
+ 318   1              if(Tx_Buff_Sel)
+ 319   1              {
+ 320   2                      Reg04=0x40;   //TPSR    txd packet start;
+ 321   2              }
+ 322   1              else
+ 323   1              {
+ 324   2                      Reg04=0x46;  //TPSR             txd packet start;
+ 325   2              }
+ 326   1              
+ 327   1              // Ethernet packets must be > 60 bytes, otherwise are rejected as runts.
+ 328   1              if(uip_len < ETH_MIN_PACKET_LEN)
+ 329   1              {       uip_len = ETH_MIN_PACKET_LEN;
+ 330   2              }
+ 331   1              
+ 332   1              Reg06=uip_len>>8;  //high byte counter
+ 333   1              Reg05=uip_len&0xff;//low byte counter
+ 334   1              
+ 335   1              Reg07=0xff;
+ 336   1              Reg00=0x3e;       //to sendpacket;
+ 337   1              while(Reg04&0x01==0);
+ 338   1      }
+ 339          
+ 340          /*  赏屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯?
+ 341              ?                                                                    ?
+ 342              ?                          etherdev_read()                           ?
+ 343              ?                                                                    ?
+ 344              ?This function will read an entire IP packet into the uip_buf.       ?
+ 345              ?If it must wait for more than 0.5 seconds, it will return with      ?
+ 346              ?the return value 0. Otherwise, when a full packet has been read     ?
+ 347              ?into the uip_buf buffer, the length of the packet is returned.      ?
+ 348              ?                                                                    ?
+ 349              韧屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯屯? */
+ 350          unsigned int etherdev_read(void)
+ 351          {    
+ 352   1          unsigned int bytes_read;
+ 353   1      
+ 354   1          /* tick_count threshold should be 12 for 0.5 sec bail-out
+ 355   1             One second (24) worked better for me, but socket recycling
+ 356   1             is then slower. I set UIP_TIME_WAIT_TIMEOUT 60 in uipopt.h
+ 357   1             to counter this. Retransmission timing etc. is affected also. */
+ 358   1          while ((!(bytes_read = etherdev_poll())) && (tick_count < (ETH_T0_INT_RATE/2))) continue;
+ 359   1      
+ 360   1          tick_count = 0;
+ 361   1      
+ 362   1          return bytes_read;
+ 363   1      }
+ 364          
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 7   
+
+ 365          /*****************************************************************************
+ 366          *                                                               etherdev_poll()                           
+ 367          *                       Poll the RTL8019AS ethernet device for an available packet.         
+ 368          ******************************************************************************/
+ 369          static unsigned int etherdev_poll(void)
+ 370          {
+ 371   1          unsigned char i;
+ 372   1              unsigned int ii,_len;
+ 373   1          unsigned char bnry,curr;
+ 374   1              unsigned char xdata rxdbuf[18];
+ 375   1        
+ 376   1          page(0);
+ 377   1          Reg07=0xFF;
+ 378   1          bnry=Reg03;               //bnry page have read 读页指针
+ 379   1          page(1);
+ 380   1          curr=Reg07;               //curr writepoint 8019写页指针
+ 381   1          page(0);
+ 382   1          if(curr==0)
+ 383   1              return 0;             //读的过程出错 
+ 384   1      
+ 385   1      
+ 386   1      //    bnry=bnry++;
+ 387   1                bnry=bnry+1;
+ 388   1      
+ 389   1      
+ 390   1      //    if(bnry>0x7F) bnry=0x4C;
+ 391   1              if(bnry>0x5F) bnry=0x4C;
+ 392   1          if(bnry!=curr){           //此时表示有新的数据包在缓冲区里
+ 393   2       //读取一包的前18个字节:4字节的8019头部,6字节目的地址,6字节原地址,2字节协议
+ 394   2       //在任何操作都最好返回page0
+ 395   2              page(0);
+ 396   2              Reg09=bnry;           //read page address high
+ 397   2              Reg08=0x00;           //read page address low
+ 398   2              Reg0b=0x00;           //read count high
+ 399   2              Reg0a=18;             //read count low;
+ 400   2              Reg00=0x0A;           //read dma
+ 401   2              for(i=0;i<18;i++)
+ 402   2                  rxdbuf[i]=Reg10;
+ 403   2      
+ 404   2              i=rxdbuf[3];     //将长度字段的高低字节掉转
+ 405   2              rxdbuf[3]=rxdbuf[2];
+ 406   2              rxdbuf[2]=i;    
+ 407   2              _len=rxdbuf[2]*256+rxdbuf[3]-4; //去掉4个字节的CRC
+ 408   2      
+ 409   2              //表示读入的数据包有效
+ 410   2            //  if(((rxdbuf[0]&0x01)==0)||(rxdbuf[1]>0x7F)||(rxdbuf[1]<0x4C)||(rxdbuf[2]>0x06)){
+ 411   2                      if(((rxdbuf[0]&0x01)==0)||(rxdbuf[1]>0x5F)||(rxdbuf[1]<0x4C)||(rxdbuf[2]>0x06)){
+ 412   3                  //接收状态错误,或者next_page_start错误或者长度错误,将丢弃所有数据包
+ 413   3                  page(1);
+ 414   3                  curr=Reg07;       //page1
+ 415   3                  page(0);          //切换回page0
+ 416   3                  bnry=curr-1;
+ 417   3                  //if(bnry<0x4C) bnry=0x7F;
+ 418   3                              if(bnry<0x4C) bnry=0x5F;
+ 419   3                  Reg03=bnry;       //write to bnry     
+ 420   3                  return 0;
+ 421   3              }
+ 422   2              else
+ 423   2                      {//表示数据包是完好的.读取剩下的数据
+ 424   3                  if((rxdbuf[16]*256+rxdbuf[17]==0x0800)||(rxdbuf[16]*256+rxdbuf[17]==0x0806))
+ 425   3                              {
+ 426   4                  //协议为IP或ARP才接收       
+C51 COMPILER V9.01   ETHERDEV                                                              08/23/2013 20:12:42 PAGE 8   
+
+ 427   4                      Reg09=bnry;   //RSAR1   read page address high
+ 428   4                      Reg08=4;      //RSAR0   不要4byte的8019as头部
+ 429   4      
+ 430   4                      Reg0b=_len>>8;          //RBCR1 read count high
+ 431   4                      Reg0a=_len&0xFF;        //RBCR0 read count low;
+ 432   4                      Reg00=0x0A;             //re/ad dma
+ 433   4      
+ 434   4                      for(ii=0;ii<_len;ii++)
+ 435   4                          *(uip_buf+ii)=Reg10;
+ 436   4      
+ 437   4                      //================终止DMA操作
+ 438   4                      Reg0b=0x00;                     //read count high   
+ 439   4                      Reg0a=0x00;                     //read count low;
+ 440   4                      Reg00=0x22;                     //结束或放弃DMA
+ 441   4                      //============================
+ 442   4                  }
+ 443   3                  bnry=rxdbuf[1]-1;//next page start-1
+ 444   3      
+ 445   3                  //if(bnry<0x4C) bnry=0x7F;
+ 446   3                              if(bnry<0x4C) bnry=0x5F;
+ 447   3                  Reg03=bnry;       //write to bnry 
+ 448   3            
+ 449   3                  return _len;         //返回包长
+ 450   3              }
+ 451   2          }
+ 452   1          return 0;
+ 453   1      }
+ 454          
+ 455          static void etherdev_timer0_isr(void) interrupt 1 using 1
+ 456          {
+ 457   1          // Reload timer/ counter 0 for 24Hz periodic interrupt.   
+ 458   1          TH0 = ETH_T0_RELOAD >> 8;
+ 459   1          TL0 = ETH_T0_RELOAD;
+ 460   1      
+ 461   1          // Increment 24ths of a second counter.
+ 462   1          tick_count++;
+ 463   1      
+ 464   1          return;
+ 465   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1180    ----
+   CONSTANT SIZE    =    144    ----
+   XDATA SIZE       =   ----      94
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
