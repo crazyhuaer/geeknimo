@@ -54,6 +54,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
 # ADD LINK32 libusb-1.0.lib /nologo /subsystem:windows /machine:I386
+# SUBTRACT LINK32 /pdb:none /incremental:yes /debug /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "dialog_usb_test - Win32 Debug"
 

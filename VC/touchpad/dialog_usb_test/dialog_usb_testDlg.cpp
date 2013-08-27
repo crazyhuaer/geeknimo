@@ -56,26 +56,7 @@ BOOL CDialog_usb_testDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 	
 	// TODO: Add extra initialization here
-	CString temp;
-	int r;
-	ssize_t cnt;
-	
-	r = libusb_init(NULL);
-	if (r < 0)
-		return r;
-	
-	cnt = libusb_get_device_list(NULL, &devs);
-	if (cnt < 0)
-		return (int) cnt;
-	
 
-	m_cRichEdit.UpdateData(TRUE);
-	temp.Format("总共发现设备%d个\n",cnt);
-
-	m_cRichEdit.SetSel(-1, -1);
-	m_cRichEdit.ReplaceSel(temp);
-
-	m_cRichEdit.UpdateData(FALSE);
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -124,7 +105,27 @@ void CDialog_usb_testDlg::OnButtonDetect()
 {
 	// TODO: Add your control notification handler code here
 	CString Temp;
-
+	int r;
+	ssize_t cnt;
+	
+	
+	r = libusb_init(NULL);
+	if (r < 0)
+		return;
+	
+	cnt = libusb_get_device_list(NULL, &devs);
+	if (cnt < 0)
+		return;
+	
+	
+	m_cRichEdit.UpdateData(TRUE);
+	m_cRichEdit.SetWindowText("");
+	Temp.Format("总共发现设备%d个\n",cnt);
+	
+	m_cRichEdit.SetSel(-1, -1);
+	m_cRichEdit.ReplaceSel(Temp);
+	
+	m_cRichEdit.UpdateData(FALSE);
 	libusb_device *dev;
 	int i = 0;
 	m_cRichEdit.UpdateData(TRUE);
@@ -136,21 +137,13 @@ void CDialog_usb_testDlg::OnButtonDetect()
 			AfxMessageBox("failed to get device descriptor");
 			return;
 		}
-		
-		if (desc.idVendor == 0x8080 && desc.idProduct == 0x0101)
-		{
-			AfxMessageBox("Find Vendor=0x8080,Product=0x0101");
-			m_cRichEdit.SetSel(-1, -1);
-			m_cRichEdit.ReplaceSel("Find Vendor=0x8080,Product=0x0101\n");
-		} 
-		else
-		{
-			Temp.Format("%04x:%04x (bus %d, device %d)\n",
-				desc.idVendor, desc.idProduct,
-				libusb_get_bus_number(dev), libusb_get_device_address(dev));
-			m_cRichEdit.SetSel(-1, -1);
-			m_cRichEdit.ReplaceSel(Temp);
-		}
+			
+		Temp.Format("Vendor:%04x_Product:%04x (bus %d, device %d)\n",
+			desc.idVendor, desc.idProduct,
+			libusb_get_bus_number(dev), libusb_get_device_address(dev));
+		m_cRichEdit.SetSel(-1, -1);
+		m_cRichEdit.ReplaceSel(Temp);
+
 			
 	}
 	m_cRichEdit.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
