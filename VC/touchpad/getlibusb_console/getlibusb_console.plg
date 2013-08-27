@@ -6,6 +6,26 @@
 --------------------Configuration: getlibusb_console - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD1F2.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /FR"Debug/" /Fp"Debug/getlibusb_console.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\touchpad\getlibusb_console\getlibusb_console.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD1F2.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD1F3.tmp" with contents
+[
+libusb-1.0.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/getlibusb_console.pdb" /debug /machine:I386 /out:"Debug/getlibusb_console.exe" /pdbtype:sept /libpath:"F:\Code\geeknimo\VC\touchpad\getlibusb_console\libusb.lib" 
+.\Debug\getlibusb_console.obj
+.\Debug\StdAfx.obj
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD1F3.tmp"
+<h3>Output Window</h3>
+Compiling...
+getlibusb_console.cpp
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/getlibusb_console.bsc"  .\Debug\StdAfx.sbr .\Debug\getlibusb_console.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 

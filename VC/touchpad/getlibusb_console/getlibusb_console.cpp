@@ -35,9 +35,19 @@ static void print_devs(libusb_device **devs)
 			return;
 		}
 		
-		printf("%04x:%04x (bus %d, device %d)\n",
-			desc.idVendor, desc.idProduct,
+		if (desc.idVendor == 0x8080 && desc.idProduct == 0x0101)
+		{
+			printf("Find Vendor=0x8080,Product=0x0101\n");
+		} 
+		else
+		{
+			printf("Not Touchpad just Find:\n");
+			printf("%04x:%04x (bus %d, device %d)\n",
+				desc.idVendor, desc.idProduct,
 			libusb_get_bus_number(dev), libusb_get_device_address(dev));
+		}
+
+
 	}
 }
 

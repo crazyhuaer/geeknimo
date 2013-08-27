@@ -1071,6 +1071,8 @@ typedef void (LIBUSB_CALL *libusb_transfer_cb_fn)(struct libusb_transfer *transf
  * completed, the library populates the transfer with the results and passes
  * it back to the user.
  */
+#pragma warning( push )
+#pragma warning( disable : 4200 )
 struct libusb_transfer {
 	/** Handle of the device that this transfer will be submitted to */
 	libusb_device_handle *dev_handle;
@@ -1128,6 +1130,7 @@ struct libusb_transfer {
 #endif
 	;
 };
+#pragma warning( pop )
 
 /** \ingroup misc
  * Capabilities supported by this instance of libusb. Test if the loaded
