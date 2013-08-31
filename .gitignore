@@ -3,15 +3,17 @@
 *.d
 
 # Libraries
+#*.dll
 *.a
 
 # Shared objects (inc. Windows DLLs)
+#*.lib
 #*.so
 #*.so.*
 *.dylib
 
 # Executables
-*.exe
+#*.exe
 *.out
 *.app
 */bin/*
