@@ -53,7 +53,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 hid.lib setupapi.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 hid.lib setupapi.lib /nologo /subsystem:windows /machine:I386 /opt:noref
+# SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "stm32_usb_hid - Win32 Debug"
 

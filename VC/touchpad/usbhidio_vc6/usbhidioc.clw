@@ -31,7 +31,7 @@ Type=0
 HeaderFile=usbhidiocDlg.h
 ImplementationFile=usbhidiocDlg.cpp
 Filter=D
-LastObject=IDC_txtVendorID
+LastObject=IDC_optExchangeFeatureReports
 BaseClass=CDialog
 VirtualFilter=dWC
 

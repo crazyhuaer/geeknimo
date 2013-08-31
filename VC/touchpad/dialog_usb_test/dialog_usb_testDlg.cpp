@@ -130,7 +130,8 @@ void CDialog_usb_testDlg::OnButtonDetect()
 	int i = 0;
 	m_cRichEdit.UpdateData(TRUE);
 
-	while ((dev = devs[i++]) != NULL) {
+	while ((dev = devs[i++]) != NULL) 
+	{
 		struct libusb_device_descriptor desc;
 		int r = libusb_get_device_descriptor(dev, &desc);
 		if (r < 0) {
@@ -142,9 +143,7 @@ void CDialog_usb_testDlg::OnButtonDetect()
 			desc.idVendor, desc.idProduct,
 			libusb_get_bus_number(dev), libusb_get_device_address(dev));
 		m_cRichEdit.SetSel(-1, -1);
-		m_cRichEdit.ReplaceSel(Temp);
-
-			
+		m_cRichEdit.ReplaceSel(Temp);	
 	}
 	m_cRichEdit.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 	m_cRichEdit.UpdateData(FALSE);

@@ -49,15 +49,31 @@ public:
 	DWORD								NumberOfBytesRead;
 	char								OutputReport[256];
 	HANDLE								ReadHandle;
-	DWORD								ReportType;
+	//DWORD								ReportType;
 	ULONG								Required;
 	CString								ValueToDisplay;
 	HANDLE								WriteHandle;
 public:
+	// function for common
+	bool	FindTheDevice();
+	void	ReadAndWriteToDevice(bool ReportType);
+	void	ReadInputReport();
+	void	WriteOutputReport();
+	void	WriteFeatureReport();
+	void	ReadFeatureReport();
+
+
 	void	RegisterForDeviceNotifications();
-	void	DisplayLastError(CString Operation);
 	void	GetDeviceCapabilities();
 	void	PrepareForOverlappedTransfer();
+	
+	void	DisplayLastError(CString Operation);
+	void	DisplayData(CString sOutputData);
+	void	DisplayCurrentTime();
+	void	DisplayInputReport();
+	void	DisplayFeatureReport();
+
+	void	CloseHandles();
 	
 	//These are the vendor and product IDs to look for.
 	//Uses Lakeview Research's Vendor ID.
@@ -67,7 +83,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CStm32_usb_hidDlg)
 	enum { IDD = IDD_STM32_USB_HID_DIALOG };
-		// NOTE: the ClassWizard will add data members here
+	CEdit	m_CEditVid;
+	CEdit	m_CEditPid;
+	CRichEditCtrl	m_CRichOutputMessage;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -86,6 +104,11 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnButtonDetect();
+	afx_msg void OnChangeEditVid();
+	afx_msg void OnChangeEditPid();
+	afx_msg void OnButtonReadreport();
+	afx_msg void OnButtonWritereport();
+	afx_msg void OnButtonClear();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

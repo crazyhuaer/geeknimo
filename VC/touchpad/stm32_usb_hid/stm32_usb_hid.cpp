@@ -42,7 +42,7 @@ CStm32_usb_hidApp theApp;
 BOOL CStm32_usb_hidApp::InitInstance()
 {
 	AfxEnableControlContainer();
-
+	AfxInitRichEdit();
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	//  of your final executable, you should remove from the following

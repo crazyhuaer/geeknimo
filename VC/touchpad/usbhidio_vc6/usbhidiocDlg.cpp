@@ -1236,7 +1236,7 @@ void CUsbhidiocDlg::ReadAndWriteToDevice()
 
 	if (MyDeviceDetected==FALSE)
 		{
-		MyDeviceDetected=FindTheHID();
+		MyDeviceDetected=FindTheHID(); 
 		}
 	
 	// Do nothing if the device isn't detected.
