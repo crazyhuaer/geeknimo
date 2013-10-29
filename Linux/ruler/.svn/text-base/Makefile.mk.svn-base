@@ -1,0 +1,82 @@
+#############################################################
+#
+#
+#	File name: Makefile.mk
+#	Description: define makefile rulers for DM365
+#	Version: 1.0
+#
+##############################################################
+
+
+
+
+##############################################################
+# define compile commands
+##############################################################
+
+
+CC			= $(CROSS_COMPILE)gcc
+CXX			= $(CROSS_COMPILE)g++
+LD			= $(CROSS_COMPILE)ld
+AS			= $(CROSS_COMPILE)as
+AR			= $(CROSS_COMPILE)ar
+NM			= $(CROSS_COMPILE)nm
+STRIP		= $(CROSS_COMPILE)strip
+OBJCOPY		= $(CROSS_COMPILE)objcopy
+OBJDUMP		= $(CROSS_COMPILE)objdump
+RANLIB		= $(CROSS_COMPILE)ranlib
+
+##############################################################
+# define shell commands
+##############################################################
+MAKE		= make 
+CP			= cp -f
+RM			= rm -f
+SORT		= sort
+SED			= sed
+TOUCH		= touch
+MKDIR		= mkdir -p
+LN		    = ln -s
+
+##############################################################
+# define output files path
+##############################################################
+OUT_BIN_FOLDER		= $(PRJ_ROOT)/bin
+OUT_LIB_FOLDER		= $(PRJ_ROOT)/lib
+OUT_PLATFORM_LIB_FOLDER = $(PRJ_ROOT)/lib/$(PLATFORM_NAME)
+OUT_THIRD_LIBS_IDR	= $(PRJ_ROOT)/third_libs
+OBJ_FOLDER          = $(PRJ_ROOT)/obj/
+##############################################################
+# define compile variables
+##############################################################
+INCLUDE_PATH = /bionic/libc/include /bionic/libstdc++/include  /bionic/libc/arch-arm/include  /system/core/include /bionic/libc/kernel/common /bionic/libc/kernel/arch-arm /bionic/libm/include/ /bionic/libm/include/arch/arm   
+LIB_PATH = 
+DEBUG_FLAG = -c -g -fno-exceptions -Wno-multichar -msoft-float -fpic -ffunction-sections -funwind-tables -fstack-protector -Wa,--noexecstack -Werror=format-security -fno-short-enums -march=armv7-a -mfloat-abi=softfp -mfpu=neon -Wno-psabi -mthumb-interwork -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wstrict-aliasing=2 -finline-functions -fno-inline-functions-called-once -fgcse-after-reload -frerun-cse-after-loop -frename-registers -fvisibility-inlines-hidden -fmessage-length=0 -Os -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64  -fno-rtti -DDEBUG
+RELEASE_FLAG = -c -g -fno-exceptions -Wno-multichar -msoft-float -fpic -ffunction-sections -funwind-tables -fstack-protector -Wa,--noexecstack -Werror=format-security -fno-short-enums -march=armv7-a -mfloat-abi=softfp -mfpu=neon -Wno-psabi -mthumb-interwork -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wstrict-aliasing=2 -finline-functions -fno-inline-functions-called-once -fgcse-after-reload -frerun-cse-after-loop -frename-registers -fvisibility-inlines-hidden -fmessage-length=0 -Os -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64  -fno-rtti  -DNDEBUG
+
+ifeq ($(COMPILE_FLAG), Debug)
+CFLAGS := $(DEBUG_FLAG)
+else
+CFLAGS := $(RELEASE_FLAG)
+endif
+
+INCLUDE = $(addprefix -I$(ANDROID_ROOT), $(INCLUDE_PATH))
+LD_FLAGS = $(addprefix -L, $(LIB_PATH))
+ANDROID_LD_OPT = -nostdlib -Bdynamic -Wl,-T,$(ANDROID_ROOT)/build/core/armelf.x -Wl,-dynamic-linker,/system/bin/linker -Wl,--gc-sections -Wl,-z,nocopyreloc -Wl,-z,noexecstack -Wl,--fix-cortex-a8 -Wl,--no-undefined  -Wl,-rpath-link=$(ANDROID_LIBS_DIR)
+ANDROID_DYN_BEGIN_OBJ = $(ANDROID_LIBS_DIR)/crtbegin_dynamic.o 
+ANDROID_END_OBJ = $(PLATFORM_PATH)/lib/gcc/arm-eabi/4.4.3/libgcc.a $(ANDROID_LIBS_DIR)/crtend_android.o 
+
+CURRENT_DIR			:=  $(shell cd ./; pwd)
+#C_SRCS				=  $(wildcard $(CURRENT_DIR)/*.c)
+#CPP_SRCS			=  $(wildcard $(CURRENT_DIR)/*.cpp)
+C_SRCS				=  $(notdir $(wildcard $(CURRENT_DIR)/*.c))
+CPP_SRCS			= $(notdir $(wildcard $(CURRENT_DIR)/*.cpp))
+C_OBJS				=  $(C_SRCS:.c=.o) 
+CPP_OBJS			=  $(CPP_SRCS:.cpp=.o)
+AS_OBJS				=  $(AS_SRCS:.S=.o)
+
+OBJS				=  $(C_OBJS) $(CPP_OBJS) $(AS_OBJS)
+DEPS				=  $(OBJS:.o=.d)
+#MISSING_DEPS		:= $(filter-out $(wildcard $(DEPS)),$(DEPS))
+#MISSING_DEPS_SOURCES := $(wildcard $(patsubst %.d,%.c,$(MISSING_DEPS)) \
+#					    $(patsubst %.d,%.cc,$(MISSING_DEPS)))

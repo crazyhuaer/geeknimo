@@ -156,19 +156,21 @@ byte getPage(IPAddress ipBuf,int thisPort, char *page)
   {
     Serial.print("switch 1");
     digitalWrite(9,HIGH);
-    digitalWrite(8,LOW);
+    //digitalWrite(8,LOW);
+    digitalWrite(8,HIGH);
   }
   else if(inChar == '2')
   {
     Serial.print("switch 2");
-    digitalWrite(9,LOW);
+    digitalWrite(9,HIGH);
+    //digitalWrite(8,HIGH);
     digitalWrite(8,HIGH);
   }
   else 
   {
     Serial.write(inChar);
-    digitalWrite(9,LOW);
-    digitalWrite(8,LOW);
+    digitalWrite(9,HIGH);
+    digitalWrite(8,HIGH);
   }
   Serial.println();
   Serial.println(F("disconnecting."));
