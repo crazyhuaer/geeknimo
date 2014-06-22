@@ -1,0 +1,30 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: hidapi_test - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP7156.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/hidapi_test.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ  /c 
+"F:\Code\geeknimo\VC\touchpad\20131120\hidapi_test\hidapi_test.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP7156.tmp" 
+Creating command line "link.exe hidapi.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/hidapi_test.pdb" /debug /machine:I386 /out:"Debug/hidapi_test.exe" /pdbtype:sept  .\Debug\StdAfx.obj .\Debug\hidapi_test.obj "
+<h3>Output Window</h3>
+Compiling...
+hidapi_test.cpp
+F:\Code\geeknimo\VC\touchpad\20131120\hidapi_test\hidapi_test.cpp(18) : warning C4101: 'wstr' : unreferenced local variable
+F:\Code\geeknimo\VC\touchpad\20131120\hidapi_test\hidapi_test.cpp(15) : warning C4101: 'res' : unreferenced local variable
+F:\Code\geeknimo\VC\touchpad\20131120\hidapi_test\hidapi_test.cpp(20) : warning C4101: 'i' : unreferenced local variable
+Linking...
+
+
+
+<h3>Results</h3>
+hidapi_test.exe - 0 error(s), 3 warning(s)
+</pre>
+</body>
+</html>

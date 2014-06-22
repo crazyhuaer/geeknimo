@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+		<title>Google Authenticator PHP Demo</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="description" content="Description" />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.qrcode-0.7.0.js"></script>
+	
+		<script type="text/javascript">
+				$(document).ready(function(){
+							
+						$("#createqrcode").click(function(){
+								var ServerUrl = "http://192.168.1.200/projecttest/googleauth/php/encode.php";
+				
+						    $.get(ServerUrl,function(result,status){
+						        var data = result.split("#");
+						   			//alert(data[0]);
+						        //$("#qrcode").attr("src",data[0]);
+						        
+						        $('#output').html("").qrcode({
+						        	text:data[0],
+						        	ecLevel:'L',
+						        	size:200,
+						        	render:'image',	
+						        });
+						        
+						        //$("#verifycode").val(htmldecode(data[0]));
+						        $("#secretkey").val(data[1]);
+						    });   
+						});				
+						
+						
+						$("#verifyqrcode").click(function(){
+						    var ServerUrl = "http://192.168.1.200/projecttest/googleauth/php/decode.php";
+								
+						    $.post(ServerUrl,{
+						        SecretKey:$('#secretkey').val(),
+						        VerifyCode:$("#verifycode").val()
+						    },function(result,status){
+						    		alert(result);
+						    })
+						});
+						
+				});
+		</script>
+	
+</head>
+
+<body>
+	
+		<h1 align="center">Google Authenticator PHP Demo</h1>
+		
+		<br />
+		<hr/>
+			
+		<!-- content goes here -->
+		<div align="center">
+				<div id="output"><img width="200" height="200" id="qrcode"></img><br /></div>
+				<input type='button' id="createqrcode" value="生成图形验证码" /><br />
+				密钥：<input type="text" id="secretkey" size="20" /><br/>
+				验证码：<input type="text" id="verifycode" size="6" /><font id="verifystatus" color="red"></font><br />
+				<input type='button' id="verifyqrcode" value='双重校验' />
+		</div>
+		
+		<hr/>
+			
+</body>
+
+</html>

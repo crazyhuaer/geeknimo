@@ -1,0 +1,64 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: test - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD3AD.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/test.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\CODE\GEEKNIMO\VC\test\test\test.cpp"
+"F:\Code\geeknimo\VC\test\test\Log.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD3AD.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD3AE.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/test.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\CODE\GEEKNIMO\VC\test\test\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD3AE.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD3AF.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/test.pdb" /debug /machine:I386 /out:"Debug/test.exe" /pdbtype:sept 
+.\Debug\StdAfx.obj
+.\Debug\test.obj
+.\Debug\Log.obj
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD3AF.tmp"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+f:\code\geeknimo\vc\test\test\log.h(11) : error C2629: unexpected 'class CLog ('
+f:\code\geeknimo\vc\test\test\log.h(11) : error C2238: unexpected token(s) preceding ';'
+f:\code\geeknimo\vc\test\test\log.h(14) : error C2061: syntax error : identifier 'UINT'
+f:\code\geeknimo\vc\test\test\log.h(15) : error C2061: syntax error : identifier 'CString'
+f:\code\geeknimo\vc\test\test\log.h(15) : error C2535: 'void __thiscall CLog::LogMessage(void)' : member function already defined or declared
+        f:\code\geeknimo\vc\test\test\log.h(14) : see declaration of 'LogMessage'
+f:\code\geeknimo\vc\test\test\log.h(16) : error C2146: syntax error : missing ';' before identifier 'ClearLogFile'
+f:\code\geeknimo\vc\test\test\log.h(16) : error C2501: 'BOOL' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(20) : error C2146: syntax error : missing ';' before identifier 'm_strLogfileName'
+f:\code\geeknimo\vc\test\test\log.h(20) : error C2501: 'CString' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(20) : error C2501: 'm_strLogfileName' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(21) : error C2146: syntax error : missing ';' before identifier 'm_bUseLog'
+f:\code\geeknimo\vc\test\test\log.h(21) : error C2501: 'BOOL' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(21) : error C2501: 'm_bUseLog' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(22) : error C2146: syntax error : missing ';' before identifier 'm_dwMaxLen'
+f:\code\geeknimo\vc\test\test\log.h(22) : error C2501: 'DWORD' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(22) : error C2501: 'm_dwMaxLen' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(23) : error C2143: syntax error : missing ';' before '*'
+f:\code\geeknimo\vc\test\test\log.h(23) : error C2501: 'CFile' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(23) : error C2501: 'm_pLogFile' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(24) : error C2146: syntax error : missing ';' before identifier 'm_bDisplayDlg'
+f:\code\geeknimo\vc\test\test\log.h(24) : error C2501: 'BOOL' : missing storage-class or type specifiers
+f:\code\geeknimo\vc\test\test\log.h(24) : error C2501: 'm_bDisplayDlg' : missing storage-class or type specifiers
+Error executing cl.exe.
+
+
+
+<h3>Results</h3>
+test.exe - 22 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

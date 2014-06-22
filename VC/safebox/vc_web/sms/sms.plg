@@ -1,0 +1,60 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: sms - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP1F5B.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/sms.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\Code\geeknimo\VC\test\testlog\Log.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP1F5B.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP1F5C.tmp" with contents
+[
+Shlwapi.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/sms.pdb" /machine:I386 /out:"Release/sms.exe" 
+.\Release\Comm.obj
+.\Release\Dialog_Login.obj
+.\Release\Dialog_Main.obj
+.\Release\Log.obj
+.\Release\md5_password.obj
+.\Release\MyCom.obj
+.\Release\sms.obj
+.\Release\smsclass.obj
+.\Release\smsDlg.obj
+.\Release\SmsTraffic.obj
+.\Release\StdAfx.obj
+.\Release\sms.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP1F5C.tmp"
+<h3>Output Window</h3>
+Compiling...
+Log.cpp
+Linking...
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP2076.tmp" with contents
+[
+/nologo /o"Release/sms.bsc" 
+.\Release\StdAfx.sbr
+.\Release\Comm.sbr
+.\Release\Dialog_Login.sbr
+.\Release\Dialog_Main.sbr
+.\Release\Log.sbr
+.\Release\md5_password.sbr
+.\Release\MyCom.sbr
+.\Release\sms.sbr
+.\Release\smsclass.sbr
+.\Release\smsDlg.sbr
+.\Release\SmsTraffic.sbr]
+Creating command line "bscmake.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP2076.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+sms.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

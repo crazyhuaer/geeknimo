@@ -1,0 +1,270 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\sms.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\sms.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SMS_DIALOG DIALOGEX 0, 0, 443, 327
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "短信发送平台"
+FONT 9, "宋体"
+BEGIN
+    CONTROL         "Tab1",IDC_TAB_ALL,"SysTabControl32",0x0,7,7,429,298
+    LTEXT           "Your Company Name",IDC_STATIC,7,311,88,9
+    LTEXT           "Your Company WebSite",IDC_STATIC,348,311,88,9
+END
+
+IDD_DIALOG_LOGIN DIALOG DISCARDABLE  0, 0, 319, 157
+STYLE DS_MODALFRAME | DS_CENTER | WS_CHILD
+FONT 10, "System"
+BEGIN
+    GROUPBOX        "访问登陆",IDC_STATIC,7,7,305,143
+    RTEXT           "用户名：",IDC_STATIC,96,56,39,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_LOGIN_USERNAME,135,57,88,12,ES_AUTOHSCROLL
+    RTEXT           "密    码：",IDC_STATIC,96,75,39,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_LOGIN_PASSWORD,135,76,88,12,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "登陆(Login)",IDC_LOGIN_ON,129,102,62,19
+    RTEXT           "服务器地址：",IDC_STATIC,24,32,52,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_SERVER_URL,79,33,219,12,ES_AUTOHSCROLL
+    LTEXT           "默认格式为：http://localhost/project/sms/login.php",
+                    IDC_STATIC,73,18,172,11
+END
+
+DIALOG_MAIN_PAGE DIALOG DISCARDABLE  0, 0, 322, 214
+STYLE DS_MODALFRAME | WS_CHILD
+FONT 10, "System"
+BEGIN
+    GROUPBOX        "TC35基本设置",IDC_STATIC,7,7,308,55
+    CONTROL         "",IDC_STATUS_INFORMATION,"RICHEDIT",ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | 
+                    WS_TABSTOP,7,78,308,129
+    GROUPBOX        "状态信息栏",IDC_STATIC,7,67,308,140,BS_LEFT
+    PUSHBUTTON      "打开TC35串口",IDC_ON_OFF_TC35,75,44,52,11
+    COMBOBOX        IDC_COM_NUMBER,33,44,39,113,CBS_DROPDOWNLIST | CBS_SORT | 
+                    CBS_UPPERCASE | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "测试TC35",IDC_TEST_GPRS,131,44,37,11
+    PUSHBUTTON      "启动定时发送",IDC_START_SEND,172,44,54,11
+    LTEXT           "远端数据访问URL：",IDC_STATIC,18,29,72,9,SS_CENTERIMAGE
+    EDITTEXT        IDC_DATA_URL,91,27,219,13,ES_AUTOHSCROLL
+    LTEXT           "默认格式为：http://localhost/project/sms/getthedata.php",
+                    IDC_STATIC,59,16,204,11
+    LTEXT           "周期:",IDC_STATIC,237,45,21,8
+    EDITTEXT        IDC_PERIOD_SEND,260,44,18,12,ES_RIGHT | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "秒",IDC_STATIC,282,45,8,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "sms Microsoft 基础类应用程序\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "sms\0"
+            VALUE "LegalCopyright", "版权所有 (C) 2014\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "sms.EXE\0"
+            VALUE "ProductName", "sms 应用程序\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SMS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 436
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 320
+    END
+
+    IDD_DIALOG_LOGIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 150
+    END
+
+    DIALOG_MAIN_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 207
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+DIALOG_MAIN_PAGE DLGINIT
+BEGIN
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x314d, "\000" 
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x324d, "\000" 
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x334d, "\000" 
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x344d, "\000" 
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x354d, "\000" 
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x364d, "\000" 
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x374d, "\000" 
+    IDC_COM_NUMBER, 0x403, 5, 0
+0x4f43, 0x384d, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 sms(&A)..."
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\sms.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

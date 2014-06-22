@@ -1,0 +1,89 @@
+Sunplus u'nSP Assembler - Ver. 1.14.12
+
+                            	// GCC for SUNPLUS u'nSP version 1.0.23
+                            	// Command: D:\PROGRA~1\Sunplus\UNSPID~1.2D\toolchain\cc1.exe C:\Users\geeknimo\AppData\Local\Temp\cc8scaaa.i -fkeep-inline-functions -quiet -dumpbase libgloss.c -mglobal-var-iram -O2 -Wall -o .\Release/libgloss.asm
+                            		.external __sn_func_ptr_sec
+                            	
+                            	// gcc2_compiled.:
+                            	
+                            	// GCC inline ASM start
+00000000                    		.code
+                            	.public _printf_hook
+                            	_printf_hook: .proc
+00000000 90 9A              	  retf
+                            	  .endp
+                            	
+                            	// GCC inline ASM end
+00000001                    	.code
+                            	.public _printf_init
+                            	_printf_init:	.proc
+                            		// total=0, vars=0
+                            		// frame_pointer_needed: 1
+00000001                    	.code
+00000001 88 DA              		PUSH BP to [SP]
+00000002 08 0B 01 00        		BP=SP+1
+                            	
+                            	
+00000004 88 98              		POP BP from [SP]
+00000005 90 9A              		RETF
+                            		.endp	// end of printf_init
+                            	
+00000006                    	.code
+                            	.public _printf_end
+                            	_printf_end:	.proc
+                            		// total=0, vars=0
+                            		// frame_pointer_needed: 1
+00000006                    	.code
+00000006 88 DA              		PUSH BP to [SP]
+00000007 08 0B 01 00        		BP=SP+1
+                            	
+                            	
+00000009 88 98              		POP BP from [SP]
+0000000A 90 9A              		RETF
+                            		.endp	// end of printf_end
+                            	
+0000000B                    	.code
+                            	.public _putchar
+                            	_putchar:	.proc
+                            		// total=0, vars=0
+                            		// frame_pointer_needed: 1
+0000000B                    	.code
+0000000B 88 DA              		PUSH BP to [SP]
+0000000C 08 0B 01 00        		BP=SP+1
+                            	
+0000000E 03 92              		R1=[BP+3]	// QImode move
+                            	
+0000000F 88 98              		POP BP from [SP]
+00000010 90 9A              		RETF
+                            		.endp	// end of putchar
+                            	
+00000011                    	.code
+                            	.public __malloc_lock
+                            	__malloc_lock:	.proc
+                            		// total=0, vars=0
+                            		// frame_pointer_needed: 1
+00000011                    	.code
+00000011 88 DA              		PUSH BP to [SP]
+00000012 08 0B 01 00        		BP=SP+1
+                            	
+                            	
+00000014 88 98              		POP BP from [SP]
+00000015 90 9A              		RETF
+                            		.endp	// end of _malloc_lock
+                            	
+00000016                    	.code
+                            	.public __malloc_unlock
+                            	__malloc_unlock:	.proc
+                            		// total=0, vars=0
+                            		// frame_pointer_needed: 1
+00000016                    	.code
+00000016 88 DA              		PUSH BP to [SP]
+00000017 08 0B 01 00        		BP=SP+1
+                            	
+                            	
+00000019 88 98              		POP BP from [SP]
+0000001A 90 9A              		RETF
+                            		.endp	// end of _malloc_unlock
+                            	
+                            		.end
+0 error(s), 0 warning(s).

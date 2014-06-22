@@ -1,0 +1,377 @@
+Sunplus u'nSP Assembler - Ver. 1.14.12
+
+                            	// GCC for SUNPLUS u'nSP version 1.0.23
+                            	// Command: D:\PROGRA~1\Sunplus\UNSPID~1.2D\toolchain\cc1.exe C:\Users\geeknimo\AppData\Local\Temp\ccGocaaa.i -fkeep-inline-functions -quiet -dumpbase main.c -mglobal-var-iram -O2 -Wall -o .\Release/main.asm
+                            		.external __sn_func_ptr_sec
+                            	
+                            	// gcc2_compiled.:
+                            	
+                            	.public _gActivated
+00000000                    	.iram
+                            	_gActivated:
+00000000 00 00              		.dw 0
+                            	.public _gTriggerRespond
+00000001                    	.iram
+                            	_gTriggerRespond:
+00000001 09 00              		.dw 9
+00000002 0A 00              		.dw 10
+00000003 09 00              		.dw 9
+                            	.public _gComm2Respond
+00000004                    	.iram
+                            	_gComm2Respond:
+00000004 0B 00              		.dw 11
+00000005 0C 00              		.dw 12
+00000006 0D 00              		.dw 13
+                            	.public _PlayFlag
+00000007                    	.iram
+                            	_PlayFlag:
+00000007 00 00              		.dw 0
+00000000                    	.code
+                            	.public _PlayRespond2
+                            	_PlayRespond2:	.proc
+                            		// total=2, vars=2
+                            		// frame_pointer_needed: 1
+00000000                    	.code
+00000000 88 DA              		PUSH BP to [SP]
+00000001 42 20              		SP-=2
+00000002 08 0B 01 00        		BP=SP+1
+                            	
+00000004 05 92              		R1=[BP+5]	// QImode move
+00000005 C5 D2              		[BP]=R1	// QImode move
+00000006 40 F0 00 00        		CALL _BSR_StopRecognizer	// call without return value
+00000008 41 92              		R1=1	// QImode move
+00000009 C8 D2              		[SP--]=R1	// QImode move
+0000000A 40 F0 00 00        		CALL _SACM_A2000_Initial	// call with return value
+0000000C 43 92              		R1=3	// QImode move
+0000000D C8 D2              		[SP--]=R1	// QImode move
+0000000E C8 D2              		[SP--]=R1	// QImode move
+0000000F C5 92              		R1=[BP]	// QImode move
+00000010 C8 D2              		[SP--]=R1	// QImode move
+00000011 40 F0 00 00        		CALL _SACM_A2000_Play	// call with return value
+00000013 44 00              		SP = SP + 4	//SP
+00000014 0F 9F 1A 00        		PC=L3	// jump
+                            	L5:
+00000016 40 F0 00 00        		CALL _SACM_A2000_ServiceLoop	// call with return value
+00000018 40 F0 00 00        		CALL _ClearWatchDog	// call without return value
+                            	L3:
+0000001A 40 F0 00 00        		CALL _SACM_A2000_Status	// call with return value
+0000001C 09 B5 01 00        		R2=R1&1
+0000001E 40 44              		CMP R2,0	// QImode test
+0000001F 4A 4E              		NSJNZ L5	//QImode NE
+00000020 01 D4              		[BP+1]=R2	// QImode move
+00000021 40 F0 00 00        		CALL _SACM_A2000_Stop	// call with return value
+00000023 01 94              		R2=[BP+1]	// QImode move
+00000024 C8 D4              		[SP--]=R2	// QImode move
+00000025 40 F0 00 00        		CALL _BSR_InitRecognizer	// call with return value
+00000027 40 F0 00 00        		CALL _BSR_EnableCPUIndicator	// call without return value
+00000029 41 00              		SP = SP + 1	//SP
+                            	
+0000002A 42 00              		SP+=2
+0000002B 88 98              		POP BP from [SP]
+0000002C 90 9A              		RETF
+                            		.endp	// end of PlayRespond2
+                            	
+0000002D                    	.code
+                            	.public _PlayRespond
+                            	_PlayRespond:	.proc
+                            		// total=2, vars=2
+                            		// frame_pointer_needed: 1
+0000002D                    	.code
+0000002D 88 DA              		PUSH BP to [SP]
+0000002E 42 20              		SP-=2
+0000002F 08 0B 01 00        		BP=SP+1
+                            	
+00000031 05 92              		R1=[BP+5]	// QImode move
+00000032 C5 D2              		[BP]=R1	// QImode move
+00000033 40 F0 00 00        		CALL _BSR_StopRecognizer	// call without return value
+00000035 41 92              		R1=1	// QImode move
+00000036 C8 D2              		[SP--]=R1	// QImode move
+00000037 40 F0 00 00        		CALL _SACM_S480_Initial	// call with return value
+00000039 43 92              		R1=3	// QImode move
+0000003A C8 D2              		[SP--]=R1	// QImode move
+0000003B C8 D2              		[SP--]=R1	// QImode move
+0000003C C5 92              		R1=[BP]	// QImode move
+0000003D C8 D2              		[SP--]=R1	// QImode move
+0000003E 40 F0 00 00        		CALL _SACM_S480_Play	// call with return value
+00000040 44 00              		SP = SP + 4	//SP
+00000041 0F 9F 47 00        		PC=L9	// jump
+                            	L11:
+00000043 40 F0 00 00        		CALL _SACM_S480_ServiceLoop	// call with return value
+00000045 40 F0 00 00        		CALL _ClearWatchDog	// call without return value
+                            	L9:
+00000047 40 F0 00 00        		CALL _SACM_S480_Status	// call with return value
+00000049 09 B5 01 00        		R2=R1&1
+0000004B 40 44              		CMP R2,0	// QImode test
+0000004C 4A 4E              		NSJNZ L11	//QImode NE
+0000004D 01 D4              		[BP+1]=R2	// QImode move
+0000004E 40 F0 00 00        		CALL _SACM_S480_Stop	// call with return value
+00000050 01 94              		R2=[BP+1]	// QImode move
+00000051 C8 D4              		[SP--]=R2	// QImode move
+00000052 40 F0 00 00        		CALL _BSR_InitRecognizer	// call with return value
+00000054 40 F0 00 00        		CALL _BSR_EnableCPUIndicator	// call without return value
+00000056 41 00              		SP = SP + 1	//SP
+                            	
+00000057 42 00              		SP+=2
+00000058 88 98              		POP BP from [SP]
+00000059 90 9A              		RETF
+                            		.endp	// end of PlayRespond
+                            	
+0000005A                    	.code
+                            	.public _TrainWord
+                            	_TrainWord:	.proc
+                            		// total=1, vars=1
+                            		// frame_pointer_needed: 1
+0000005A                    	.code
+0000005A 88 DA              		PUSH BP to [SP]
+0000005B 41 20              		SP-=1
+0000005C 08 0B 01 00        		BP=SP+1
+                            	
+0000005E 0D 03 04 00        		R1=BP+4
+00000060 04 94              		R2=[BP+4]	// QImode move
+00000061 C5 D4              		[BP]=R2	// QImode move
+00000062 D9 92              		R1 = [++R1]
+00000063 C8 D2              		[SP--]=R1	// QImode move
+00000064 0F 9F 73 00        		PC=L32	// jump
+                            	L18:
+00000066 46 02              		R1=R1+6
+00000067 45 42              		CMP R1,5	// QImode compare
+00000068 29 9E 01 EE        		NSJA L17	//QImode GTU
+         00 EE      
+0000006B 09 03 00 00        		R1=R1+L28
+0000006D C1 9E              		PC=[R1]	// tablejump
+00000000                    	.text
+                            	L28:
+00000000 8F 00              		.dw L35
+00000001 80 00              		.dw L24
+00000002 8F 00              		.dw L35
+00000003 78 00              		.dw L22
+00000004 71 00              		.dw L21
+00000005 6E 00              		.dw L20
+0000006E                    	.code
+                            	L20:
+0000006E 45 92              		R1=5	// QImode move
+0000006F 0F 9F 79 00        		PC=L33	// jump
+                            	L21:
+00000071 44 94              		R2=4	// QImode move
+00000072 C8 D4              		[SP--]=R2	// QImode move
+                            	L32:
+00000073 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+00000075 41 00              		SP = SP + 1	//SP
+00000076 0F 9F 92 00        		PC=L17	// jump
+                            	L22:
+00000078 4E 92              		R1=14	// QImode move
+                            	L33:
+00000079 C8 D2              		[SP--]=R1	// QImode move
+0000007A 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+0000007C 41 62              		R1=(-1)	// QImode move
+0000007D 41 00              		SP = SP + 1	//SP
+0000007E 0F 9F 9B 00        		PC=L14	// jump
+                            	L24:
+00000080 C5 94              		R2=[BP]	// QImode move
+00000081 0A 45 00 01        		CMP R2,256	// QImode compare
+00000083 06 4E 01 EE        		NSJNZ L25	//QImode NE
+         00 EE      
+00000086 46 92              		R1=6	// QImode move
+00000087 C8 D2              		[SP--]=R1	// QImode move
+00000088 0F 9F 8C 00        		PC=L34	// jump
+                            	L25:
+0000008A 47 94              		R2=7	// QImode move
+0000008B C8 D4              		[SP--]=R2	// QImode move
+                            	L34:
+0000008C 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+0000008E 41 00              		SP = SP + 1	//SP
+                            	L35:
+0000008F 41 62              		R1=(-1)	// QImode move
+00000090 0F 9F 9B 00        		PC=L14	// jump
+                            	L17:
+00000092 40 92              		R1=0	// QImode move
+00000093 C8 D2              		[SP--]=R1	// QImode move
+00000094 C5 94              		R2=[BP]	// QImode move
+00000095 C8 D4              		[SP--]=R2	// QImode move
+00000096 40 F0 00 00        		CALL _BSR_Train	// call with return value
+00000098 42 00              		SP = SP + 2	//SP
+00000099 40 42              		CMP R1,0	// QImode test
+0000009A 75 4E              		NSJNZ L18	//QImode NE
+                            	L14:
+                            	
+0000009B 41 00              		SP+=1
+0000009C 88 98              		POP BP from [SP]
+0000009D 90 9A              		RETF
+                            		.endp	// end of TrainWord
+                            	
+0000009E                    	.code
+                            	.public _main
+                            	_main:	.proc
+                            		// total=3, vars=3
+                            		// frame_pointer_needed: 1
+0000009E                    	.code
+0000009E 88 DA              		PUSH BP to [SP]
+0000009F 43 20              		SP-=3
+000000A0 08 0B 01 00        		BP=SP+1
+                            	
+000000A2 40 92              		R1=0	// QImode move
+000000A3 C5 D2              		[BP]=R1	// QImode move
+000000A4 01 D2              		[BP+1]=R1	// QImode move
+000000A5 C8 D2              		[SP--]=R1	// QImode move
+000000A6 40 F0 00 00        		CALL _BSR_DeleteSDGroup	// call with return value
+000000A8 C5 94              		R2=[BP]	// QImode move
+000000A9 C8 D4              		[SP--]=R2	// QImode move
+000000AA 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+000000AC 42 00              		SP = SP + 2	//SP
+                            	L42:
+000000AD 41 96              		R3=1	// QImode move
+000000AE C8 D6              		[SP--]=R3	// QImode move
+000000AF 09 93 00 01        		R1=256	// QImode move
+000000B1 C8 D2              		[SP--]=R1	// QImode move
+000000B2 40 F0 5A 00        		CALL _TrainWord	// call with return value
+000000B4 42 00              		SP = SP + 2	//SP
+000000B5 40 42              		CMP R1,0	// QImode test
+000000B6 4A 4E              		NSJNZ L42	//QImode NE
+                            	L45:
+000000B7 42 94              		R2=2	// QImode move
+000000B8 C8 D4              		[SP--]=R2	// QImode move
+000000B9 0B 97 01 01        		R3=257	// QImode move
+000000BB C8 D6              		[SP--]=R3	// QImode move
+000000BC 40 F0 5A 00        		CALL _TrainWord	// call with return value
+000000BE 42 00              		SP = SP + 2	//SP
+000000BF 40 42              		CMP R1,0	// QImode test
+000000C0 4A 4E              		NSJNZ L45	//QImode NE
+                            	L48:
+000000C1 43 92              		R1=3	// QImode move
+000000C2 C8 D2              		[SP--]=R1	// QImode move
+000000C3 0A 95 02 01        		R2=258	// QImode move
+000000C5 C8 D4              		[SP--]=R2	// QImode move
+000000C6 40 F0 5A 00        		CALL _TrainWord	// call with return value
+000000C8 42 00              		SP = SP + 2	//SP
+000000C9 40 42              		CMP R1,0	// QImode test
+000000CA 4A 4E              		NSJNZ L48	//QImode NE
+000000CB C8 D2              		[SP--]=R1	// QImode move
+000000CC 40 F0 00 00        		CALL _BSR_InitRecognizer	// call with return value
+000000CE 40 F0 00 00        		CALL _BSR_EnableCPUIndicator	// call without return value
+000000D0 48 96              		R3=8	// QImode move
+000000D1 C8 D6              		[SP--]=R3	// QImode move
+000000D2 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+000000D4 42 00              		SP = SP + 2	//SP
+                            	L51:
+000000D5 01 92              		R1=[BP+1]	// QImode move
+000000D6 41 02              		R1=R1+1
+000000D7 01 D2              		[BP+1]=R1	// QImode move
+000000D8 42 42              		CMP R1,2	// QImode compare
+000000D9 04 AE 01 EE        		NSJNG L52	//QImode LE
+         00 EE      
+000000DC 40 94              		R2=0	// QImode move
+000000DD 01 D4              		[BP+1]=R2	// QImode move
+                            	L52:
+000000DE 40 F0 00 00        		CALL _BSR_GetResult	// call with return value
+000000E0 40 42              		CMP R1,0	// QImode test
+000000E1 02 BE 0F 9F        		NSJNG L53	//QImode LE
+         3E 01      
+000000E4 12 95 00 00        		R2=[_gActivated]	// QImode move
+000000E6 02 4E 0F 9F        		NSJZ L54	//QImode EQ
+         28 01      
+000000E9 40 96              		R3=0	// QImode move
+000000EA C5 D6              		[BP]=R3	// QImode move
+000000EB 09 43 01 01        		CMP R1,257	// QImode compare
+000000ED 1E 5E 01 EE        		NSJZ L57	//QImode EQ
+         00 EE      
+000000F0 09 BE 01 EE        		NSJG L61	//QImode GT
+         00 EE      
+000000F3 09 43 00 01        		CMP R1,256	// QImode compare
+000000F5 0B 5E 01 EE        		NSJZ L56	//QImode EQ
+         00 EE      
+000000F8 0F 9F D5 00        		PC=L51	// jump
+                            	L61:
+000000FA 09 43 02 01        		CMP R1,258	// QImode compare
+000000FC 1E 5E 01 EE        		NSJZ L58	//QImode EQ
+         00 EE      
+000000FF 0F 9F D5 00        		PC=L51	// jump
+                            	L56:
+00000101 01 92              		R1=[BP+1]	// QImode move
+00000102 0A 95 01 00        		R2=_gTriggerRespond	// QImode move
+00000104 02 03              		R1 = R1 + R2	//addqi3
+00000105 C1 92              		R1=[R1]
+00000106 C8 D2              		[SP--]=R1	// QImode move
+00000107 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+00000109 41 00              		SP = SP + 1	//SP
+0000010A 0F 9F D5 00        		PC=L51	// jump
+                            	L57:
+0000010C 41 96              		R3=1	// QImode move
+0000010D 1B D7 07 00        		[_PlayFlag]=R3	// QImode move
+0000010F C5 92              		R1=[BP]	// QImode move
+00000110 C8 D2              		[SP--]=R1	// QImode move
+00000111 40 F0 00 00        		CALL _PlayRespond2	// call without return value
+00000113 C5 94              		R2=[BP]	// QImode move
+00000114 1A D5 07 00        		[_PlayFlag]=R2	// QImode move
+00000116 1A D5 00 00        		[_gActivated]=R2	// QImode move
+00000118 41 00              		SP = SP + 1	//SP
+00000119 0F 9F D5 00        		PC=L51	// jump
+                            	L58:
+0000011B 01 96              		R3=[BP+1]	// QImode move
+0000011C 0B 03 04 00        		R1=R3+_gComm2Respond
+0000011E C1 92              		R1=[R1]
+0000011F C8 D2              		[SP--]=R1	// QImode move
+00000120 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+00000122 C5 92              		R1=[BP]	// QImode move
+00000123 19 D3 00 00        		[_gActivated]=R1	// QImode move
+00000125 41 00              		SP = SP + 1	//SP
+00000126 0F 9F D5 00        		PC=L51	// jump
+                            	L54:
+00000128 09 43 00 01        		CMP R1,256	// QImode compare
+0000012A 02 5E 0F 9F        		NSJNZ L51	//QImode NE
+         D5 00      
+0000012D 01 92              		R1=[BP+1]	// QImode move
+0000012E 0B 97 01 00        		R3=_gTriggerRespond	// QImode move
+00000130 03 03              		R1 = R1 + R3	//addqi3
+00000131 C1 92              		R1=[R1]
+00000132 C8 D2              		[SP--]=R1	// QImode move
+00000133 02 D4              		[BP+2]=R2	// QImode move
+00000134 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+00000136 41 92              		R1=1	// QImode move
+00000137 19 D3 00 00        		[_gActivated]=R1	// QImode move
+00000139 02 94              		R2=[BP+2]	// QImode move
+0000013A C5 D4              		[BP]=R2	// QImode move
+0000013B 01 01              		SP = SP + R1	//SP
+0000013C 0F 9F D5 00        		PC=L51	// jump
+                            	L53:
+0000013E 11 93 00 00        		R1=[_gActivated]	// QImode move
+00000140 02 4E 0F 9F        		NSJZ L51	//QImode EQ
+         D5 00      
+00000143 C5 94              		R2=[BP]	// QImode move
+00000144 41 04              		R2=R2+1
+00000145 C5 D4              		[BP]=R2	// QImode move
+00000146 0A 45 C2 01        		CMP R2,450	// QImode compare
+00000148 02 BE 0F 9F        		NSJNG L51	//QImode LE
+         D5 00      
+0000014B 45 96              		R3=5	// QImode move
+0000014C C8 D6              		[SP--]=R3	// QImode move
+0000014D 40 F0 2D 00        		CALL _PlayRespond	// call without return value
+0000014F 40 92              		R1=0	// QImode move
+00000150 19 D3 00 00        		[_gActivated]=R1	// QImode move
+00000152 C5 D2              		[BP]=R1	// QImode move
+00000153 41 00              		SP = SP + 1	//SP
+00000154 0F 9F D5 00        		PC=L51	// jump
+                            	
+00000156 43 00              		SP+=3
+00000157 88 98              		POP BP from [SP]
+00000158 90 9A              		RETF
+                            		.endp	// end of main
+                            	
+                            	.external _BSR_GetResult
+                            	.external _BSR_DeleteSDGroup
+                            	.external _BSR_Train
+                            	.external _SACM_S480_Stop
+                            	.external _SACM_S480_ServiceLoop
+                            	.external _SACM_S480_Status
+                            	.external _SACM_S480_Play
+                            	.external _SACM_S480_Initial
+                            	.external _BSR_EnableCPUIndicator
+                            	.external _BSR_InitRecognizer
+                            	.external _SACM_A2000_Stop
+                            	.external _ClearWatchDog
+                            	.external _SACM_A2000_ServiceLoop
+                            	.external _SACM_A2000_Status
+                            	.external _SACM_A2000_Play
+                            	.external _SACM_A2000_Initial
+                            	.external _BSR_StopRecognizer
+                            		.end
+0 error(s), 0 warning(s).
