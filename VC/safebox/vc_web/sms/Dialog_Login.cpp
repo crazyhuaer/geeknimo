@@ -97,7 +97,7 @@ void CDialog_Login::OnLoginOn()
 	{
 		strRequestData = "?username="+strUserName+"&password="+strPassword;
 		
-		theApp.m_Log.LogMessage("开始连接服务器，连接登陆的url网址为:"+strRequestURL+strRequestData);
+		theApp.m_Log.LogMessage("开始连接服务器，连接登陆的url网址为:"+strRequestURL);
 		
 		CHttpFile *pFile = (CHttpFile *) m_session.OpenURL(strRequestURL+strRequestData, 1, 
 			INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);

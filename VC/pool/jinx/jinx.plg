@@ -1,0 +1,43 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: jinx - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Debug/jinx.res" /d "_DEBUG" /d "_AFXDLL" "F:\Code\geeknimo\VC\pool\jinx\jinx.rc"" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPB3CE.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/jinx.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\pool\jinx\jinx.cpp"
+"F:\Code\geeknimo\VC\pool\jinx\jinxDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPB3CE.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPB3CF.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/jinx.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\pool\jinx\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPB3CF.tmp" 
+Creating command line "link.exe ws2_32.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/jinx.pdb" /debug /machine:I386 /out:"Debug/jinx.exe" /pdbtype:sept  .\Debug\jinx.obj .\Debug\jinxDlg.obj .\Debug\StdAfx.obj .\Debug\jinx.res "
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+jinx.cpp
+jinxDlg.cpp
+Generating Code...
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/jinx.bsc"  .\Debug\StdAfx.sbr .\Debug\jinx.sbr .\Debug\jinxDlg.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+jinx.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

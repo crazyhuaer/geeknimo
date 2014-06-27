@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=CDialog_Main
+LastClass=CDialog_Login
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "sms.h"
@@ -13,10 +13,10 @@ Class2=CSmsDlg
 Class3=CAboutDlg
 
 ResourceCount=4
-Resource1=IDD_SMS_DIALOG
+Resource1=IDD_DIALOG_LOGIN
 Resource2=IDR_MAINFRAME
 Class4=CDialog_Login
-Resource3=IDD_DIALOG_LOGIN
+Resource3=IDD_SMS_DIALOG
 Class5=CDialog_Main
 Resource4=DIALOG_MAIN_PAGE
 
@@ -69,7 +69,7 @@ HeaderFile=Dialog_Login.h
 ImplementationFile=Dialog_Login.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=IDC_SERVER_URL
+LastObject=CDialog_Login
 VirtualFilter=dWC
 
 [DLG:DIALOG_MAIN_PAGE]

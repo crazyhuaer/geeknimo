@@ -67,7 +67,7 @@ void CDialog_Main::OnOnOffTc35()
 		m_MSCOMM_Open = FALSE;
 
         m_Status_Information.SetSel(-1, -1);
-        m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"串口已关闭\n");
+        m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t串口已关闭\n");
 
 		m_test_gprs.EnableWindow(FALSE);
 
@@ -90,7 +90,7 @@ void CDialog_Main::OnOnOffTc35()
 		if (!::OpenComm(tmp, nRate))
 		{
 			m_Status_Information.SetSel(-1, -1);
-			m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"串口打开异常，请尝试切换其他端口\n");
+			m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t串口打开异常，请尝试切换其他端口\n");
 			m_test_gprs.EnableWindow(FALSE);
 			
 			m_Start_Send.SetWindowText("启动定时发送");
@@ -105,7 +105,7 @@ void CDialog_Main::OnOnOffTc35()
 		{
 			m_MSCOMM_Open = TRUE;
 			m_Status_Information.SetSel(-1, -1);
-			m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"串口打开成功\n");
+			m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t串口打开成功\n");
 			m_test_gprs.EnableWindow(TRUE);
 			m_Open_MSCOMM.SetWindowText("关闭TC35串口");
 			((CSmsApp*)AfxGetApp())->m_Log.LogMessage("串口打开成功");
@@ -123,7 +123,7 @@ void CDialog_Main::OnTestGprs()
 	{
 
 		m_Status_Information.SetSel(-1, -1);
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"TC35连接失败\n");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\tTC35连接失败\n");
 
 		m_Start_Send.SetWindowText("启动定时发送");
 		m_Start_Send.EnableWindow(FALSE);
@@ -133,7 +133,7 @@ void CDialog_Main::OnTestGprs()
 	else
 	{
 		m_Status_Information.SetSel(-1, -1);
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"TC35连接成功\n");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\tTC35连接成功\n");
 
 		m_Start_Send.SetWindowText("启动定时发送");
 		m_Start_Send.EnableWindow(TRUE);
@@ -156,7 +156,7 @@ void CDialog_Main::OnStartSend()
 	if (!gsmInit())
 	{
 		m_Status_Information.SetSel(-1, -1);
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"TC35连接失败\n");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\tTC35连接失败\n");
 		
 		m_Start_Send.SetWindowText("启动定时发送");
 		m_Start_Send.EnableWindow(FALSE);
@@ -172,7 +172,7 @@ void CDialog_Main::OnStartSend()
 	{
 		//AfxMessageBox("周期设置错错误，请设置大于0的周期");
 		m_Status_Information.SetSel(-1, -1);
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"周期设置错误，请正确设置为大于0的数\n");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t周期设置错误，请正确设置为大于0的数\n");
 		((CSmsApp*)AfxGetApp())->m_Log.LogMessage("周期设置错误，请正确设置为大于0的数");
 	} 
 	else
@@ -185,101 +185,110 @@ void CDialog_Main::OnStartSend()
 			
 			m_Start_Send.SetWindowText("关闭定时发送");
 			m_Status_Information.SetSel(-1, -1);
-			m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"定时器已经启动，周期为"+strPeriod+"s一次\n");
+			m_Status_Information.UpdateData(FALSE);
+			m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t定时器已经启动，周期为"+strPeriod+"s一次\n");
 			((CSmsApp*)AfxGetApp())->m_Log.LogMessage("定时器已经启动，周期为"+strPeriod+"s一次");
-			{
-				// This message is used to test.
-				//CString	strSmsc = "13010888500";		//短信中心号码(请勿改动，这是深圳短信中心号码)
-				//CString	strNumber = "13006661808";		//欲发送的短信号码
-				//CString	strContent = "发送的中文内容";	//发送的内容
-				
-				// get the data from the sever
-				// if the server response data is out of our control,will do nothing.
-				// otherwise,send the message.
-				// you need to get the strSmsc,strNumber,strContent.
-				
-				CString strSmsc = "",strNumber,strContent;	
-				
-				CTabCtrl *pDlg = (CTabCtrl *)GetParent();
-				CSmsDlg *pSmsDlg = (CSmsDlg *)this->GetParent()->GetParent();
-				
-				// Get the data from server.
-				CInternetSession m_session;
-				CString strData;
-				TCHAR	ch;
-				CString	strRequestURL,strRequestData;
-				
-				CString	strUsername = pSmsDlg->m_Login_Tab.m_strUsername;
-				CString strPassword = pSmsDlg->m_Login_Tab.m_strPassword;
-				
-				char* User_Password_Char=strPassword.GetBuffer(strPassword.GetLength());
-				strPassword = MDString(User_Password_Char);
-				
-				m_Data_Url.GetWindowText(strRequestURL);
-				strRequestURL.TrimLeft(); 
-				strRequestURL.TrimRight();
-				if (strRequestURL == "")
-				{
-					AfxMessageBox("请按照格式输入服务器地址");
-					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("没有输入服务器地址");
-				}
-				else if (strRequestURL.Left(7) == "http://" )
-				{
-					strRequestData = "?username="+ strUsername +"&password="+strPassword;
-
-					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("手机号码请求发送的服务器连接:"+strRequestURL+strRequestData);
-					CHttpFile *pFile = (CHttpFile *) m_session.OpenURL(strRequestURL+strRequestData, 1, 
-						INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
-					
-					while (pFile->Read(&ch, sizeof(TCHAR)))
-					{
-						strData += ch;
-					}	
-					
-					CString* pStr;
-					int iSubStrs;
-					pStr = SplitString(strData, '#', iSubStrs);
-					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("服务器返回的数据为:"+strData);
-					// if the substr just one.
-					if (iSubStrs == 1)
-					{
-						// This Mean the server is not ok.
-						// you need process it.
-						//AfxMessageBox(strData); 
-						KillTimer(1);
-						m_Status_Information.SetSel(-1, -1);
-						m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"定时器遇到意外情况被迫关闭\n");
-						((CSmsApp*)AfxGetApp())->m_Log.LogMessage("定时器遇到意外情况被迫关闭");
-						m_Start_Send.SetWindowText("启动定时发送");
-					}
-					else
-					{   
-						// Follow the format,i set the second parm is number,the third is content,the first is status.
-						pStr[2].TrimRight("");
-						
-						// Send the message.
-						SendTheMessage(strSmsc,pStr[1],pStr[2]);
-						m_Status_Information.SetSel(-1, -1);
-						m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"发送"+pStr[1]+":"+pStr[2]+"\n");
-						((CSmsApp*)AfxGetApp())->m_Log.LogMessage("发送"+pStr[1]+":"+pStr[2]);
-						delete []pStr;
-					}		
-					// Start the timer 1
-					SetTimer(1,atoi(strPeriod)*1000,NULL);
-				}
-				else
-				{
-					AfxMessageBox("请使用http协议");
-					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("输入的协议不正确");
-				}
-			}
+			
+			m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t短信正在发送\n");
+			m_Status_Information.UpdateData(TRUE);
+			m_Status_Information.UpdateWindow();
+			CDialog_Main::OnTimer(1);
+			Sleep(5000);
+			
+			SetTimer(1,atoi(strPeriod)*1000,NULL);
+// 			{
+// 				// This message is used to test.
+// 				//CString	strSmsc = "13010888500";		//短信中心号码(请勿改动，这是深圳短信中心号码)
+// 				//CString	strNumber = "13006661808";		//欲发送的短信号码
+// 				//CString	strContent = "发送的中文内容";	//发送的内容
+// 				
+// 				// get the data from the sever
+// 				// if the server response data is out of our control,will do nothing.
+// 				// otherwise,send the message.
+// 				// you need to get the strSmsc,strNumber,strContent.
+// 				
+// 				CString strSmsc = "",strNumber,strContent;	
+// 				
+// 				CTabCtrl *pDlg = (CTabCtrl *)GetParent();
+// 				CSmsDlg *pSmsDlg = (CSmsDlg *)this->GetParent()->GetParent();
+// 				
+// 				// Get the data from server.
+// 				CInternetSession m_session;
+// 				CString strData;
+// 				TCHAR	ch;
+// 				CString	strRequestURL,strRequestData;
+// 				
+// 				CString	strUsername = pSmsDlg->m_Login_Tab.m_strUsername;
+// 				CString strPassword = pSmsDlg->m_Login_Tab.m_strPassword;
+// 				
+// 				char* User_Password_Char=strPassword.GetBuffer(strPassword.GetLength());
+// 				strPassword = MDString(User_Password_Char);
+// 				
+// 				m_Data_Url.GetWindowText(strRequestURL);
+// 				strRequestURL.TrimLeft(); 
+// 				strRequestURL.TrimRight();
+// 				if (strRequestURL == "")
+// 				{
+// 					AfxMessageBox("请按照格式输入服务器地址");
+// 					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("没有输入服务器地址");
+// 				}
+// 				else if (strRequestURL.Left(7) == "http://" )
+// 				{
+// 					strRequestData = "?username="+ strUsername +"&password="+strPassword;
+// 
+// 					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("手机号码请求发送的服务器连接:"+strRequestURL);
+// 					CHttpFile *pFile = (CHttpFile *) m_session.OpenURL(strRequestURL+strRequestData, 1, 
+// 						INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
+// 					
+// 					while (pFile->Read(&ch, sizeof(TCHAR)))
+// 					{
+// 						strData += ch;
+// 					}	
+// 					
+// 					CString* pStr;
+// 					int iSubStrs;
+// 					pStr = SplitString(strData, '#', iSubStrs);
+// 					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("服务器返回的数据为:"+strData);
+// 					// if the substr just one.
+// 					if (iSubStrs == 1)
+// 					{
+// 						// This Mean the server is not ok.
+// 						// you need process it.
+// 						//AfxMessageBox(strData); 
+// 						KillTimer(1);
+// 						m_Status_Information.SetSel(-1, -1);
+// 						m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t定时器遇到意外情况被迫关闭\n");
+// 						((CSmsApp*)AfxGetApp())->m_Log.LogMessage("定时器遇到意外情况被迫关闭");
+// 						m_Start_Send.SetWindowText("启动定时发送");
+// 					}
+// 					else
+// 					{   
+// 						// Follow the format,i set the second parm is number,the third is content,the first is status.
+// 						pStr[2].TrimRight("");
+// 						
+// 						// Send the message.
+// 						SendTheMessage(strSmsc,pStr[1],pStr[2]);
+// 						m_Status_Information.SetSel(-1, -1);
+// 						m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | %H:%M:%S")+"\t发送"+pStr[1]+":"+pStr[2]+"\n");
+// 						((CSmsApp*)AfxGetApp())->m_Log.LogMessage("发送"+pStr[1]+":"+pStr[2]);
+// 						delete []pStr;
+// 					}		
+// 					// Start the timer 1
+// 					SetTimer(1,atoi(strPeriod)*1000,NULL);
+// 				}
+// 				else
+// 				{
+// 					AfxMessageBox("请使用http协议");
+// 					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("输入的协议不正确");
+// 				}
+// 			}
 		} 
 		else
 		{
 			KillTimer(1);
 			m_Start_Send.SetWindowText("启动定时发送");
 			m_Status_Information.SetSel(-1, -1);
-			m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"定时器已经关闭\n");
+			m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t定时器已经关闭\n");
 			((CSmsApp*)AfxGetApp())->m_Log.LogMessage("定时器已经关闭");
 		}
 	}
@@ -315,28 +324,29 @@ void CDialog_Main::SendTheMessage(CString strSmsc,CString strNumber,CString strC
 
 	char ans[128];
 	ReadComm(ans, 128);
-
+	
 	int iPos = 0;
-	CString	returnByte;
-	returnByte.Format("%s",ans);
+	CString	returnByte(ans);
+//	returnByte.Format("%c",ans);
 
 	//+CMGS:
 
 	//m_Status_Information.ReplaceSel(returnByte+"\n");
 
 	//查看是否发送成功，如果成功，则修改服务器数据的状态
-	iPos = returnByte.Find("CMGS");
+	Sleep(2000);
+	iPos = returnByte.Find("13010888500");
 
 	m_Status_Information.SetSel(-1, -1);
 	CTime tmTime = CTime::GetCurrentTime ();
 	if (iPos == -1)
 	{
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"发送失败\n");
-		((CSmsApp*)AfxGetApp())->m_Log.LogMessage("发送失败");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t发送成功\n");
+		((CSmsApp*)AfxGetApp())->m_Log.LogMessage("t发送成功");
     }
 	else
 	{
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"发送成功\n");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t发送成功");
 		((CSmsApp*)AfxGetApp())->m_Log.LogMessage("发送成功");
 
 		//update server status
@@ -367,7 +377,7 @@ void CDialog_Main::SendTheMessage(CString strSmsc,CString strNumber,CString strC
 		else if (strRequestURL.Left(7) == "http://" )
 		{
 			strRequestData = "?username="+ strUsername +"&password="+strPassword;
-			((CSmsApp*)AfxGetApp())->m_Log.LogMessage("反馈服务器url:"+strRequestURL+strRequestData);
+			((CSmsApp*)AfxGetApp())->m_Log.LogMessage("反馈服务器url:"+strRequestURL);
 
 			CHttpFile *pFile = (CHttpFile *) m_session.OpenURL(strRequestURL+strRequestData, 1, 
 										INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
@@ -376,7 +386,7 @@ void CDialog_Main::SendTheMessage(CString strSmsc,CString strNumber,CString strC
 			{
 				strData += ch;
 			}	
-			m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"服务器返回的是"+strData+"\n");
+			m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t服务器返回的是"+strData+"\n");
 			((CSmsApp*)AfxGetApp())->m_Log.LogMessage("服务器返回的是"+strData);
 		}
 		else
@@ -435,7 +445,7 @@ void CDialog_Main::OnTimer(UINT nIDEvent)
 			{
 				strRequestData = "?username="+ strUsername +"&password="+strPassword;
 				
-				((CSmsApp*)AfxGetApp())->m_Log.LogMessage("号码请求url连接为:"+strRequestURL+strRequestData);
+				((CSmsApp*)AfxGetApp())->m_Log.LogMessage("号码请求url连接为:"+strRequestURL);
 
 				CHttpFile *pFile = (CHttpFile *) m_session.OpenURL(strRequestURL+strRequestData,1, 
 					INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
@@ -460,7 +470,7 @@ void CDialog_Main::OnTimer(UINT nIDEvent)
 					//AfxMessageBox(strData); 
 					KillTimer(1);
 					m_Status_Information.SetSel(-1, -1);
-					m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"定时器遇到意外情况被迫关闭\n");
+					m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t定时器遇到意外情况被迫关闭\n");
 					m_Start_Send.SetWindowText("启动定时发送");
 
 					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("定时器遇到意外情况被迫关闭");
@@ -469,13 +479,16 @@ void CDialog_Main::OnTimer(UINT nIDEvent)
 				{   
 					// Follow the format,i set the second parm is number,the third is content,the first is status.
 					pStr[2].TrimRight("");
-
+					pStr[2].Replace("\n", "");
 					// Send the message.
-					SendTheMessage(strSmsc,pStr[1],pStr[2]);
+					
 					m_Status_Information.SetSel(-1, -1);
-					m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"发送"+pStr[1]+":"+pStr[2]+"\n");
+					m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t发送"+pStr[1]+":"+pStr[2]+"\n");
 
 					((CSmsApp*)AfxGetApp())->m_Log.LogMessage("发送"+pStr[1]+":"+pStr[2]);
+
+					SendTheMessage(strSmsc,pStr[1],pStr[2]);
+
 					delete []pStr;
 				}		
 			}
@@ -557,13 +570,13 @@ void CDialog_Main::OnKillfocusPeriodSend()
 	{
 		m_Period_Send.SetWindowText("1");
 		m_Status_Information.SetSel(-1, -1);
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"周期设置错误，请正确设置为大于0的整数\n");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t周期设置错误，请正确设置为大于0的整数\n");
 		((CSmsApp*)AfxGetApp())->m_Log.LogMessage("周期设置错误，请正确设置为大于0的整数");
 	}
 	else
 	{
 		m_Status_Information.SetSel(-1, -1);
-		m_Status_Information.ReplaceSel(tmTime.Format ("%m/%d/%y %H:%M:%S")+"周期设置为"+strPeriod+"\n");
+		m_Status_Information.ReplaceSel(tmTime.Format ("20%y-%m-%d | | %H:%M:%S")+"\t周期设置为"+strPeriod);
 		((CSmsApp*)AfxGetApp())->m_Log.LogMessage("周期设置为"+strPeriod);
 	}
 }

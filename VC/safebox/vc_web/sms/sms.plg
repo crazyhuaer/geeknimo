@@ -6,13 +6,13 @@
 --------------------Configuration: sms - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP1F5B.tmp" with contents
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP58CC.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/sms.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"F:\Code\geeknimo\VC\test\testlog\Log.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\sms\Dialog_Main.cpp"
 ]
-Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP1F5B.tmp" 
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP1F5C.tmp" with contents
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP58CC.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP58CD.tmp" with contents
 [
 Shlwapi.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/sms.pdb" /machine:I386 /out:"Release/sms.exe" 
 .\Release\Comm.obj
@@ -28,12 +28,12 @@ Shlwapi.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/sms.pdb" /m
 .\Release\StdAfx.obj
 .\Release\sms.res
 ]
-Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP1F5C.tmp"
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP58CD.tmp"
 <h3>Output Window</h3>
 Compiling...
-Log.cpp
+Dialog_Main.cpp
 Linking...
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP2076.tmp" with contents
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP5A16.tmp" with contents
 [
 /nologo /o"Release/sms.bsc" 
 .\Release\StdAfx.sbr
@@ -47,7 +47,7 @@ Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP2076.tmp" with 
 .\Release\smsclass.sbr
 .\Release\smsDlg.sbr
 .\Release\SmsTraffic.sbr]
-Creating command line "bscmake.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP2076.tmp"
+Creating command line "bscmake.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP5A16.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 

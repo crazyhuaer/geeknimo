@@ -25,10 +25,12 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CSmsApp construction
 
-CSmsApp::CSmsApp():m_Log("LogFile.log")
+CSmsApp::CSmsApp():m_Log(((CTime)CTime::GetCurrentTime ()).Format ("20%y-%m-%d")+"-LogFile.log")
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
+	//CTime tmTime = CTime::GetCurrentTime ();
+	
 }
 
 /////////////////////////////////////////////////////////////////////////////

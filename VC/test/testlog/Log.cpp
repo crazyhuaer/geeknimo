@@ -149,7 +149,8 @@ void CLog::LogMessage (UINT uMsgID)
 	if (strMsg.LoadString (uMsgID))	// Load the String from the string table
 	{
 		CTime tmTime = CTime::GetCurrentTime ();
-		strMsg =((tmTime.Format ("%m/%d/%y %H:%M:%S  ")) + strMsg +CRLF);
+		//strMsg =((tmTime.Format ("20%y-%m-%d %H:%M:%S  ")) + strMsg +CRLF);
+		strMsg =((tmTime.Format ("20%y-%m-%d %H:%M:%S  ")) + strMsg +CRLF);
 		m_pLogFile->Write (strMsg,strMsg.GetLength());
 		DisplayWarningMessage();
 	}
@@ -174,7 +175,7 @@ void CLog::LogMessage (CString strMsg)
 	if (strMsg.IsEmpty ())
 		return;
 	CTime tmTime = CTime::GetCurrentTime();
-	strMsg =((tmTime.Format ("%m/%d/%y %H:%M:%S  ")) + strMsg +CRLF);
+	strMsg =((tmTime.Format ("20%y-%m-%d %H:%M:%S  ")) + strMsg +CRLF);
 	m_pLogFile->Write (strMsg,strMsg.GetLength());
 	DisplayWarningMessage();
 }
