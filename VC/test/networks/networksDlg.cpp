@@ -236,6 +236,7 @@ UINT CNetworksDlg::NbtstatThread(LPVOID param)
 
 	CString strHtmlData, iTmp, iDestAddr;
 
+	//for (int i=2;i<254;i++)
 	for (int i=2;i<254;i++)
 	{
 		CString ipHead = "192.168.1.";

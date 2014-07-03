@@ -13,10 +13,10 @@ Class2=CSmsDlg
 Class3=CAboutDlg
 
 ResourceCount=4
-Resource1=IDD_DIALOG_LOGIN
+Resource1=IDD_SMS_DIALOG
 Resource2=IDR_MAINFRAME
 Class4=CDialog_Login
-Resource3=IDD_SMS_DIALOG
+Resource3=IDD_DIALOG_LOGIN
 Class5=CDialog_Main
 Resource4=DIALOG_MAIN_PAGE
 

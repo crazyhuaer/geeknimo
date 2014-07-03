@@ -3,29 +3,32 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: ssh - Win32 Release--------------------
+--------------------Configuration: ssh - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP98B8.tmp" with contents
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPB947.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Release/ssh.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/ssh.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
 "F:\Code\geeknimo\VC\pool\ssh\ssh\sshDlg.cpp"
 ]
-Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP98B8.tmp" 
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP98B9.tmp" with contents
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPB947.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPB948.tmp" with contents
 [
-F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgDll.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgMt.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgSt.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelDll.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelMt.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelSt.lib ws2_32.lib Crypt32.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/ssh.pdb" /machine:I386 /nodefaultlib:"MSVCRTD" /out:"Release/ssh.exe" 
-.\Release\ssh.obj
-.\Release\sshDlg.obj
-.\Release\StdAfx.obj
-.\Release\UDP.obj
-.\Release\ssh.res
+F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgDll.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgMt.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgSt.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelDll.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelMt.lib F:\Code\geeknimo\VC\pool\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelSt.lib ws2_32.lib Crypt32.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/ssh.pdb" /debug /machine:I386 /out:"Debug/ssh.exe" /pdbtype:sept 
+.\Debug\ssh.obj
+.\Debug\sshDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\UDP.obj
+.\Debug\ssh.res
 ]
-Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP98B9.tmp"
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPB948.tmp"
 <h3>Output Window</h3>
 Compiling...
 sshDlg.cpp
 Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/ssh.bsc"  .\Debug\StdAfx.sbr .\Debug\ssh.sbr .\Debug\sshDlg.sbr .\Debug\UDP.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 

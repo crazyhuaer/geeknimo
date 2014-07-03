@@ -3,9 +3,33 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: networks - Win32 Release--------------------
+--------------------Configuration: networks - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPE348.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/networks.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\test\networks\networksDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPE348.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPE349.tmp" with contents
+[
+ws2_32.lib Shlwapi.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/networks.pdb" /debug /machine:I386 /out:"Debug/networks.exe" /pdbtype:sept 
+.\Debug\Log.obj
+.\Debug\networks.obj
+.\Debug\networksDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\UDP.obj
+.\Debug\networks.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPE349.tmp"
+<h3>Output Window</h3>
+Compiling...
+networksDlg.cpp
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/networks.bsc"  .\Debug\StdAfx.sbr .\Debug\Log.sbr .\Debug\networks.sbr .\Debug\networksDlg.sbr .\Debug\UDP.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 

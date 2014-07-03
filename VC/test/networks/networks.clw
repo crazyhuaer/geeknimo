@@ -30,7 +30,7 @@ ImplementationFile=networksDlg.cpp
 Filter=D
 BaseClass=CDialog
 VirtualFilter=dWC
-LastObject=IDC_BUTTON_REFRESH
+LastObject=CNetworksDlg
 
 [CLS:CAboutDlg]
 Type=0
