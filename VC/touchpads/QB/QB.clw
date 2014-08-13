@@ -18,9 +18,9 @@ Class6=CQBDlg
 
 ResourceCount=5
 Resource1=IDD_TAB_HELP
-Resource2=IDD_TAB_CALIBRATION
-Resource3=IDD_TAB_PCB_SETTING
-Resource4=IDD_QB_DIALOG
+Resource2=IDD_TAB_PCB_SETTING
+Resource3=IDD_QB_DIALOG
+Resource4=IDD_TAB_CALIBRATION
 Resource5=IDD_TAB_TEST
 
 [CLS:CDialog_Tab_Calibration]

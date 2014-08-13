@@ -1,0 +1,70 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: networks - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP58B3.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/networks.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\Code\geeknimo\VC\pool\networks_20140811\networks\networksDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP58B3.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP58B4.tmp" with contents
+[
+E:\workDoc\code\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgDll.lib E:\workDoc\code\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgMt.lib E:\workDoc\code\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgSt.lib E:\workDoc\code\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelDll.lib E:\workDoc\code\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelMt.lib E:\workDoc\code\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatRelSt.lib ws2_32.lib Crypt32.lib Shlwapi.lib sqlite3.lib /nologo /subsystem:windows /profile /machine:I386 /nodefaultlib:"MSVCRTD" /out:"Release/networks.exe " 
+.\Release\Dialog_BTC1T.obj
+.\Release\DialogLTC30M.obj
+.\Release\DialogLTC60M.obj
+.\Release\InitFile.obj
+.\Release\Log.obj
+.\Release\LoginDialog.obj
+.\Release\md5_password.obj
+.\Release\ModifyPassowrd.obj
+.\Release\MyHeaderCtrl.obj
+.\Release\MyListCtrl1.obj
+.\Release\networks.obj
+.\Release\networksDlg.obj
+.\Release\StdAfx.obj
+.\Release\UDP.obj
+.\Release\UnknowType.obj
+.\Release\networks.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP58B4.tmp"
+<h3>Output Window</h3>
+Compiling...
+networksDlg.cpp
+Linking...
+LINK : fatal error LNK1181: cannot open input file "E:\workDoc\code\chilkat-9.5.0-x86-vc6\chilkat-9.5.0-x86-vc6\libs\ChilkatDbgDll.lib"
+Error executing link.exe.
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP5F5C.tmp" with contents
+[
+/nologo /o"Release/networks.bsc" 
+.\Release\StdAfx.sbr
+.\Release\Dialog_BTC1T.sbr
+.\Release\DialogLTC30M.sbr
+.\Release\DialogLTC60M.sbr
+.\Release\InitFile.sbr
+.\Release\Log.sbr
+.\Release\LoginDialog.sbr
+.\Release\md5_password.sbr
+.\Release\ModifyPassowrd.sbr
+.\Release\MyHeaderCtrl.sbr
+.\Release\MyListCtrl1.sbr
+.\Release\networks.sbr
+.\Release\networksDlg.sbr
+.\Release\UDP.sbr
+.\Release\UnknowType.sbr]
+Creating command line "bscmake.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP5F5C.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+networks.exe - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

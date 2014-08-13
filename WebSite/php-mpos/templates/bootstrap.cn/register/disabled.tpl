@@ -1,0 +1,1 @@
+<br /><center><p><font size="5px">我们目前暂不接受新用户注册（只接受邀请注册），请稍后再试！</font></p></center>

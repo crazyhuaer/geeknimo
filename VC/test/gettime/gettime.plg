@@ -1,0 +1,27 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: gettime - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPEBA1.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/gettime.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\Code\geeknimo\VC\test\gettime\gettime.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPEBA1.tmp" 
+Creating command line "link.exe ws2_32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/gettime.pdb" /machine:I386 /out:"Release/gettime.exe"  .\Release\gettime.obj .\Release\StdAfx.obj "
+<h3>Output Window</h3>
+Compiling...
+gettime.cpp
+Linking...
+
+
+
+<h3>Results</h3>
+gettime.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

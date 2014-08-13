@@ -6,6 +6,29 @@
 --------------------Configuration: ReadandWrite - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP4FBA.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/ReadandWrite.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\touchpads\ini_read_write\ReadandWriteDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP4FBA.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP4FCB.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/ReadandWrite.pdb" /debug /machine:I386 /out:"Debug/ReadandWrite.exe" /pdbtype:sept 
+.\Debug\InitFile.obj
+.\Debug\ReadandWrite.obj
+.\Debug\ReadandWriteDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\ReadandWrite.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP4FCB.tmp"
+<h3>Output Window</h3>
+Compiling...
+ReadandWriteDlg.cpp
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/ReadandWrite.bsc"  .\Debug\StdAfx.sbr .\Debug\InitFile.sbr .\Debug\ReadandWrite.sbr .\Debug\ReadandWriteDlg.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 

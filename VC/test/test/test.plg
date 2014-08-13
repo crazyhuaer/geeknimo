@@ -6,27 +6,27 @@
 --------------------Configuration: test - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD3AD.tmp" with contents
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP6FE6.tmp" with contents
 [
 /nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/test.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"F:\CODE\GEEKNIMO\VC\test\test\test.cpp"
 "F:\Code\geeknimo\VC\test\test\Log.cpp"
+"F:\Code\geeknimo\VC\test\test\test.cpp"
 ]
-Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD3AD.tmp" 
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD3AE.tmp" with contents
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP6FE6.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP6FE7.tmp" with contents
 [
 /nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/test.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"F:\CODE\GEEKNIMO\VC\test\test\StdAfx.cpp"
+"F:\Code\geeknimo\VC\test\test\StdAfx.cpp"
 ]
-Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD3AE.tmp" 
-Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD3AF.tmp" with contents
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP6FE7.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP6FE8.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/test.pdb" /debug /machine:I386 /out:"Debug/test.exe" /pdbtype:sept 
+.\Debug\Log.obj
 .\Debug\StdAfx.obj
 .\Debug\test.obj
-.\Debug\Log.obj
 ]
-Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD3AF.tmp"
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP6FE8.tmp"
 <h3>Output Window</h3>
 Compiling...
 StdAfx.cpp
