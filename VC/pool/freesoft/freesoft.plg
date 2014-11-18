@@ -1,0 +1,56 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: freesoft - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP21C6.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR"Release/" /Fp"Release/freesoft.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\Code\geeknimo\VC\pool\freesoft\ScanTraffic.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP21C6.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP21C7.tmp" with contents
+[
+ws2_32.lib Crypt32.lib Shlwapi.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/freesoft.pdb" /machine:I386 /nodefaultlib:"MSVCRTD" /out:"Release/freesoft.exe" /opt:noref 
+.\Release\Dialog_LK_BTC15T.obj
+.\Release\Dialog_LKBTC1T.obj
+.\Release\freesoft.obj
+.\Release\freesoftDlg.obj
+.\Release\MyHeaderCtrl.obj
+.\Release\MyListCtrl.obj
+.\Release\ScanTraffic.obj
+.\Release\StdAfx.obj
+.\Release\UDP.obj
+.\Release\freesoft.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP21C7.tmp"
+<h3>Output Window</h3>
+Compiling...
+ScanTraffic.cpp
+Linking...
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP22E1.tmp" with contents
+[
+/nologo /o"Release/freesoft.bsc" 
+.\Release\StdAfx.sbr
+.\Release\Dialog_LK_BTC15T.sbr
+.\Release\Dialog_LKBTC1T.sbr
+.\Release\freesoft.sbr
+.\Release\freesoftDlg.sbr
+.\Release\MyHeaderCtrl.sbr
+.\Release\MyListCtrl.sbr
+.\Release\ScanTraffic.sbr
+.\Release\UDP.sbr]
+Creating command line "bscmake.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP22E1.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+freesoft.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

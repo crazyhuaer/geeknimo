@@ -1,0 +1,69 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: SmsTest - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Debug/SmsTest.res" /d "_DEBUG" /d "_AFXDLL" "F:\Code\geeknimo\VC\safebox\vc_web\client\client\SmsTest.rc"" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD01B.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/SmsTest.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\Comm.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\MainFrm.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\SettingsDlg.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\Sms.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\SmsTest.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\SmsTestDoc.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\SmsTestView.cpp"
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\SmsTraffic.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD01B.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD01C.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/SmsTest.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\safebox\vc_web\client\client\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD01C.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSPD01D.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/SmsTest.pdb" /debug /machine:I386 /out:"Debug/SmsTest.exe" /pdbtype:sept 
+.\Debug\Comm.obj
+.\Debug\MainFrm.obj
+.\Debug\SettingsDlg.obj
+.\Debug\Sms.obj
+.\Debug\SmsTest.obj
+.\Debug\SmsTestDoc.obj
+.\Debug\SmsTestView.obj
+.\Debug\SmsTraffic.obj
+.\Debug\StdAfx.obj
+.\Debug\SmsTest.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSPD01D.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+Comm.cpp
+MainFrm.cpp
+SettingsDlg.cpp
+Sms.cpp
+SmsTest.cpp
+SmsTestDoc.cpp
+SmsTestView.cpp
+SmsTraffic.cpp
+Generating Code...
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/SmsTest.bsc"  .\Debug\StdAfx.sbr .\Debug\Comm.sbr .\Debug\MainFrm.sbr .\Debug\SettingsDlg.sbr .\Debug\Sms.sbr .\Debug\SmsTest.sbr .\Debug\SmsTestDoc.sbr .\Debug\SmsTestView.sbr .\Debug\SmsTraffic.sbr"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+SmsTest.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

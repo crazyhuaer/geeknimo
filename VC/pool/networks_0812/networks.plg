@@ -3,9 +3,61 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: networks - Win32 Release--------------------
+--------------------Configuration: networks - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP7E6B.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/networks.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\Code\geeknimo\VC\pool\networks_0812\networksDlg.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP7E6B.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP7E6C.tmp" with contents
+[
+ChilkatDbgDll.lib ChilkatDbgMt.lib ChilkatDbgSt.lib ChilkatRelDll.lib ChilkatRelMt.lib ChilkatRelSt.lib ws2_32.lib Crypt32.lib Shlwapi.lib sqlite3.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/networks.pdb" /debug /machine:I386 /out:"Debug/networks.exe" /pdbtype:sept 
+.\Debug\Dialog_BTC1T.obj
+.\Debug\DialogLTC30M.obj
+.\Debug\DialogLTC60M.obj
+.\Debug\InitFile.obj
+.\Debug\Log.obj
+.\Debug\LoginDialog.obj
+.\Debug\md5_password.obj
+.\Debug\ModifyPassowrd.obj
+.\Debug\MyHeaderCtrl.obj
+.\Debug\MyListCtrl1.obj
+.\Debug\networks.obj
+.\Debug\networksDlg.obj
+.\Debug\StdAfx.obj
+.\Debug\UDP.obj
+.\Debug\UnknowType.obj
+.\Debug\networks.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP7E6C.tmp"
+<h3>Output Window</h3>
+Compiling...
+networksDlg.cpp
+Linking...
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP7FA5.tmp" with contents
+[
+/nologo /o"Debug/networks.bsc" 
+.\Debug\StdAfx.sbr
+.\Debug\Dialog_BTC1T.sbr
+.\Debug\DialogLTC30M.sbr
+.\Debug\DialogLTC60M.sbr
+.\Debug\InitFile.sbr
+.\Debug\Log.sbr
+.\Debug\LoginDialog.sbr
+.\Debug\md5_password.sbr
+.\Debug\ModifyPassowrd.sbr
+.\Debug\MyHeaderCtrl.sbr
+.\Debug\MyListCtrl1.sbr
+.\Debug\networks.sbr
+.\Debug\networksDlg.sbr
+.\Debug\UDP.sbr
+.\Debug\UnknowType.sbr]
+Creating command line "bscmake.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP7FA5.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 

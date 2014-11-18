@@ -1,0 +1,234 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\modifyip.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\modifyip.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 modifyip"
+FONT 9, "宋体"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "modifyip 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "版权所有 (C) 2014",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_MODIFYIP_DIALOG DIALOGEX 0, 0, 657, 290
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "内蒙修改IP"
+FONT 9, "宋体"
+BEGIN
+    CONTROL         "IPAddress1",IDC_IPADDRESS_TARGET,"SysIPAddress32",
+                    WS_TABSTOP,11,34,100,15
+    CTEXT           "修改机IP:",IDC_STATIC,35,22,48,10,SS_CENTERIMAGE
+    PUSHBUTTON      "测试连通",IDC_BUTTON_PING,12,54,42,19
+    PUSHBUTTON      "修改",IDC_BUTTON_MODIFYIP,66,54,42,19
+    CONTROL         "",IDC_RICHEDIT_MESSAGE,"RICHEDIT",ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_BORDER | WS_VSCROLL | WS_TABSTOP,223,
+                    18,421,258
+    GROUPBOX        "消息区",IDC_STATIC,218,7,432,276
+    CONTROL         "List1",IDC_LIST_IPPOOL,"SysListView32",LVS_SMALLICON | 
+                    LVS_SINGLESEL | LVS_AUTOARRANGE | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_TABSTOP,123,19,84,258
+    GROUPBOX        "IP池",IDC_STATIC,117,7,96,276
+    GROUPBOX        "IP池生成区",IDC_STATIC,7,82,107,201
+    GROUPBOX        "单机修改区",IDC_STATIC,7,7,107,71
+    CONTROL         "IPAddress3",IDC_IPADDRESS_IPPOOL_1,"SysIPAddress32",
+                    WS_TABSTOP,10,106,100,15
+    CONTROL         "IPAddress4",IDC_IPADDRESS_IPPOOL_2,"SysIPAddress32",
+                    WS_TABSTOP,10,138,100,15
+    PUSHBUTTON      "生成IP池",IDC_BUTTON_CREATE_IPPOOL,35,256,42,19
+    CONTROL         "IPAddress2",IDC_IPADDRESS_DNS,"SysIPAddress32",
+                    WS_TABSTOP,11,234,100,15
+    CTEXT           "子网掩码:",IDC_STATIC,34,159,53,10,SS_CENTERIMAGE
+    CONTROL         "IPAddress2",IDC_IPADDRESS_NETMASK,"SysIPAddress32",
+                    WS_TABSTOP,11,170,100,15
+    CTEXT           "默认网关:",IDC_STATIC,34,191,53,10,SS_CENTERIMAGE
+    CONTROL         "IPAddress2",IDC_IPADDRESS_GATEWAY,"SysIPAddress32",
+                    WS_TABSTOP,11,202,100,15
+    CTEXT           "DNS:",IDC_STATIC,34,223,53,10,SS_CENTERIMAGE
+    CTEXT           "IP池起始地址:",IDC_STATIC,34,95,53,10,SS_CENTERIMAGE
+    CTEXT           "IP池终止地址:",IDC_STATIC,34,127,53,10,SS_CENTERIMAGE
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "modifyip Microsoft 基础类应用程序\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "modifyip\0"
+            VALUE "LegalCopyright", "版权所有 (C) 2014\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "modifyip.EXE\0"
+            VALUE "ProductName", "modifyip 应用程序\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_MODIFYIP_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 650
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 283
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 modifyip(&A)..."
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\modifyip.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

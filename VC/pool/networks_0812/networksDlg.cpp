@@ -2165,7 +2165,335 @@ void CNetworksDlg::OnSingleUpdate()
 void CNetworksDlg::OnSingleReboot() 
 {
 	// TODO: Add your control notification handler code here
-	AfxBeginThread(SingleRebootThread,(LPVOID)this,CREATE_NEW);
+	//AfxBeginThread(SingleRebootThread,(LPVOID)this,CREATE_NEW);
+	CString	strHtmlData,sTmp,temp,iDestAddr= "192.168.1.28";
+	int temps = MachineType(iDestAddr,&strHtmlData);
+
+
+	int ret = 0;
+	
+	//////////////////////////////////////////////////////////////////////////
+			// "BTC 1.5T"
+			//	AfxMessageBox("BTC 1.5T");
+			CString BA1, BA2, BA3, BA4, BA5,BA6,SUM, poolUser1, pool1Status, poolUser2, pool2Status, poolUser3, pool3Status, RunTime;
+			CString strTemp[6]={"","","","","",""};
+			int iPos = strHtmlData.Find("BA1");
+			int strHtmlData_Len = strHtmlData.GetLength();
+			if (iPos == -1)
+			{
+				return;
+			}
+			//int strLength = strHtmlData.GetLength();
+
+			//first
+			CString	tempHtml = strHtmlData.Mid(iPos,strHtmlData_Len);
+			{
+				temp = tempHtml;
+				for (int i = 0;i < 5; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlData_Len);
+				}
+				
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlData_Len);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				temp.Remove(',');
+				temp.Mid(0, temp.Find('.')-1);
+
+				temp.Format("%d",int(atoi(temp)/1000+0.5));
+				BA1 = temp;
+				
+				// second
+				for (i = 0;i < 23; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlData_Len);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlData_Len);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				temp.Remove(',');
+				temp.Mid(0, temp.Find('.')-1);
+				temp.Format("%d",int(atoi(temp)/1000+0.5));
+				BA2 = temp;
+				// third
+				for (i = 0;i < 23; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlData_Len);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlData_Len);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				temp.Remove(',');
+				temp.Mid(0, temp.Find('.')-1);
+				temp.Format("%d",int(atoi(temp)/1000+0.5));
+				BA3 = temp;
+				// forth
+				for (i = 0;i < 23; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlData_Len);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlData_Len);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				temp.Remove(',');
+				temp.Mid(0, temp.Find('.')-1);
+				temp.Format("%d",int(atoi(temp)/1000+0.5));
+				BA4 = temp;
+
+				//five
+				for (i = 0;i < 23; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlData_Len);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlData_Len);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				temp.Remove(',');
+				temp.Mid(0, temp.Find('.')-1);
+				temp.Format("%d",int(atoi(temp)/1000+0.5));
+				BA5 = temp;
+				//six
+				for (i = 0;i < 23; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlData_Len);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlData_Len);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				temp.Remove(',');
+				temp.Mid(0, temp.Find('.')-1);
+				temp.Format("%d",int(atoi(temp)/1000+0.5));
+				BA6 = temp;
+
+				// summary
+				iPos = strHtmlData.Find("SUMMARY");
+				if (iPos < 0)
+				{
+					ret = -1;
+				}
+				else
+				{
+					tempHtml = strHtmlData.Mid(iPos,500);
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					iPos = tempHtml.Find(">");
+					tempHtml = tempHtml.Mid(iPos,500);
+					
+					iPos = tempHtml.Find("</td>");
+					temp = tempHtml.Mid(1,iPos-1);
+					temp.Remove(',');
+					temp.Mid(0, temp.Find('.')-1);
+					temp.Format("%d",int(atoi(temp)/1000+0.5));
+				}
+				SUM = temp;
+				// pool-user1
+				iPos = strHtmlData.Find("Stratum URL");
+				tempHtml = strHtmlData.Mid(iPos,5000);
+				for (i = 0;i < 7; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				pool1Status = temp;
+
+				for (i = 0;i < 12; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				poolUser1 = temp;
+				// pool-user2
+
+				for (i = 0;i < 18; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				pool2Status = temp;
+
+				for (i = 0;i < 12; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				poolUser2 = temp;
+				// pool-user3
+				for (i = 0;i < 18; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				pool3Status = temp;
+
+				for (i = 0;i < 12; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				poolUser3 = temp;
+				// run time
+				CString strUrl = "http://"+iDestAddr+"/miner.php?ref=0&pg=Stats";
+				TCHAR	ch;
+				char *pstrURL = (char*)LPCTSTR(strUrl);
+				CInternetSession m_session;
+				strHtmlData = "";
+				pstrURL = (char*)LPCTSTR(strUrl);
+
+				CHttpFile *pFile;//  = (CHttpFile *) m_session.OpenURL(pstrURL, 1, 
+				//	INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
+				try
+				{
+					pFile  = (CHttpFile *) m_session.OpenURL(pstrURL, 1, 
+						INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
+					
+					//m_session.Close();
+				}
+				catch (CException* e)
+				{
+					//e->ReportError();
+					e->Delete();
+					goto OUTP;
+				}
+
+				while (pFile->Read(&ch, sizeof(TCHAR)))
+				{
+					strHtmlData += ch;
+				}	
+				
+				iPos = strHtmlData.Find("Work Utility");
+				//int strLength = strHtmlData.GetLength();
+				tempHtml = strHtmlData.Mid(iPos,500);
+				
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					
+					iPos = tempHtml.Find(">");
+					tempHtml = tempHtml.Mid(iPos,500);
+					
+					iPos = tempHtml.Find("</td>");
+					RunTime = tempHtml.Mid(1,iPos-1);
+					RunTime.Replace("&nbsp;","");
+					//AfxMessageBox(RunTime);
+				}
+
+				int		iPosTemp;
+				CString strFind[]={"BA10","BA11","BA12","BA13","BA14","BA15"};
+				CString	iTemp = strHtmlData;
+				
+				for (i = 0;i < 6;i++)
+				{
+					iPosTemp = strHtmlData.Find(strFind[i]);
+					if (iPosTemp == -1)
+					{
+						strTemp[i] = "0";
+					} 
+					else
+					{
+						iTemp = strHtmlData.Mid(iPosTemp,2500);
+						{
+							if (ret == 1)
+							{
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+							} 
+							else if (ret == 3)
+							{
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+								iPosTemp = iTemp.Find("<td ");
+								iTemp = iTemp.Mid(iPosTemp+5,2500);
+							}
+							else
+							{
+								;
+							}
+							/*
+							iPos = temp.Find("<td ");
+							temp = temp.Mid(iPos+5,2500);
+							*/
+							iPosTemp = iTemp.Find(">");
+							iTemp = iTemp.Mid(iPosTemp,2500);
+							
+							iPosTemp = iTemp.Find("</td>");
+							//m_ListCtrl.SetItemText(curline, 13+i,temp.Mid(1,iPos-1));
+							strTemp[i]=iTemp.Mid(1,iPosTemp-1);
+							
+						}
+					}
+					
+				}
+			}
+	//////////////////////////////////////////////////////////////////////////
+OUTP:;
+	 AfxMessageBox("ok");
 }
 
 void CNetworksDlg::OnMutipleReboot() 
@@ -2505,6 +2833,7 @@ int ret:
 ret =	1:BTC 1T
 2:LTC 30M
 3:LTC 60M
+4:LTC 30M sz
 
 */
 /************************************************************************/
@@ -2518,10 +2847,23 @@ int CNetworksDlg::MachineType(CString ipAddr,CString *strHtmlData)
 	
 	TCHAR	ch;
 	char *pstrURL = (char*)LPCTSTR(strUrl);
-	
+	CHttpFile *pFile;
 	CInternetSession m_session;
-	CHttpFile *pFile = (CHttpFile *) m_session.OpenURL(pstrURL, 1, 
-		INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
+	//CHttpFile *pFile = (CHttpFile *) m_session.OpenURL(pstrURL, 1, 
+	//	INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
+	try
+		{
+		pFile  = (CHttpFile *) m_session.OpenURL(pstrURL, 1, 
+			INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
+		
+		//m_session.Close();
+		}
+	catch (CException* e)
+	{
+		//e->ReportError();
+		e->Delete();
+		return -1;
+	}
 	
 	while (pFile->Read(&ch, sizeof(TCHAR)))
 	{
@@ -2539,7 +2881,23 @@ int CNetworksDlg::MachineType(CString ipAddr,CString *strHtmlData)
 		}
 		else
 		{
-			ret = 2;
+			CString sTemp = *strHtmlData;
+			int strLen = strHtmlData->GetLength();
+			
+			for( int pos = 0, count = 0; pos != -1; count++ )
+			{
+				pos = sTemp.Find("ICA");
+				sTemp = sTemp.Mid(pos+1,strLen);
+			}
+			
+			if (count > 14)
+			{
+				ret = 4;
+			} 
+			else
+			{
+				ret = 2;
+			}
 		}
 	}
 	else
@@ -2561,17 +2919,37 @@ int CNetworksDlg::MachineType(CString ipAddr,CString *strHtmlData)
 			
 			iPos = temp.Find("</td>");
 			temp = temp.Mid(1,iPos-1);
-		
+			
 			temp.Remove(',');
 			temp.Format("%d",int(atoi(temp)+0.5));
-			((CNetworksApp*)AfxGetApp())->m_Log.LogMessage(temp);
+			//((CNetworksApp*)AfxGetApp())->m_Log.LogMessage(temp);
 			if (atoi(temp) < 100)
 			{
 				ret = 3;
 			}
 			else
 			{
-				ret = 1;
+				//////////////////////////////////////////////////////////////////////////
+				CString sTemp = *strHtmlData;
+				int strLen = strHtmlData->GetLength();
+				
+				for( int pos = 0, count = 0; pos != -1; count++ )
+				{
+					pos = sTemp.Find("BA1");
+					sTemp = sTemp.Mid(pos+1,strLen);
+				}
+				
+				if (count > 10)
+				{
+					ret = 5;
+				} 
+				else
+				{
+					ret = 1;
+				}
+
+				//////////////////////////////////////////////////////////////////////////
+				
 			}
 		}
 	}
@@ -3551,8 +3929,188 @@ void CNetworksDlg::MultiLkMachine_GetStatus(CString iDestAddr, int ret, CString 
 		break;
 	case 4:
 		{
+			//////////////////////////////////////////////////////////////////////////
+			// "LTC SZ 30M"
+			//AfxMessageBox("LTC 30M");
+			CString ICA[12],SUM, poolUser1, pool1Status, poolUser2, pool2Status, poolUser3, pool3Status, RunTime;
+			int iPos = strHtmlData.Find("ICA");
+			int strHtmlLen = strHtmlData.GetLength();
+			if (iPos == -1)
+			{
+				break ;
+			}
+			//int strLength = strHtmlData.GetLength();
 			
+			//first
+			CString	tempHtml = strHtmlData.Mid(iPos,strHtmlLen);
+			{
+				temp = tempHtml;
+				for (int i = 0;i < 5; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlLen);
+				}
+				
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlLen);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				ICA[0] = temp;
+				
+				int j = 1;
+			for (j = 1;j<11;j++)
+			{
+				// second ... eleven
+				for (i = 0;i < 21; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,strHtmlLen);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,strHtmlLen);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				ICA[j] = temp;
+			}
+
+				// summary
+				iPos = strHtmlData.Find("SUMMARY");
+				if (iPos < 0)
+				{
+					ret = -1;
+				}
+				else
+				{
+					tempHtml = strHtmlData.Mid(iPos,500);
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					iPos = tempHtml.Find(">");
+					tempHtml = tempHtml.Mid(iPos,500);
+					
+					iPos = tempHtml.Find("</td>");
+					temp = tempHtml.Mid(1,iPos-1);
+				}
+				SUM = temp;
+				// pool-user1
+				iPos = strHtmlData.Find("Stratum URL");
+				tempHtml = strHtmlData.Mid(iPos,5000);
+
+				for (i = 0;i < 5; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				pool1Status = temp;
+
+				for (i = 0;i < 10; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				poolUser1 = temp;
+				// pool-user2
+
+				for (i = 0;i < 16; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				pool2Status = temp;
+
+				for (i = 0;i < 10; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				poolUser2 = temp;
+				// pool-user3
+
+				for (i = 0;i < 16; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				pool3Status = temp;
+
+				for (i = 0;i < 10; i++)
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,5000);
+				}
+				iPos = tempHtml.Find(">");
+				tempHtml = tempHtml.Mid(iPos,5000);
+				
+				iPos = tempHtml.Find("</td>");
+				temp = tempHtml.Mid(1,iPos-1);
+				poolUser3 = temp;
+				// run time
+				CString strUrl = "http://"+iDestAddr+"/miner.php?ref=0&pg=Stats";
+				TCHAR	ch;
+				char *pstrURL = (char*)LPCTSTR(strUrl);
+				CInternetSession m_session;
+				strHtmlData = "";
+				pstrURL = (char*)LPCTSTR(strUrl);
+				
+				CHttpFile *pFile  = (CHttpFile *) m_session.OpenURL(pstrURL, 1, 
+					INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_RELOAD);
+				
+				while (pFile->Read(&ch, sizeof(TCHAR)))
+				{
+					strHtmlData += ch;
+				}	
+				
+				iPos = strHtmlData.Find("Work Utility");
+				//int strLength = strHtmlData.GetLength();
+				tempHtml = strHtmlData.Mid(iPos,500);
+				
+				{
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					iPos = tempHtml.Find("<td ");
+					tempHtml = tempHtml.Mid(iPos+5,500);
+					
+					iPos = tempHtml.Find(">");
+					tempHtml = tempHtml.Mid(iPos,500);
+					
+					iPos = tempHtml.Find("</td>");
+					RunTime = tempHtml.Mid(1,iPos-1);
+					RunTime.Replace("&nbsp;","");
+					//AfxMessageBox(RunTime);
+				}
+
+			}
 		}
+
+		//////////////////////////////////////////////////////////////////////////
 		break;
 	default:
 		{

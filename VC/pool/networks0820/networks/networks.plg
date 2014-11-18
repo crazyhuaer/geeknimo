@@ -1,0 +1,109 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: networks - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Release/networks.res" /d "NDEBUG" /d "_AFXDLL" "F:\Code\geeknimo\VC\pool\networks0820\networks\networks.rc"" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP4C17.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/networks.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\Code\geeknimo\VC\pool\networks0820\networks\Dialog_BTC1T.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\DialogLTC30M.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\DialogLTC60M.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\InitFile.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\Log.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\LoginDialog.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\md5_password.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\ModifyPassowrd.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\MyHeaderCtrl.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\MyListCtrl1.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\networks.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\networksDlg.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\SZLTC30M.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\UDP.cpp"
+"F:\Code\geeknimo\VC\pool\networks0820\networks\UnknowType.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP4C17.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP4C18.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/networks.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"F:\Code\geeknimo\VC\pool\networks0820\networks\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP4C18.tmp" 
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP4C19.tmp" with contents
+[
+ChilkatDbgDll.lib ChilkatDbgMt.lib ChilkatDbgSt.lib ChilkatRelDll.lib ChilkatRelMt.lib ChilkatRelSt.lib ws2_32.lib Crypt32.lib Shlwapi.lib sqlite3.lib /nologo /subsystem:windows /profile /machine:I386 /nodefaultlib:"MSVCRTD" /out:"Release/networks.exe " 
+.\Release\Dialog_BTC1T.obj
+.\Release\DialogLTC30M.obj
+.\Release\DialogLTC60M.obj
+.\Release\InitFile.obj
+.\Release\Log.obj
+.\Release\LoginDialog.obj
+.\Release\md5_password.obj
+.\Release\ModifyPassowrd.obj
+.\Release\MyHeaderCtrl.obj
+.\Release\MyListCtrl1.obj
+.\Release\networks.obj
+.\Release\networksDlg.obj
+.\Release\StdAfx.obj
+.\Release\SZLTC30M.obj
+.\Release\UDP.obj
+.\Release\UnknowType.obj
+.\Release\networks.res
+]
+Creating command line "link.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP4C19.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+Dialog_BTC1T.cpp
+DialogLTC30M.cpp
+DialogLTC60M.cpp
+InitFile.cpp
+Log.cpp
+LoginDialog.cpp
+md5_password.cpp
+ModifyPassowrd.cpp
+MyHeaderCtrl.cpp
+MyListCtrl1.cpp
+networks.cpp
+networksDlg.cpp
+SZLTC30M.cpp
+UDP.cpp
+UnknowType.cpp
+Generating Code...
+Linking...
+Creating temporary file "C:\Users\geeknimo\AppData\Local\Temp\RSP54E4.tmp" with contents
+[
+/nologo /o"Release/networks.bsc" 
+.\Release\StdAfx.sbr
+.\Release\Dialog_BTC1T.sbr
+.\Release\DialogLTC30M.sbr
+.\Release\DialogLTC60M.sbr
+.\Release\InitFile.sbr
+.\Release\Log.sbr
+.\Release\LoginDialog.sbr
+.\Release\md5_password.sbr
+.\Release\ModifyPassowrd.sbr
+.\Release\MyHeaderCtrl.sbr
+.\Release\MyListCtrl1.sbr
+.\Release\networks.sbr
+.\Release\networksDlg.sbr
+.\Release\SZLTC30M.sbr
+.\Release\UDP.sbr
+.\Release\UnknowType.sbr]
+Creating command line "bscmake.exe @C:\Users\geeknimo\AppData\Local\Temp\RSP54E4.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+networks.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
